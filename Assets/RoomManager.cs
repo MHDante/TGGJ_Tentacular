@@ -11,13 +11,16 @@ public class RoomManager : MonoBehaviour
     public static float cellSize = 40;
     public int gridWidth = 5, gridHeight = 4;
     private int _gW = 0, _gH = 0;
+    private bool awoken = false;
     void Awake()
     {
+        RegenMap(true);
+        awoken = true;
     }
 
     public void OnValidate()
     {
-        if (_gW != gridWidth || _gH != gridHeight)
+        if (awoken && (_gW != gridWidth || _gH != gridHeight))
         {
             RegenMap(true);
         }
@@ -55,10 +58,14 @@ public class RoomManager : MonoBehaviour
             try
             {
                 string n = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
-                if (n == "blank0" || !Application.isPlaying)
+                if (n == "blank0")
                 {
                     FileWrite.DeserializationCallback();
+                }else if (!Application.isPlaying)
+                {
+                    FileWrite.DeserializationCallback(n + ".xml");
                 }
+
                 else FileWrite.InitDeserialization(n + ".xml");
             }
             catch (FileNotFoundException e)

@@ -71,13 +71,13 @@ public static class FileWrite
         Application.LoadLevel("Blank");
         FileWrite.defaultFileName = filename;
     }
-    public static bool DeserializationCallback()
+    public static bool DeserializationCallback(string filename = null)
     {
 
         RoomManager room = MonoBehaviour.FindObjectOfType<RoomManager>();
 
         string path = GetPath();
-        XElement loaded = XElement.Load(Application.dataPath + "/SavedLevels/" + defaultFileName);
+        XElement loaded = XElement.Load(Application.dataPath + "/SavedLevels/" + (filename??defaultFileName));
         //XElement loaded = XElement.Load(path + "/" + defaultFileName + ".xml");
         XElement meta = loaded.Element(XName.Get("Meta"));
         MetaData metaData = (MetaData)MonoBehaviour.FindObjectOfType(typeof(MetaData));
