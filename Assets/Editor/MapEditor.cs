@@ -30,16 +30,30 @@ public class MapEditor : EditorWindow {
         Vector2 MousePos = sceneView.camera.ScreenPointToRay(screenpos).origin;
         if (LeftDown())
         {
-            Debug.Log(MousePos);
             CellAction(MousePos);
+            Event.current.Use();
+        }
+        else if (RightDown())
+        {
+            CellAction(MousePos, true);
+            Event.current.Use();
         }
     }
-    public void CellAction(Vector2 pos)
+    Types lastType;
+    public void CellAction(Vector2 pos, bool useLastType = false)
     {
         Cell c = RoomManager.GetFromWorldPos(pos.x, pos.y);
         if (c != null)
         {
-            c.type = (Types)(((int)c.type + 1) % Enum.GetValues(typeof(Types)).Length);
+            if (useLastType)
+            {
+                c.type = lastType;
+            }
+            else
+            {
+                c.type = (Types)(((int)c.type + 1) % Enum.GetValues(typeof(Types)).Length);
+                lastType = c.type;
+            }
         }
     }
     bool RightDown()

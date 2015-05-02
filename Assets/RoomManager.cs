@@ -45,7 +45,10 @@ public class RoomManager : MonoBehaviour
         
         try
         {
-            FileWrite.DeserializationCallback();
+            string n = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
+            if (n == "blank0") { FileWrite.DeserializationCallback(); }
+            else FileWrite.InitDeserialization(n+".xml");
+            
         }
         catch (Exception e)
         {
