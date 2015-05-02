@@ -13,13 +13,11 @@ public class RoomManager : MonoBehaviour
     {
     }
 
-    private void OnValidate()
+    public void OnValidate()
     {
         if (_gW != gridWidth || _gH != gridHeight)
         {
             RegenMap(true);
-            _gW = gridWidth;
-            _gH = gridHeight;
         }
     }
 
@@ -52,15 +50,7 @@ public class RoomManager : MonoBehaviour
         }
 
 
-        Grid = new Cell[gridWidth][];
-        for (int i = 0; i < gridWidth; i++)
-        {
-            Grid[i] = new Cell[gridHeight];
-            for (int j = 0; j < gridHeight; j++)
-            {
-                Grid[i][j] = new Cell(i, j);
-            }
-        }
+        GenerateEmptyGrid();
         if (Application.isPlaying)
         {
             try
@@ -78,6 +68,22 @@ public class RoomManager : MonoBehaviour
                 throw e;
             }
         }
+    }
+
+    public void GenerateEmptyGrid()
+    {
+        Grid = new Cell[gridHeight][];
+        for (int i = 0; i < gridHeight; i++)
+        {
+            Grid[i] = new Cell[gridWidth];
+            for (int j = 0; j < gridWidth; j++)
+            {
+                Grid[i][j] = new Cell(i, j);
+            }
+        }
+
+        _gW = gridWidth;
+        _gH = gridHeight;
     }
 
     // Use this for initialization

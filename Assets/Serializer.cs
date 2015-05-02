@@ -91,6 +91,9 @@ public static class FileWrite
         metaData.levelName = meta.Attribute("LevelName").Value;
 
         XElement grid = loaded.Element("Grid");
+        RoomManager.roomManager.gridWidth = int.Parse(grid.Attribute("Width").Value);
+        RoomManager.roomManager.gridHeight = int.Parse(grid.Attribute("Height").Value);
+        RoomManager.roomManager.GenerateEmptyGrid();
 
         foreach (XElement row in grid.Elements("Row"))
         {
