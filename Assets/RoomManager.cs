@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.IO;
+
 [ExecuteInEditMode]
 public class RoomManager : MonoBehaviour
 {
@@ -48,35 +50,31 @@ public class RoomManager : MonoBehaviour
                 Destroy(o.gameObject);
             }
         }
-
-
-        GenerateEmptyGrid();
-        if (Application.isPlaying)
-        {
+        //if (Application.isPlaying)
+        //{
             try
             {
                 string n = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
-                if (n == "blank0")
+                if (n == "blank0" || !Application.isPlaying)
                 {
                     FileWrite.DeserializationCallback();
                 }
                 else FileWrite.InitDeserialization(n + ".xml");
             }
-            catch (Exception e)
+            catch (FileNotFoundException e)
             {
-                Debug.Log("Exception : " + e);
-                throw e;
+                GenerateEmptyGrid();
             }
-        }
+        //}
     }
 
     public void GenerateEmptyGrid()
     {
-        Grid = new Cell[gridHeight][];
-        for (int i = 0; i < gridHeight; i++)
+        Grid = new Cell[gridWidth][];
+        for (int i = 0; i < gridWidth; i++)
         {
-            Grid[i] = new Cell[gridWidth];
-            for (int j = 0; j < gridWidth; j++)
+            Grid[i] = new Cell[gridHeight];
+            for (int j = 0; j < gridHeight; j++)
             {
                 Grid[i][j] = new Cell(i, j);
             }

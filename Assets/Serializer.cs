@@ -69,17 +69,10 @@ public static class FileWrite
         //MonoBehaviour.Destroy(RoomManager.roomManager);
         //RoomManager.roomManager = null;
         Application.LoadLevel("Blank");
-        AwaitingDSCallback = true;
         FileWrite.defaultFileName = filename;
     }
-    static bool AwaitingDSCallback = false;
     public static bool DeserializationCallback()
     {
-        if (!AwaitingDSCallback)
-        {
-            return false;
-        }
-        AwaitingDSCallback = false;
 
         RoomManager room = MonoBehaviour.FindObjectOfType<RoomManager>();
 
@@ -126,8 +119,8 @@ public static class FileWrite
         eRoot.Add(eGrid);
 
         var grid = RoomManager.roomManager.Grid;
-        eGrid.Add(new XAttribute("Width", grid[0].Length));
-        eGrid.Add(new XAttribute("Height", grid.Length));
+        eGrid.Add(new XAttribute("Width", grid.Length));
+        eGrid.Add(new XAttribute("Height", grid[0].Length));
 
 
         for (int y = 0; y < grid[0].Length; y++)
