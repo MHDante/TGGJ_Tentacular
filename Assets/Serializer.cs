@@ -88,6 +88,18 @@ public static class FileWrite
         RoomManager.roomManager.gridHeight = int.Parse(grid.Attribute("Height").Value);
         RoomManager.roomManager.GenerateEmptyGrid();
 
+        XAttribute elemPlayerX = grid.Attribute("PlayerX");
+        XAttribute elemPlayerY = grid.Attribute("PlayerY");
+        bool exists = elemPlayerX != null && elemPlayerY != null;
+        RoomManager.roomManager.PlayerStartX = exists ? int.Parse(elemPlayerX.Value) : 0;
+        RoomManager.roomManager.PlayerStartY = exists ? int.Parse(elemPlayerY.Value) : 0;
+
+        GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("playerPrefab"));
+        RoomManager.roomManager.player = go.GetComponent<Player>();
+        RoomManager.roomManager.player.x = RoomManager.roomManager.PlayerStartX;
+        RoomManager.roomManager.player.y = RoomManager.roomManager.PlayerStartY;
+        RoomManager.roomManager.player.transform.position = new Vector3(RoomManager.roomManager.player.x, RoomManager.roomManager.player.y);
+
         foreach (XElement row in grid.Elements("Row"))
         {
             foreach (XElement eCell in row.Elements("Cell"))
@@ -121,7 +133,8 @@ public static class FileWrite
         var grid = RoomManager.roomManager.Grid;
         eGrid.Add(new XAttribute("Width", grid.Length));
         eGrid.Add(new XAttribute("Height", grid[0].Length));
-
+        eGrid.Add(new XAttribute("PlayerX", RoomManager.roomManager.PlayerStartX));
+        eGrid.Add(new XAttribute("PlayerY", RoomManager.roomManager.PlayerStartY));
 
         for (int y = 0; y < grid[0].Length; y++)
         {

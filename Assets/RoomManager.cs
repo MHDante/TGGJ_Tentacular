@@ -12,6 +12,8 @@ public class RoomManager : MonoBehaviour
     public int gridWidth = 5, gridHeight = 4;
     private int _gW = 0, _gH = 0;
     private bool awoken = false;
+    public int PlayerStartX=0, PlayerStartY=0;
+    public Player player;
     void Awake()
     {
         RegenMap(true);
@@ -40,19 +42,14 @@ public class RoomManager : MonoBehaviour
         var obs = FindObjectsOfType<CellAdapter>();
         foreach (var o in obs)
         {
-            if (Application.isEditor && !Application.isPlaying)
-            {
-                var o1 = o;
-                UnityEditor.EditorApplication.delayCall += () =>
-                {
-                    DestroyImmediate(o1.gameObject);
-                };
-            }
-            else
-            {
-                Destroy(o.gameObject);
-            }
+            DestroyGeneralized(o.gameObject);
         }
+        var plyr = FindObjectOfType<Player>();
+        if (plyr != null)
+        {
+            DestroyGeneralized(plyr.gameObject);
+        }
+
         //if (Application.isPlaying)
         //{
             try
@@ -73,6 +70,21 @@ public class RoomManager : MonoBehaviour
                 GenerateEmptyGrid();
             }
         //}
+    }
+    public static void DestroyGeneralized(GameObject o)
+    {
+        if (Application.isEditor && !Application.isPlaying)
+        {
+            var o1 = o;
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                DestroyImmediate(o1);
+            };
+        }
+        else
+        {
+            Destroy(o);
+        }
     }
 
     public void GenerateEmptyGrid()
@@ -118,11 +130,15 @@ public class RoomManager : MonoBehaviour
     }
     public static Cell Get(int x, int y)
     {
-        if (x < 0 || x >= RoomManager.roomManager.Grid.Length
-            || y < 0 || y >= RoomManager.roomManager.Grid[0].Length)
+        if (!IsWithinGrid(x, y))
             return null;
         Cell ret = RoomManager.roomManager.Grid[x][y];
         if (x != ret.x || y != ret.y) throw new SystemException();
         return ret;
+    }
+    public static bool IsWithinGrid(int x, int y)
+    {
+        return (x >= 0 || x < RoomManager.roomManager.Grid.Length
+             || y >= 0 || y < RoomManager.roomManager.Grid[0].Length);
     }
 }
