@@ -26,12 +26,15 @@ public class Cell
     private Types _type;
     public Types type { set { Orient(value); _type = value; } get { return _type; } }
     public GameObject go;
+    public static GameObject template = Resources.Load<GameObject>("cellPrefab");
+    public static Sprite[] sprs = Resources.LoadAll<Sprite>(@"roads");
+
     public Cell(int x, int y)
     {
         this.x = x;
         this.y = y;
         this.col = Colors.Black;
-        go = (GameObject)GameObject.Instantiate(Resources.Load("cellPrefab"));
+        go = (GameObject)GameObject.Instantiate(template);
         go.tag = "cell";
         go.transform.position = new Vector2(x, y);
         Orient(type);
@@ -40,7 +43,7 @@ public class Cell
     private void Orient(Types t)
     {
         var spr = go.GetComponent<SpriteRenderer>();
-        var sprs = Resources.LoadAll<Sprite>(@"roads");
+       
         switch (t)
         {
             case Types.Blank:
