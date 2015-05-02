@@ -22,6 +22,7 @@ public class RoomManager : MonoBehaviour
     {
         if (awoken && (_gW != gridWidth || _gH != gridHeight))
         {
+            FileWrite.InitSerialization(gridWidth, gridHeight);
             RegenMap(true);
         }
     }
@@ -68,7 +69,7 @@ public class RoomManager : MonoBehaviour
 
                 else FileWrite.InitDeserialization(n + ".xml");
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
                 GenerateEmptyGrid();
             }

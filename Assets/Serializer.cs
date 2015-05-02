@@ -14,20 +14,12 @@ public static class FileWrite
     //    if (Input.GetKeyDown(KeyCode.D)) InitDeserialization();
     //    if (Input.GetKeyDown(KeyCode.T)) RoomManager.roomManager.RefreshColorFamilyAll();
     //}
-    static string defaultFileName = "Battletoads+Tetris";
-    public static string InitSerialization(string fileName = "")
+    static string defaultFileName = null;
+    public static string InitSerialization(float? newX = null, float? newY = null)
     {
-        XElement all = SerializeGrid();
+        XElement all = SerializeGrid(newX,newY);
         Debug.Log(all);
-        string fname = "";
-        if (!string.IsNullOrEmpty(fileName))
-        {
-            fname = fileName;
-        }
-        else
-        {
-            fname = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
-        }
+        var fname = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
         if (string.IsNullOrEmpty(fname))
         {
 #if UNITY_EDITOR
@@ -103,7 +95,7 @@ public static class FileWrite
 
         return true;
     }
-    public static XElement SerializeGrid()
+    public static XElement SerializeGrid(float? newX = null, float? newY = null)
     {
         XElement eRoot = new XElement("Root");
 
@@ -118,17 +110,20 @@ public static class FileWrite
         XElement eGrid = new XElement("Grid");
         eRoot.Add(eGrid);
 
-        var grid = RoomManager.roomManager.Grid;
-        eGrid.Add(new XAttribute("Width", grid.Length));
-        eGrid.Add(new XAttribute("Height", grid[0].Length));
+        //var grid = RoomManager.roomManager.Grid;
+
+        var width = newX?? RoomManager.roomManager.Grid.Length;
+        var height = newY?? RoomManager.roomManager.Grid[0].Length;
+        eGrid.Add(new XAttribute("Width", width));
+        eGrid.Add(new XAttribute("Height", height));
 
 
-        for (int y = 0; y < grid[0].Length; y++)
+        for (int y = 0; y < height; y++)
         {
             XElement eRow = new XElement("Row", new XAttribute("y", y));
-            for (int x = 0; x < grid.Length; x++)
+            for (int x = 0; x < width; x++)
             {
-                Cell cell = grid[x][y];
+                Cell cell = RoomManager.Get(x,y) ?? new Cell(x, y); ;
                 XElement eCell = new XElement("Cell", new XAttribute("x", x), new XAttribute("y", y));
                 eCell.Add(new XAttribute("Color", cell.col));
                 eCell.Add(new XAttribute("Type", cell.type));
