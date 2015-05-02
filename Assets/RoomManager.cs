@@ -7,8 +7,23 @@ public class RoomManager : MonoBehaviour
     public static RoomManager roomManager;
     public Cell[][] Grid;
     public static float cellSize = 40;
-    public static int gridWidth = 5, gridHeight = 4;
+    public int gridWidth = 5, gridHeight = 4;
+    private int _gW = 0, _gH = 0;
     void Awake()
+    {
+    }
+
+    private void OnValidate()
+    {
+        if (_gW != gridWidth || _gH != gridHeight)
+        {
+            RegenMap(true);
+            _gW = gridWidth;
+            _gH = gridHeight;
+        }
+    }
+
+    private void RegenMap(bool validation)
     {
         roomManager = this;
         //if (Application.isPlaying)
@@ -24,7 +39,11 @@ public class RoomManager : MonoBehaviour
         {
             if (Application.isEditor && !Application.isPlaying)
             {
-                DestroyImmediate(o.gameObject);
+                var o1 = o;
+                UnityEditor.EditorApplication.delayCall += () =>
+                {
+                    DestroyImmediate(o1.gameObject);
+                };
             }
             else
             {
@@ -42,20 +61,25 @@ public class RoomManager : MonoBehaviour
                 Grid[i][j] = new Cell(i, j);
             }
         }
-        
-        try
+        if (Application.isPlaying)
         {
-            string n = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
-            if (n == "blank0") { FileWrite.DeserializationCallback(); }
-            else FileWrite.InitDeserialization(n+".xml");
-            
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Exception : " + e);
-            throw e;
+            try
+            {
+                string n = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
+                if (n == "blank0")
+                {
+                    FileWrite.DeserializationCallback();
+                }
+                else FileWrite.InitDeserialization(n + ".xml");
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Exception : " + e);
+                throw e;
+            }
         }
     }
+
     // Use this for initialization
     void Start()
     {
@@ -74,6 +98,12 @@ public class RoomManager : MonoBehaviour
         int originY = (int)Mathf.Floor(y);
         //Debug.Log(originX + " " + originY);
         return RoomManager.Get(originX, originY);
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.5F);
+        Gizmos.DrawCube(new Vector3(((float)gridWidth)/2, ((float)gridHeight)/2), new Vector3(gridWidth, gridHeight));
     }
     public static Cell Get(int x, int y)
     {
