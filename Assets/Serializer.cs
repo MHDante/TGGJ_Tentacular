@@ -43,8 +43,8 @@ public static class FileWrite
     static string WriteFile(string filename, string text)
     {
         string path = GetPath();
-        //string fullFileName = path + "/SavedLevels/" + filename;
-        string fullFileName = path + "/" + filename;
+        string fullFileName = path + "/SavedLevels/" + filename;
+        //string fullFileName = path + "/" + filename;
         StreamWriter fileWriter = File.CreateText(fullFileName);
         //fileWriter.WriteLine("Hello world");
         fileWriter.Write(text);
@@ -84,8 +84,8 @@ public static class FileWrite
         RoomManager room = MonoBehaviour.FindObjectOfType<RoomManager>();
 
         string path = GetPath();
-        //XElement loaded = XElement.Load(Application.dataPath + "/SavedLevels/" + defaultFileName);
-        XElement loaded = XElement.Load(path + "/" + defaultFileName + ".xml");
+        XElement loaded = XElement.Load(Application.dataPath + "/SavedLevels/" + defaultFileName);
+        //XElement loaded = XElement.Load(path + "/" + defaultFileName + ".xml");
         XElement meta = loaded.Element(XName.Get("Meta"));
         MetaData metaData = (MetaData)MonoBehaviour.FindObjectOfType(typeof(MetaData));
         metaData.levelName = meta.Attribute("LevelName").Value;
@@ -100,6 +100,8 @@ public static class FileWrite
                 int celly = int.Parse(eCell.Attribute("y").Value);
                 Cell cell = RoomManager.roomManager.Grid[cellx][celly];
                 //pick up fields
+                cell.col = (Colors)Enum.Parse(typeof(Colors), eCell.Attribute("Color").Value);
+                cell.type = (Types)Enum.Parse(typeof(Types), eCell.Attribute("Type").Value);
             }
         }
 
@@ -132,8 +134,11 @@ public static class FileWrite
             {
                 Cell cell = grid[x][y];
                 XElement eCell = new XElement("Cell", new XAttribute("x", x), new XAttribute("y", y));
+                eCell.Add(new XAttribute("Color", cell.col));
+                eCell.Add(new XAttribute("Type", cell.type));
                 eRow.Add(eCell);
                 //add new data elems
+
             }
             eGrid.Add(eRow);
         }

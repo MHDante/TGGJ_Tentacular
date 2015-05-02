@@ -7,7 +7,7 @@ public class RoomManager : MonoBehaviour
     public static RoomManager roomManager;
     public Cell[][] Grid;
     public static float cellSize = 40;
-    public static int gridWidth = 20, gridHeight = 20;
+    public static int gridWidth = 5, gridHeight = 4;
     void Awake()
     {
         roomManager = this;
@@ -19,6 +19,20 @@ public class RoomManager : MonoBehaviour
 
         //if (masterParent == null) masterParent = GameObject.Find("Puzzle_Pieces");
         //if (masterParent == null) masterParent = new GameObject("Puzzle_Pieces");
+        var obs = FindObjectsOfType<CellAdapter>();
+        foreach (var o in obs)
+        {
+            if (Application.isEditor && !Application.isPlaying)
+            {
+                DestroyImmediate(o.gameObject);
+            }
+            else
+            {
+                Destroy(o.gameObject);
+            }
+        }
+
+
         Grid = new Cell[gridWidth][];
         for (int i = 0; i < gridWidth; i++)
         {
@@ -53,8 +67,8 @@ public class RoomManager : MonoBehaviour
 
     public static Cell GetFromWorldPos(float x, float y)
     {
-        int originX = (int)Mathf.Floor(x / cellSize);
-        int originY = (int)Mathf.Floor(y / cellSize);
+        int originX = (int)Mathf.Floor(x);
+        int originY = (int)Mathf.Floor(y);
         //Debug.Log(originX + " " + originY);
         return RoomManager.Get(originX, originY);
     }
