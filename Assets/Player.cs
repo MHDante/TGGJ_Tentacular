@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start() {
         currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
-        
+        playerSpeed = 0.1f;
     }
     bool StandingStill = true;
     bool IsMoving = false;
@@ -86,9 +86,10 @@ public class Player : MonoBehaviour {
                     lastPressDir = new Vector2(horiz, vert);
                 }
 
-                transform.position = Vector3.MoveTowards(transform.position, dest, playerSpeed*Time.deltaTime);
-                if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
-                {
+                transform.position = Vector3.MoveTowards(transform.position, dest, playerSpeed);
+                //if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
+                if (transform.position.x == dest.x && transform.position.y == dest.y)
+                    {
                     currentCell = nextCell;
                     IsMoving = false;
                     if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
