@@ -3,17 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Octopus : MonoBehaviour {
+    public enum OctopusStates
+    {
+        Normal,
+        Happy,
+        Angry,
+    }
     public Cell currentCell;
     public List<Cell> spawnCells = new List<Cell>();
     public Dictionary<Cell, Dirs> cellDirs = new Dictionary<Cell, Dirs>();
     public float spawnInterval = 2f;
     float timer = 0f;
-    Colors lastEnemyCol = Colors.Blue;
+    Colors lastEnemyCol = Colors.Red;
     //public int maxEnemies = 6;
     int enemyCounter = 0;
-	// Use this for initialization
-	void Start () {
+    public OctopusStates state = OctopusStates.Normal;
+
+    public Sprite OctNormal;
+    public Sprite OctAngry;
+    public Sprite OctHappy;
+
+    // Use this for initialization
+    void Start () {
         FindSpawnCells();
+        var sp = GetComponent<SpriteRenderer>();
+        sp.color = Color.black;
     }
     void FindSpawnCells()
     {
@@ -47,20 +61,34 @@ public class Octopus : MonoBehaviour {
             }
         }
     }
-	
+    float hue = 0f, huespeed = 5f, val = 0f, valspeed = 0.25f;
 	// Update is called once per frame
 	void Update () {
 		if (RoomManager.roomManager.IsPaused ())
 			return;
         if (enemyCounter < RoomManager.roomManager.maxEnemies)
         {
-        timer += Time.deltaTime;
-        if (timer > spawnInterval)
+            timer += Time.deltaTime;
+            if (timer > spawnInterval)
+            {
+                timer = 0;
+                SpawnEnemy();
+            }
+	    }
+        if (state == OctopusStates.Happy)
         {
-            timer = 0;
-            SpawnEnemy();
+            hue = (hue + huespeed) % 360;
+            val += valspeed;
+            if (val > 100f) val = 100f;
+            Color c = HSVToRGB(hue / 360f, 1f - val/100f, val/100f);
+            var sp = GetComponent<SpriteRenderer>();
+            sp.color = c;
+
+            if (val == 100f)
+            {
+                Debug.Log("TRUE WIN!");
+            }
         }
-	}
 	}
     int enemyIndex = 0;
     public void SpawnEnemy()
@@ -81,6 +109,30 @@ public class Octopus : MonoBehaviour {
         enemyCounter++;
         //start enemy movement
     }
+    public void ChangeState()
+    {
+        if (Enemy.WinningState)
+        {
+            if (state != OctopusStates.Happy)
+            {
+                state = OctopusStates.Happy;
+                var sp = GetComponent<SpriteRenderer>();
+                sp.sprite = OctHappy;
+                hue = 0f;
+                val = 0f;
+            }
+        }
+        else
+        {
+            if (state != OctopusStates.Normal)
+            {
+                state = OctopusStates.Normal;
+                var sp = GetComponent<SpriteRenderer>();
+                sp.sprite = OctNormal;
+                sp.color = Color.black;
+            }
+        }
+    }
     public bool IsWithinOctopus(int x, int y)
     {
         return x >= currentCell.x && x < currentCell.x + 5
@@ -94,6 +146,71 @@ public class Octopus : MonoBehaviour {
         {
             currentCell = next;
             transform.position = new Vector3(currentCell.x, currentCell.y);
+        }
+    }
+
+    public static Color HSVToRGB(float H, float S, float V)
+    {
+        if (S == 0f)
+            return new Color(V, V, V);
+        else if (V == 0f)
+            return Color.black;
+        else
+        {
+            Color col = Color.black;
+            float Hval = H * 6f;
+            int sel = Mathf.FloorToInt(Hval);
+            float mod = Hval - sel;
+            float v1 = V * (1f - S);
+            float v2 = V * (1f - S * mod);
+            float v3 = V * (1f - S * (1f - mod));
+            switch (sel + 1)
+            {
+                case 0:
+                    col.r = V;
+                    col.g = v1;
+                    col.b = v2;
+                    break;
+                case 1:
+                    col.r = V;
+                    col.g = v3;
+                    col.b = v1;
+                    break;
+                case 2:
+                    col.r = v2;
+                    col.g = V;
+                    col.b = v1;
+                    break;
+                case 3:
+                    col.r = v1;
+                    col.g = V;
+                    col.b = v3;
+                    break;
+                case 4:
+                    col.r = v1;
+                    col.g = v2;
+                    col.b = V;
+                    break;
+                case 5:
+                    col.r = v3;
+                    col.g = v1;
+                    col.b = V;
+                    break;
+                case 6:
+                    col.r = V;
+                    col.g = v1;
+                    col.b = v2;
+                    break;
+                case 7:
+                    col.r = V;
+                    col.g = v3;
+                    col.b = v1;
+                    break;
+            }
+            col.r = Mathf.Clamp(col.r, 0f, 1f);
+            col.g = Mathf.Clamp(col.g, 0f, 1f);
+            col.b = Mathf.Clamp(col.b, 0f, 1f);
+            return col;
         }
     }
 }

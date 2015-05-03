@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
     public float playerSpeed;
@@ -46,15 +47,34 @@ public class Player : MonoBehaviour {
         }
 
         spriteChild = transform.FindChild("spriteChild").gameObject;
+        skillButton1 = GameObject.Find("skillButton1");
+        skillButton2 = GameObject.Find("skillButton2");
+        skillButton3 = GameObject.Find("skillButton3");
+        skillButton4 = GameObject.Find("skillButton4");
     }
-	void Update () {
+
+    private GameObject skillButton1, skillButton2, skillButton3, skillButton4;
+
+    void alterButton(GameObject button, bool pressed)
+    {
+        var colors = button.GetComponentInChildren<Button>().colors;
+        button.GetComponent<Image>().color = new Color(button.GetComponent<Image>().color.r, button.GetComponent<Image>().color.g, button.GetComponent<Image>().color.b,pressed?1 : .25f);
+        button.GetComponentInChildren<Text>().color = pressed?Color.white :Color.black;
+    }
+    void Update () {
 		if (RoomManager.roomManager.IsPaused ())
 			return;
         Colors? currentCol = null;
-        if (Input.GetButton("Col1")) currentCol = Colors.Red;
+        if      (Input.GetButton("Col1")) currentCol = Colors.Red;
         else if (Input.GetButton("Col2")) currentCol = Colors.Green;
         else if (Input.GetButton("Col3")) currentCol = Colors.Blue;
         else if (Input.GetButton("Col4")) currentCol = Colors.Black;
+
+
+        alterButton(skillButton1, currentCol == Colors.Red);
+        alterButton(skillButton2, currentCol == Colors.Green);
+        alterButton(skillButton3, currentCol == Colors.Blue);
+        alterButton(skillButton4, currentCol == Colors.Black);
 
         if (currentCol != null)
         {
