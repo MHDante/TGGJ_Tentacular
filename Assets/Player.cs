@@ -41,10 +41,12 @@ public class Player : MonoBehaviour {
             else if (horiz == -1) dir = Dirs.W;
             else if (vert == 1) dir = Dirs.N;
             else if (vert == -1) dir = Dirs.S;
-            Cell.IsValidMove(dir, currentCell.type, possibleNext.type);
-            IsMoving = true;
-            dest = new Vector3(x, y);
-            nextCell = possibleNext;
+            if (Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
+            {
+                IsMoving = true;
+                dest = new Vector3(x, y);
+                nextCell = possibleNext;
+            }
         }
         
 	}
