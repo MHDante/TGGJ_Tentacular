@@ -21,6 +21,17 @@ public class Enemy : MonoBehaviour {
         sp.color = Cell.colorVals[col];
 
     }
+    public bool IsWinCondition()
+    {
+        var enemies = FindObjectsOfType<Enemy>();
+        if (enemies.Length != RoomManager.roomManager.maxEnemies) return false;
+        foreach (var e in enemies)
+        {
+            if (e.col != e.currentCell.col) return false;
+        }
+        return true;
+    }
+    public bool WinningState = false;
     bool IsMoving = false;
     Vector2 dest = Vector2.zero;
     Cell nextCell;
@@ -39,6 +50,11 @@ public class Enemy : MonoBehaviour {
                 if (currentCell.col == col)
                 {
                     currentCell.Decay();
+                }
+                WinningState = IsWinCondition();
+                if (WinningState)
+                {
+                    Debug.Log("WINNING STATE");
                 }
                 //if (currentCell.col != col)
                 //{

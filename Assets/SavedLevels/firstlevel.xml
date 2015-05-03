@@ -1,5 +1,5 @@
 <Root>
-  <Meta LevelName="firstlevel" NextLevel="" />
+  <Meta LevelName="firstlevel" NextLevel="MaybeNumber2.xml" />
   <Grid Width="30" Height="30" PlayerX="15" PlayerY="4" OctopusX="12" OctopusY="13" MaxEnemies="1">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />

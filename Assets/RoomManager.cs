@@ -19,9 +19,9 @@ public class RoomManager : MonoBehaviour
     private Camera mainCamera;
     private const int CAM_SIZE = 5;
     public int maxEnemies = 6;
+    public int differentColors = 3;
     public void Awake()
     {
-
         mainCamera = GetComponentInChildren<Camera>();
         mainCamera.orthographicSize = CAM_SIZE;
         RegenMap(true);

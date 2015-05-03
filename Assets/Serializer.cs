@@ -98,10 +98,17 @@ public static class FileWrite
         RoomManager.roomManager.octopus = go2.GetComponent<Octopus>();
         RoomManager.roomManager.octopus.SetCell(RoomManager.roomManager.OctopusX, RoomManager.roomManager.OctopusY);
 
+
+
         XAttribute elemMaxEnemies = grid.Attribute("MaxEnemies");
         if (elemMaxEnemies != null)
         {
             RoomManager.roomManager.maxEnemies = int.Parse(elemMaxEnemies.Value);
+        }
+        XAttribute elemDifferentColors = grid.Attribute("DifferentColors");
+        if (elemDifferentColors != null)
+        {
+            RoomManager.roomManager.differentColors = int.Parse(elemDifferentColors.Value);
         }
 
         foreach (XElement row in grid.Elements("Row"))
@@ -142,6 +149,7 @@ public static class FileWrite
         eGrid.Add(new XAttribute("OctopusX", RoomManager.roomManager.OctopusX));
         eGrid.Add(new XAttribute("OctopusY", RoomManager.roomManager.OctopusY));
         eGrid.Add(new XAttribute("MaxEnemies", RoomManager.roomManager.maxEnemies));
+        eGrid.Add(new XAttribute("DifferentColors", RoomManager.roomManager.differentColors));
 
         for (int y = 0; y < height; y++)
         {

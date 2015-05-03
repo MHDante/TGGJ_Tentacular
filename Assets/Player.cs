@@ -67,6 +67,9 @@ public class Player : MonoBehaviour {
                 currentCell.SetColor(currentCol.Value);
             //}
         }
+        Color pCol = currentCol == null ? Color.white : Cell.colorVals[currentCol.Value];
+        var sp = GetComponentInChildren<SpriteRenderer>();
+        sp.color = pCol;
 
         if (IsMoving)
         {
@@ -90,9 +93,7 @@ public class Player : MonoBehaviour {
                     }
                     return;
                 }
-                //Update();
             }
-            //Debug.Log("moving");
         }
         else
         {
@@ -119,7 +120,6 @@ public class Player : MonoBehaviour {
                             spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
 
                             nextCell = possibleNext;
-                            //StandingStill = false;
                             prevDir = dir;
 
                             Update();
@@ -128,33 +128,9 @@ public class Player : MonoBehaviour {
                     }
                 }
             }
-            //foreach (Dirs d in dictPossibleDirs[prevDir])
-            //{
-            //    Dirs opp = Cell.GetOppositeDir(d);
-            //    Vector2 next = dirToVect[d] + (Vector2)transform.position;
-            //    Cell c = RoomManager.Get((int)next.x, (int)next.y);
-            //    if (c != null 
-            //        && (RoomManager.roomManager.octopus.IsWithinOctopus(c.x,c.y) 
-            //                || (c.type != Types.Blank
-            //            && (Cell.typeDirs[c.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))))
-            //    {
-            //        IsMoving = true;
-            //        dest = next;
-            //            
-            //        float angle = Mathf.Atan2(-dirToVect[d].x, dirToVect[d].y) * Mathf.Rad2Deg;
-            //        spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
-            //
-            //        nextCell = c;
-            //        prevDir = d;
-            //
-            //        Update();
-            //        return;
-            //    }
-            //}
-            //Debug.Log("Or something");
         }
-        
 	}
+    
     public static Dictionary<Dirs, List<Dirs>> dictPossibleDirs = new Dictionary<Dirs, List<Dirs>>();
     public static List<Dirs> GetPossibleDirs(Dirs dir)
     {

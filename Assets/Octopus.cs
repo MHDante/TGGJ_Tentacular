@@ -74,7 +74,7 @@ public class Octopus : MonoBehaviour {
         enemy.SetColor(lastEnemyCol);
         enemy.prevDir = cellDirs[c];
 
-        int colIndex = ((int)lastEnemyCol + 1) % 4;
+        int colIndex = ((int)lastEnemyCol + 1) % (RoomManager.roomManager.differentColors + 1);
         if (colIndex == 0) colIndex++;
         lastEnemyCol = (Colors)colIndex;
 
