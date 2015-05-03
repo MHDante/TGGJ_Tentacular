@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour {
         }
         return true;
     }
-    public bool WinningState = false;
+    public static bool WinningState = false;
     bool IsMoving = false;
     Vector2 dest = Vector2.zero;
     Cell nextCell;
@@ -61,6 +61,7 @@ public class Enemy : MonoBehaviour {
                 //    SetColor(currentCell.col);
                 //}
             }
+            RoomManager.roomManager.octopus.ChangeState();
         }
         else
         {
