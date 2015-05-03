@@ -45,6 +45,11 @@ public class Enemy : MonoBehaviour {
                     else if (c.type != Types.Blank
                         && (Cell.typeDirs[c.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))
                     {
+                        if (RoomManager.roomManager.player.currentCell == c)
+                        {
+                            Debug.Log("You are Dead.");
+                        }
+
                         if (c.enemy != null)
                         {
                             enemyFound = true;

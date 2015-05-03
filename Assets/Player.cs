@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start() {
         currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
-        
+        playerSpeed = 5;
     }
     bool StandingStill = true;
     bool IsMoving = false;
