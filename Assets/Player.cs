@@ -26,6 +26,15 @@ public class Player : MonoBehaviour {
     Cell nextCell;
     Dirs prevDir;
 	// Update is called once per frame
+    void Awake()
+    {
+        foreach (Dirs d in Enum.GetValues(typeof(Dirs))) {
+            dictPossibleDirs[d] = GetPossibleDirs(d);
+        }
+        foreach (Dirs d in dirToVect.Keys) {
+            vectToDir.Add(dirToVect[d], d);
+        }
+    }
 	void Update () {
         if (StandingStill)
         {
@@ -118,16 +127,6 @@ public class Player : MonoBehaviour {
         
 	}
     public static Dictionary<Dirs, List<Dirs>> dictPossibleDirs = new Dictionary<Dirs, List<Dirs>>();
-    static Player(){
-        foreach (Dirs d in Enum.GetValues(typeof(Dirs)))
-        {
-            dictPossibleDirs[d] = GetPossibleDirs(d);
-        }
-        foreach(Dirs d in dirToVect.Keys)
-        {
-            vectToDir.Add(dirToVect[d], d);
-        }
-    }
     public static List<Dirs> GetPossibleDirs(Dirs dir)
     {
         List<Dirs> dirs = new List<Dirs>();
