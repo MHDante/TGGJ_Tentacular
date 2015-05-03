@@ -1,5 +1,5 @@
 <Root>
-  <Meta LevelName="tentacruel" NextLevel="tangle2.xml" />
+  <Meta LevelName="tentacruel" NextLevel="" />
   <Grid Width="30" Height="30" PlayerX="2" PlayerY="0" OctopusX="13" OctopusY="13" MaxEnemies="6" DifferentColors="3" secondsUntilGoat="240">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />

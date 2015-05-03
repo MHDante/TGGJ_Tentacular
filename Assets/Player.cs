@@ -21,7 +21,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start() {
         currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
-        playerSpeed = 0.04f;
+        playerSpeed = 0.08f;
     }
     //bool StandingStill = true;
     bool IsMoving = false;
@@ -133,10 +133,11 @@ public class Player : MonoBehaviour {
                 {
                     Cell possibleNext = RoomManager.Get(x, y);
                     bool isOctTile = RoomManager.roomManager.octopus.IsWithinOctopus(x, y);
+                    bool prevOctTile = RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y);
                     if (isOctTile || (int)possibleNext.type != 0)
                     {
                         Dirs dir = vectToDir[new Vector2(horiz, vert)];
-                        if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
+                        if ((isOctTile && prevOctTile) || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
                         {
                             IsMoving = true;
                             dest = new Vector2(x, y);

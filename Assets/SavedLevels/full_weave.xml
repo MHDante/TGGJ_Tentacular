@@ -1,5 +1,5 @@
 <Root>
-  <Meta LevelName="full_weave" NextLevel="middleoct.xml" />
+  <Meta LevelName="full_weave" NextLevel="shart.xml" />
   <Grid Width="20" Height="20" PlayerX="17" PlayerY="1" OctopusX="0" OctopusY="16" MaxEnemies="8" DifferentColors="2" secondsUntilGoat="180">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
