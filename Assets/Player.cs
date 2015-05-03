@@ -89,7 +89,7 @@ public class Player : MonoBehaviour {
                 transform.position = Vector3.MoveTowards(transform.position, dest, Mathf.Min(playerSpeed, Vector2.Distance(transform.position, dest)));
                 //if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
                 if (transform.position.x == dest.x && transform.position.y == dest.y)
-                    {
+                {
                     currentCell = nextCell;
                     IsMoving = false;
                     if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
