@@ -143,7 +143,7 @@ public class RoomManager : MonoBehaviour
     }
     public static bool IsWithinGrid(int x, int y)
     {
-        return (x >= 0 || x < RoomManager.roomManager.Grid.Length
-             || y >= 0 || y < RoomManager.roomManager.Grid[0].Length);
+        return (x >= 0 && x < RoomManager.roomManager.Grid.Length
+             && y >= 0 && y < RoomManager.roomManager.Grid[0].Length);
     }
 }
