@@ -84,13 +84,19 @@ public static class FileWrite
         bool exists = elemPlayerX != null && elemPlayerY != null;
         RoomManager.roomManager.PlayerStartX = exists ? int.Parse(elemPlayerX.Value) : 0;
         RoomManager.roomManager.PlayerStartY = exists ? int.Parse(elemPlayerY.Value) : 0;
-
         GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("playerPrefab"));
         RoomManager.roomManager.player = go.GetComponent<Player>();
         RoomManager.roomManager.player.SetCell(RoomManager.roomManager.PlayerStartX, RoomManager.roomManager.PlayerStartY);
-        //RoomManager.roomManager.player.x = RoomManager.roomManager.PlayerStartX;
-        //RoomManager.roomManager.player.y = RoomManager.roomManager.PlayerStartY;
-        //RoomManager.roomManager.player.transform.position = new Vector3(RoomManager.roomManager.player.x, RoomManager.roomManager.player.y);
+
+        XAttribute elemOctopusX = grid.Attribute("OctopusX");
+        XAttribute elemOctopusY = grid.Attribute("OctopusY");
+        bool exists2 = elemOctopusX != null && elemOctopusY != null;
+        RoomManager.roomManager.OctopusX = exists2 ? int.Parse(elemOctopusX.Value) : 0;
+        RoomManager.roomManager.OctopusY = exists2 ? int.Parse(elemOctopusY.Value) : 0;
+        GameObject go2 = (GameObject)GameObject.Instantiate(Resources.Load("octopusPrefab"));
+        RoomManager.roomManager.octopus = go2.GetComponent<Octopus>();
+        RoomManager.roomManager.octopus.SetCell(RoomManager.roomManager.OctopusX, RoomManager.roomManager.OctopusY);
+
 
         foreach (XElement row in grid.Elements("Row"))
         {
@@ -126,6 +132,9 @@ public static class FileWrite
         eGrid.Add(new XAttribute("Height", height));
         eGrid.Add(new XAttribute("PlayerX", RoomManager.roomManager.PlayerStartX));
         eGrid.Add(new XAttribute("PlayerY", RoomManager.roomManager.PlayerStartY));
+        eGrid.Add(new XAttribute("OctopusX", RoomManager.roomManager.OctopusX));
+        eGrid.Add(new XAttribute("OctopusY", RoomManager.roomManager.OctopusY));
+
 
         for (int y = 0; y < height; y++)
         {

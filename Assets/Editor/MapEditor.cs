@@ -25,6 +25,21 @@ public class MapEditor : EditorWindow {
     }
     void OnUpdate(SceneView sceneView)
     {
+        if (Event.current.type == EventType.keyDown)
+        {
+            if (Event.current.keyCode == KeyCode.LeftControl)
+            {
+                ctrldown = true;
+            }
+        }
+        else if (Event.current.type == EventType.keyUp)
+        {
+            if (Event.current.keyCode == KeyCode.LeftControl)
+            {
+                ctrldown = false;
+            }
+        }
+
         if (!Active) return;
         Vector2 screenpos = Event.current.mousePosition;
         screenpos.y = sceneView.camera.pixelHeight - screenpos.y;
@@ -41,10 +56,21 @@ public class MapEditor : EditorWindow {
         }
         else if (MiddleDown())
         {
-            PlacePlayer(MousePos);
+            if (ctrldown)
+            {
+                PlaceOctopus(MousePos);
+            }
+            else
+            {
+                PlacePlayer(MousePos);
+            }
             Event.current.Use();
         }
+        
+
+        //Event.current.keyCode
     }
+    bool ctrldown = false;
     Types lastType;
     public void CellAction(Vector2 pos, bool useLastType = false)
     {
@@ -67,6 +93,12 @@ public class MapEditor : EditorWindow {
         RoomManager.roomManager.PlayerStartX = (int)pos.x;
         RoomManager.roomManager.PlayerStartY = (int)pos.y;
         RoomManager.roomManager.player.SetCell((int)pos.x, (int)pos.y);
+    }
+    public void PlaceOctopus(Vector2 pos)
+    {
+        RoomManager.roomManager.OctopusX = (int)pos.x;
+        RoomManager.roomManager.OctopusY = (int)pos.y;
+        RoomManager.roomManager.octopus.SetCell((int)pos.x, (int)pos.y);
     }
     bool RightDown()
     {

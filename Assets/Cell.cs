@@ -38,7 +38,7 @@ public class Cell
     public Types type { set { Orient(value); _type = value; } get { return _type; } }
     public GameObject go;
     public static GameObject template = Resources.Load<GameObject>("cellPrefab");
-    public static Sprite[] sprs = Resources.LoadAll<Sprite>(@"roads");
+    public static Sprite[] sprs = Resources.LoadAll<Sprite>(@"roads_wht");
 
     public static Dictionary<Types, HashSet<Dirs>> typeDirs = new Dictionary<Types, HashSet<Dirs>>()
     {
@@ -47,8 +47,8 @@ public class Cell
         { Types.Horiz, new HashSet<Dirs>() { Dirs.E, Dirs.W } },
         { Types.TopLeft, new HashSet<Dirs>() { Dirs.N, Dirs.W } },
         { Types.TopRight, new HashSet<Dirs>() { Dirs.N, Dirs.E } },
-        { Types.BotRight, new HashSet<Dirs>() { Dirs.S, Dirs.W } },
-        { Types.BotLeft, new HashSet<Dirs>() { Dirs.S, Dirs.E } },
+        { Types.BotRight, new HashSet<Dirs>() { Dirs.S, Dirs.E } },
+        { Types.BotLeft, new HashSet<Dirs>() { Dirs.S, Dirs.W } },
     };
     public static Dirs GetOppositeDir(Dirs d)
     {

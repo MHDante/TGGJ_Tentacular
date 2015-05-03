@@ -12,8 +12,10 @@ public class RoomManager : MonoBehaviour
     public int gridWidth = 5, gridHeight = 4;
     private int _gW = 0, _gH = 0;
     private bool awoken = false;
-    public int PlayerStartX=0, PlayerStartY=0;
+    public int PlayerStartX = 0, PlayerStartY = 0;
     public Player player;
+    public int OctopusX = 0, OctopusY = 0;
+    public Octopus octopus;
 
     public void Awake()
     {
@@ -55,10 +57,15 @@ public class RoomManager : MonoBehaviour
         {
             DestroyGeneralized(plyr.gameObject);
         }
+        var oct = FindObjectOfType<Octopus>();
+        if (oct != null)
+        {
+            DestroyGeneralized(oct.gameObject);
+        }
 
         //if (Application.isPlaying)
         //{
-            try
+        try
             {
                 string n = levelName;
                 if (n == "blank0")
