@@ -14,14 +14,19 @@ public class RoomManager : MonoBehaviour
     private bool awoken = false;
     public int PlayerStartX=0, PlayerStartY=0;
     public Player player;
-    void Awake()
+
+    public void Awake()
     {
         RegenMap(true);
         awoken = true;
     }
+    public string levelName;
 
     public void OnValidate()
     {
+        if (levelName == "")
+            Debug.LogError("levelname is null");
+
         if (awoken && (_gW != gridWidth || _gH != gridHeight))
         {
             FileWrite.InitSerialization(gridWidth, gridHeight);
@@ -55,7 +60,7 @@ public class RoomManager : MonoBehaviour
         //{
             try
             {
-                string n = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
+                string n = levelName;
                 if (n == "blank0")
                 {
                     FileWrite.DeserializationCallback();

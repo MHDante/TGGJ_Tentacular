@@ -82,6 +82,7 @@ public class MapEditor : EditorWindow {
     public bool Active;
 
     string result = "";
+    string levelname = "blank";
     void OnGUI()
     {
         Active = (EditorGUILayout.Toggle("Active", Active));
@@ -89,7 +90,7 @@ public class MapEditor : EditorWindow {
         var infos = new DirectoryInfo(path);
         //we're leaving this here
         var fileinfos = infos.GetFiles().Select(f => f.Name).Where(s => !s.Contains(".meta")).Union(new string[] { "" }).ToArray();
-        result = fileinfos[EditorGUILayout.Popup("Choose Filename", fileinfos.ToList().IndexOf(result), fileinfos)];
+        result = fileinfos[EditorGUILayout.Popup("Load:", fileinfos.ToList().IndexOf(result), fileinfos)];
 
         if (GUILayout.Button("Load"))
         {
@@ -97,6 +98,18 @@ public class MapEditor : EditorWindow {
             //Debug.Log(result);
             if (Application.isPlaying)
                 FileWrite.InitDeserialization(result);
+            else
+            {
+                levelname = result.Replace(".xml", "");
+                RoomManager.roomManager.levelName = levelname;
+                RoomManager.roomManager.Awake();
+            }
+        }
+        var tempname = EditorGUILayout.TextField("Name:",levelname);
+        if (tempname != levelname)
+        {
+            levelname = tempname;
+            RoomManager.roomManager.levelName = levelname;
         }
         if (GUILayout.Button("Save"))
         {

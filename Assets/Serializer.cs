@@ -19,7 +19,7 @@ public static class FileWrite
     {
         XElement all = SerializeGrid(newX,newY);
         Debug.Log(all);
-        var fname = MonoBehaviour.FindObjectOfType<MetaData>().levelName;
+        var fname = RoomManager.roomManager.levelName;
         if (string.IsNullOrEmpty(fname))
         {
 #if UNITY_EDITOR
@@ -72,8 +72,7 @@ public static class FileWrite
         XElement loaded = XElement.Load(Application.dataPath + "/SavedLevels/" + (filename??defaultFileName));
         //XElement loaded = XElement.Load(path + "/" + defaultFileName + ".xml");
         XElement meta = loaded.Element(XName.Get("Meta"));
-        MetaData metaData = (MetaData)MonoBehaviour.FindObjectOfType(typeof(MetaData));
-        metaData.levelName = meta.Attribute("LevelName").Value;
+        room.levelName = meta.Attribute("LevelName").Value;
 
         XElement grid = loaded.Element("Grid");
         RoomManager.roomManager.gridWidth = int.Parse(grid.Attribute("Width").Value);
@@ -114,11 +113,7 @@ public static class FileWrite
 
         XElement eInfo = new XElement("Meta");
         eRoot.Add(eInfo);
-        MetaData auth = MonoBehaviour.FindObjectOfType<MetaData>();
-        if (auth != null)
-        {
-            eInfo.Add(new XAttribute("LevelName", auth.levelName));
-        }
+            eInfo.Add(new XAttribute("LevelName", RoomManager.roomManager.levelName));
 
         XElement eGrid = new XElement("Grid");
         eRoot.Add(eGrid);
