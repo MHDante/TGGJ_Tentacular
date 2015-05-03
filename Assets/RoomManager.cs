@@ -24,7 +24,7 @@ public class RoomManager : MonoBehaviour
     public bool hardMode = false;
     public int secondsUntilGoat = 2;
     private Text hintText;
-    private int MaxHintTimer = 10;
+    private int MaxHintTimer = 4;
     private float tempHintTimer = 0;
     private float MaxFadeTimer = 2;
 
@@ -143,7 +143,7 @@ public class RoomManager : MonoBehaviour
     // Use this for initialization
         void Start()
     {
-
+        //hintText.text = Hints.GetHint();
     }
 
     private float hintAlpha = 0;
@@ -156,7 +156,7 @@ public class RoomManager : MonoBehaviour
         Wait
 
     }
-    private  FadeStates fadeState = FadeStates.Wait;
+    private  FadeStates fadeState = FadeStates.FadeOut;
     void Update()
     {
 
@@ -170,7 +170,7 @@ public class RoomManager : MonoBehaviour
             if (fadeState == FadeStates.FadeIn)
             {
                 fadeState = FadeStates.Show;
-                hintText.color = new Color(1, 1, 1);
+                hintText.color = Color.black;
                 tempHintTimer = MaxHintTimer;
             }
             else if(fadeState == FadeStates.Show)
@@ -179,9 +179,10 @@ public class RoomManager : MonoBehaviour
                 tempHintTimer = MaxFadeTimer;
             } else if (fadeState == FadeStates.FadeOut) {
                 fadeState = FadeStates.Wait;
-                hintText.color = new Color(1, 1, 1, 0);
+                hintText.color = new Color(0, 0, 0, 0);
                 tempHintTimer = MaxHintTimer;
-                Hints.GetHint();
+                //Hints.GetHint();
+                hintText.text = Hints.GetHint();
             } else if (fadeState == FadeStates.Wait) {
                 fadeState = FadeStates.FadeIn;
                 tempHintTimer = MaxFadeTimer;
@@ -189,13 +190,13 @@ public class RoomManager : MonoBehaviour
             
         }
 
-        float percent = tempHintTimer / MaxFadeTimer;
+        float percent = (float)tempHintTimer / (float)MaxFadeTimer;
         if (fadeState == FadeStates.FadeOut)
         {
-            hintText.color = new Color(1,1,1,1-percent);
+            hintText.color = new Color(0,0,0,percent);
         }
-        if (fadeState == FadeStates.FadeOut) {
-            hintText.color = new Color(1, 1, 1, percent);
+        else if (fadeState == FadeStates.FadeIn) {
+            hintText.color = new Color(0, 0, 0, 1-percent);
         }
 
 
