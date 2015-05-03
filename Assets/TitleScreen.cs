@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class TitleScreen : MonoBehaviour
 {
@@ -15,16 +16,23 @@ public class TitleScreen : MonoBehaviour
 	public GameObject QuitButton;
 	public GameObject Xbutton;
 
-
+    public GameObject HardMode;
 	// Use this for initialization
 	void Start () {
-	
-	}
+        HardMode.GetComponent<Toggle>().isOn= RoomManager.hardMode;
+
+        FileWrite.WriteFile("rummy123.txt", "haha");
+    }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public void setHardMode()
+    {
+        RoomManager.hardMode = HardMode.GetComponent<Toggle>().isOn;
+    }
 
     public void OnClick() {
         Debug.Log("Click!");

@@ -21,7 +21,7 @@ public class RoomManager : MonoBehaviour
     private const int CAM_SIZE = 5;
     public int maxEnemies = 6;
     public int differentColors = 3;
-    public bool hardMode = false;
+    public static bool hardMode = false;
     public int secondsUntilGoat = 2;
     private Text hintText;
     private int MaxHintTimer = 4;
@@ -38,6 +38,9 @@ public class RoomManager : MonoBehaviour
 
         hardMode = false;
         hintText = GameObject.Find("HintText").GetComponent<Text>();
+
+        
+
     }
 	public bool IsPaused(){
 		return gameObject.GetComponent<Pause> ().MenuShowing;
@@ -107,6 +110,7 @@ public class RoomManager : MonoBehaviour
     }
     public static void DestroyGeneralized(GameObject o)
     {
+#if UNITY_EDITOR
         if (Application.isEditor && !Application.isPlaying)
         {
             var o1 = o;
@@ -117,8 +121,11 @@ public class RoomManager : MonoBehaviour
         }
         else
         {
+#endif
             Destroy(o);
+#if UNITY_EDITOR
         }
+#endif
     }
 
     public void GenerateEmptyGrid()

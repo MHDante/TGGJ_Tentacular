@@ -33,7 +33,7 @@ public static class FileWrite
         WriteFile(fname + ".xml", all.ToString());
         
     }
-    static string WriteFile(string filename, string text)
+    public static string WriteFile(string filename, string text)
     {
         string path = GetPath();
         string fullFileName = path + "/SavedLevels/" + filename;

@@ -117,7 +117,7 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            if (currentCell.enemy != null && RoomManager.roomManager.hardMode)
+            if (currentCell.enemy != null && RoomManager.hardMode)
             {
                 var pause = GameObject.FindObjectOfType<Pause>();
                 pause.MenuToggle("GameOver");

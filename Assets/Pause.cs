@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Pause : MonoBehaviour {
 	public bool MenuShowing = false;
@@ -13,6 +14,8 @@ public class Pause : MonoBehaviour {
 	public GameObject PausedSign;
 
     public GameObject continueButton;
+   
+    public GameObject HardMode;
 	public void MenuToggle (string type){
 		MenuPanel.SetActive (!MenuShowing);
 		MenuShowing = !MenuShowing;
@@ -41,7 +44,12 @@ public class Pause : MonoBehaviour {
 		Application.LoadLevel ("TitleScreen");
 	}
 
-	public void Restart () {
+    public void setHardMode()
+    {
+        RoomManager.hardMode = HardMode.GetComponent<Toggle>().isOn;
+    }
+
+    public void Restart () {
 		FileWrite.InitDeserialization (RoomManager.roomManager.levelName + ".xml");
 	}
 
@@ -50,7 +58,11 @@ public class Pause : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		MenuPanel.SetActive(false);
+        var hmObj = GameObject.Find("HardMode");
+        var tog = hmObj.GetComponent<Toggle>();
+        tog.isOn = RoomManager.hardMode;
+
+        MenuPanel.SetActive(false);
 		PausedSign.SetActive (false);
 		GameOverSign.SetActive (false);
 		VictorySign.SetActive (false);
