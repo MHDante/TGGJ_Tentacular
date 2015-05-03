@@ -1,6 +1,6 @@
 <Root>
-  <Meta LevelName="zackstwoloops" NextLevel="" />
-  <Grid Width="30" Height="30" PlayerX="2" PlayerY="4" OctopusX="12" OctopusY="14" MaxEnemies="6" DifferentColors="3">
+  <Meta LevelName="zackstwoloops" NextLevel="full_weave.xml" />
+  <Grid Width="30" Height="30" PlayerX="22" PlayerY="11" OctopusX="12" OctopusY="14" MaxEnemies="2" DifferentColors="2" secondsUntilGoat="90">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
       <Cell x="1" y="0" Color="Black" Type="Blank" />
