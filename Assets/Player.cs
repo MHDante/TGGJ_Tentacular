@@ -112,6 +112,7 @@ public class Player : MonoBehaviour {
                     }
                 }
                 StandingStill = true;
+                Debug.Log("Or something");
             }
         }
         
