@@ -27,6 +27,9 @@ public class RoomManager : MonoBehaviour
         RegenMap(true);
         awoken = true;
     }
+	public bool IsPaused(){
+		return gameObject.GetComponent<Pause> ().MenuShowing;
+	}
     public string levelName;
     public string nextlevel;
 
@@ -134,6 +137,10 @@ public class RoomManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (IsPaused ()) {
+			return;
+			Debug.Log("we're paused");
+		}
         if (Application.isPlaying && player != null)
         {
             mainCamera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);

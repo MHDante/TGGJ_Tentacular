@@ -48,6 +48,8 @@ public class Player : MonoBehaviour {
     }
     Vector2 lastPressDir = Vector2.zero;
 	void Update () {
+		if (RoomManager.roomManager.IsPaused ())
+			return;
         Colors? currentCol = null;
         if (Input.GetButton("Col1")) currentCol = Colors.Red;
         else if (Input.GetButton("Col2")) currentCol = Colors.Green;

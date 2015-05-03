@@ -50,15 +50,17 @@ public class Octopus : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (RoomManager.roomManager.IsPaused ())
+			return;
         if (enemyCounter < RoomManager.roomManager.maxEnemies)
         {
-            timer += Time.deltaTime;
-            if (timer > spawnInterval)
-            {
-                timer = 0;
-                SpawnEnemy();
-            }
+        timer += Time.deltaTime;
+        if (timer > spawnInterval)
+        {
+            timer = 0;
+            SpawnEnemy();
         }
+	}
 	}
     int enemyIndex = 0;
     public void SpawnEnemy()
