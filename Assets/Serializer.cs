@@ -15,10 +15,10 @@ public static class FileWrite
     //    if (Input.GetKeyDown(KeyCode.T)) RoomManager.roomManager.RefreshColorFamilyAll();
     //}
     static string defaultFileName = null;
-    public static string InitSerialization(float? newX = null, float? newY = null)
+    public static void InitSerialization(float? newX = null, float? newY = null)
     {
+        if (RoomManager.roomManager == null) return;
         XElement all = SerializeGrid(newX,newY);
-        Debug.Log(all);
         var fname = RoomManager.roomManager.levelName;
         if (string.IsNullOrEmpty(fname))
         {
@@ -30,7 +30,8 @@ public static class FileWrite
         }
         fname = WWW.EscapeURL(fname);
         Debug.Log("Writing file: " + fname);
-        return WriteFile(fname + ".xml", all.ToString());
+        WriteFile(fname + ".xml", all.ToString());
+        
     }
     static string WriteFile(string filename, string text)
     {
@@ -69,8 +70,17 @@ public static class FileWrite
         RoomManager room = MonoBehaviour.FindObjectOfType<RoomManager>();
 
         string path = GetPath();
-        XElement loaded = XElement.Load(Application.dataPath + "/SavedLevels/" + (filename??defaultFileName));
-        //XElement loaded = XElement.Load(path + "/" + defaultFileName + ".xml");
+
+        XElement loaded;
+        try
+        {
+            loaded = XElement.Load(Application.dataPath + "/SavedLevels/" + (filename ?? defaultFileName));
+            //XElement loaded = XElement.Load(path + "/" + defaultFileName + ".xml");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return false;
+        }
         XElement meta = loaded.Element(XName.Get("Meta"));
         room.levelName = meta.Attribute("LevelName").Value;
         room.nextlevel = meta.Attribute("NextLevel") == null ? null : meta.Attribute("NextLevel").Value;
@@ -128,6 +138,7 @@ public static class FileWrite
     }
     public static XElement SerializeGrid(float? newX = null, float? newY = null)
     {
+        
         XElement eRoot = new XElement("Root");
 
         XElement eInfo = new XElement("Meta");
