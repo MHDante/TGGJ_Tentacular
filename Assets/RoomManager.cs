@@ -147,6 +147,11 @@ public class RoomManager : MonoBehaviour
         }
     }
 
+    public void SkillButton(int num)
+    {
+        
+    }
+
     public static Cell GetFromWorldPos(float x, float y)
     {
         int originX = (int)Mathf.Floor(x);
