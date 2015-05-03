@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour {
     public float enemySpeed;
@@ -13,7 +14,7 @@ public class Enemy : MonoBehaviour {
     bool IsMoving = false;
     Vector2 dest = Vector2.zero;
     Cell nextCell;
-    Dirs prevDir;
+    public Dirs prevDir;
     // Update is called once per frame
     void Update () {
         if (IsMoving)
@@ -27,32 +28,61 @@ public class Enemy : MonoBehaviour {
         }
         else
         {
-            foreach (Dirs d in Enum.GetValues(typeof(Dirs)))
+            bool enemyFound = false;
+            List<Dirs> possibleDirs = new List<Dirs>();
+            foreach (Dirs d in Player.dictPossibleDirs[prevDir])
             {
-                if (d == prevDir) continue;
+                Dirs opp = Cell.GetOppositeDir(d);
+                Vector2 next = Player.dirToVect[d] + (Vector2)transform.position;
+                Cell c = RoomManager.Get((int)next.x, (int)next.y);
+                //check if player is adjacent, and kill no matter what
+                if (c != null)
+                {
+                    if (RoomManager.roomManager.octopus.IsWithinOctopus(c.x, c.y))
+                    {
+                        enemyFound = true;
+                    }
+                    else if (c.type != Types.Blank
+                        && (Cell.typeDirs[c.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))
+                    {
+                        if (RoomManager.roomManager.player.currentCell == c)
+                        {
+                            Debug.Log("You are Dead.");
+                        }
 
+                        if (c.enemy != null)
+                        {
+                            enemyFound = true;
+                        }
+                        else
+                        {
+                            possibleDirs.Add(d);
+                        }
+                    }
+                }
             }
-
-
-            //int x = (int)horiz + currentCell.x;
-            //int y = (int)vert + currentCell.y;
-            //if (!RoomManager.IsWithinGrid(x, y)) return;
-            //Cell possibleNext = RoomManager.Get(x, y);
-            //bool isOctTile = RoomManager.roomManager.octopus.IsWithinOctopus(x, y);
-            //if (!isOctTile && (int)possibleNext.type == 0) return;
-            //Dirs dir = Dirs.N;
-            //if (horiz == 1) dir = Dirs.E;
-            //else if (horiz == -1) dir = Dirs.W;
-            //else if (vert == 1) dir = Dirs.N;
-            //else if (vert == -1) dir = Dirs.S;
-            //
-            //if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
-            //{
-            //    IsMoving = true;
-            //    dest = new Vector3(x, y);
-            //    nextCell = possibleNext;
-            //}
+            if (possibleDirs.Count > 0)
+            {
+                Dirs d = possibleDirs.ToArray()[UnityEngine.Random.Range(0, possibleDirs.Count)];
+                MoveInDir(d);
+            }
+            else if (enemyFound)
+            {
+                MoveInDir(Cell.GetOppositeDir(prevDir));
+            }
         }
+    }
+    void MoveInDir(Dirs d)
+    {
+        Vector2 next = Player.dirToVect[d] + (Vector2)transform.position;
+        Cell c = RoomManager.Get((int)next.x, (int)next.y);
+        IsMoving = true;
+        dest = next;
+        nextCell = c;
+        currentCell.enemy = null;
+        nextCell.enemy = this;
+        prevDir = d;
+        Update();
     }
     public void SetCell(int x, int y)
     {
@@ -61,6 +91,7 @@ public class Enemy : MonoBehaviour {
         {
             currentCell = next;
             transform.position = new Vector3(currentCell.x, currentCell.y);
+            currentCell.enemy = this;
         }
     }
 }

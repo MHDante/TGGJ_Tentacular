@@ -73,6 +73,7 @@ public static class FileWrite
         //XElement loaded = XElement.Load(path + "/" + defaultFileName + ".xml");
         XElement meta = loaded.Element(XName.Get("Meta"));
         room.levelName = meta.Attribute("LevelName").Value;
+        room.nextlevel = meta.Attribute("NextLevel") == null ? null : meta.Attribute("NextLevel").Value;
 
         XElement grid = loaded.Element("Grid");
         RoomManager.roomManager.gridWidth = int.Parse(grid.Attribute("Width").Value);
@@ -119,7 +120,8 @@ public static class FileWrite
 
         XElement eInfo = new XElement("Meta");
         eRoot.Add(eInfo);
-            eInfo.Add(new XAttribute("LevelName", RoomManager.roomManager.levelName));
+        eInfo.Add(new XAttribute("LevelName", RoomManager.roomManager.levelName));
+        eInfo.Add(new XAttribute("NextLevel", RoomManager.roomManager.nextlevel??""));
 
         XElement eGrid = new XElement("Grid");
         eRoot.Add(eGrid);

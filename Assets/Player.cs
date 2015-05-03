@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
     public float playerSpeed;
     public Cell currentCell;
 
+    private GameObject spriteChild;
     public static Dictionary<Dirs, Vector2> dirToVect = new Dictionary<Dirs, Vector2>()
     {
         { Dirs.N, Vector2.up },
@@ -18,7 +19,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start() {
         currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
-        playerSpeed = 0.05f;
+        playerSpeed = 0.1f;
     }
     bool StandingStill = true;
     bool IsMoving = false;
@@ -42,7 +43,10 @@ public class Player : MonoBehaviour {
                 vectToDir.Add(dirToVect[d], d);
             }
         }
+
+        spriteChild = transform.FindChild("spriteChild").gameObject;
     }
+    Vector2 lastPressDir = Vector2.zero;
 	void Update () {
         if (StandingStill)
         {
@@ -60,7 +64,11 @@ public class Player : MonoBehaviour {
             if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
             {
                 IsMoving = true;
-                dest = new Vector3(x, y);
+                dest = new Vector2(x, y);
+
+                float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y) * Mathf.Rad2Deg;
+                spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+
                 nextCell = possibleNext;
                 StandingStill = false;
                 prevDir = dir;
@@ -70,7 +78,16 @@ public class Player : MonoBehaviour {
         {
             if (IsMoving)
             {
-                transform.position = Vector3.MoveTowards(transform.position, dest, playerSpeed);
+                float horiz = Input.GetAxisRaw("Horizontal");
+                float vert = Input.GetAxisRaw("Vertical");
+                if (horiz != 0) vert = 0;
+                if (horiz != 0 || vert != 0)
+                {
+                    lastPressDir = new Vector2(horiz, vert);
+                }
+
+                transform.position = Vector3.MoveTowards(transform.position, dest, Mathf.Min(playerSpeed, Vector2.Distance(transform.position, dest)));
+                //if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
                 if (transform.position.x == dest.x && transform.position.y == dest.y)
                 {
                     currentCell = nextCell;
@@ -78,6 +95,14 @@ public class Player : MonoBehaviour {
                     if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
                     {
                         Debug.Log("WIN");
+                        if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
+                        {
+                            Application.LoadLevel("TitleScreen");
+                        }
+                        else
+                        {
+                            FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
+                        }
                         return;
                     }
                     //Update();
@@ -89,6 +114,11 @@ public class Player : MonoBehaviour {
                 float horiz = Input.GetAxisRaw("Horizontal");
                 float vert = Input.GetAxisRaw("Vertical");
                 if (horiz != 0) vert = 0;
+                if (horiz == 0 && vert == 0)
+                {
+                    horiz = lastPressDir.x;
+                    vert = lastPressDir.y;
+                }
                 if (horiz != 0 || vert != 0)
                 {
                     int x = (int)horiz + currentCell.x;
@@ -103,10 +133,16 @@ public class Player : MonoBehaviour {
                             if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
                             {
                                 IsMoving = true;
-                                dest = new Vector3(x, y);
+                                dest = new Vector2(x, y);
+
+                                float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y) * Mathf.Rad2Deg;
+                                spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+
                                 nextCell = possibleNext;
                                 StandingStill = false;
                                 prevDir = dir;
+                                lastPressDir = Vector2.zero;
+
                                 Update();
                                 return;
                             }
@@ -125,8 +161,14 @@ public class Player : MonoBehaviour {
                     {
                         IsMoving = true;
                         dest = next;
+                        
+                        float angle = Mathf.Atan2(-dirToVect[d].x, dirToVect[d].y) * Mathf.Rad2Deg;
+                        spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+
                         nextCell = c;
                         prevDir = d;
+                        lastPressDir = Vector2.zero;
+
                         Update();
                         return;
                     }

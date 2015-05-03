@@ -1,5 +1,5 @@
 <Root>
-  <Meta LevelName="firstlevel" />
+  <Meta LevelName="firstlevel" NextLevel="tangle1.xml" />
   <Grid Width="20" Height="20" PlayerX="9" PlayerY="1" OctopusX="7" OctopusY="11">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
