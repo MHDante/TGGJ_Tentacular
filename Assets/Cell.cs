@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
+
 public enum Colors
 {
     Black,
@@ -11,13 +14,21 @@ public enum Colors
 public enum Types
 {
     Blank,
-    Vert,
     Horiz,
+    Vert,
     TopLeft,
     TopRight,
     BotRight,
     BotLeft,
 }
+public enum Dirs
+{
+    N,
+    E,
+    S,
+    W,
+}
+
 public class Cell
 {
     public int x { get; set; }
@@ -28,6 +39,26 @@ public class Cell
     public GameObject go;
     public static GameObject template = Resources.Load<GameObject>("cellPrefab");
     public static Sprite[] sprs = Resources.LoadAll<Sprite>(@"roads");
+
+    public static Dictionary<Types, HashSet<Dirs>> typeDirs = new Dictionary<Types, HashSet<Dirs>>()
+    {
+        { Types.Blank, new HashSet<Dirs>() },
+        { Types.Vert, new HashSet<Dirs>() { Dirs.N, Dirs.S } },
+        { Types.Horiz, new HashSet<Dirs>() { Dirs.E, Dirs.W } },
+        { Types.TopLeft, new HashSet<Dirs>() { Dirs.N, Dirs.W } },
+        { Types.TopRight, new HashSet<Dirs>() { Dirs.N, Dirs.E } },
+        { Types.BotRight, new HashSet<Dirs>() { Dirs.S, Dirs.W } },
+        { Types.BotLeft, new HashSet<Dirs>() { Dirs.S, Dirs.E } },
+    };
+    public static Dirs GetOppositeDir(Dirs d)
+    {
+        return (Dirs)(((int)d + 2) % Enum.GetValues(typeof(Dirs)).Length);
+    }
+    public static bool IsValidMove(Dirs direction, Types prev, Types dest)
+    {
+        Dirs opp = GetOppositeDir(direction);
+        return (typeDirs[dest].Contains(opp) || typeDirs[prev].Contains(direction));
+    }
 
     public Cell(int x, int y)
     {
@@ -52,7 +83,6 @@ public class Cell
             default:
                 spr.sprite = sprs[(int)t- 1];
                     break;
-
         }
 
     }

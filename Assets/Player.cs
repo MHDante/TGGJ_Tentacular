@@ -36,6 +36,12 @@ public class Player : MonoBehaviour {
             if (!RoomManager.IsWithinGrid(x, y)) return;
             Cell possibleNext = RoomManager.Get(x, y);
             if ((int)possibleNext.type == 0) return;
+            Dirs dir = Dirs.N;
+            if (horiz == 1) dir = Dirs.E;
+            else if (horiz == -1) dir = Dirs.W;
+            else if (vert == 1) dir = Dirs.N;
+            else if (vert == -1) dir = Dirs.S;
+            Cell.IsValidMove(dir, currentCell.type, possibleNext.type);
             IsMoving = true;
             dest = new Vector3(x, y);
             nextCell = possibleNext;
