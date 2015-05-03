@@ -28,9 +28,11 @@ static class Hints
 
     private static String[][] hints =
     {
-        new string[]{"This is a level 0 hint","Zeroooooooooo" },
-        new string[]{"This is a level 1 hint","Juanito" },
-        new string[]{"This is a level 2 hint","Jacob", "Harvey Dent" },
+        new string[]{"Use the Number Keys!","Stay inside him when he's happy" },
+        new string[]{"You have to keep them in their color.","Press 4 to paint black.","Without the Loops you'll fail." },
+        new string[]{"The head makes them bounce","They won't last in a short loop.", "Press 4 to paint black" },
+        new string[]{"The head makes them bounce","They won't last in a short loop.", "Press 4 to paint black" },
+        new string[]{"The head makes them bounce","They won't last in a short loop.", "Press 4 to paint black" },
 
     };
 
