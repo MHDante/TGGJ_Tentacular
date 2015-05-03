@@ -16,6 +16,7 @@ public class MapEditor : EditorWindow {
         SceneView.onSceneGUIDelegate += OnUpdate;
         EditorApplication.playmodeStateChanged = () =>
         {
+            levelname = RoomManager.roomManager.levelName;
             if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
             {
                 FileWrite.InitSerialization();
@@ -82,7 +83,7 @@ public class MapEditor : EditorWindow {
     public bool Active;
 
     string result = "";
-    string levelname = "blank";
+    string levelname;
     void OnGUI()
     {
         Active = (EditorGUILayout.Toggle("Active", Active));
@@ -103,6 +104,8 @@ public class MapEditor : EditorWindow {
                 levelname = result.Replace(".xml", "");
                 RoomManager.roomManager.levelName = levelname;
                 RoomManager.roomManager.Awake();
+                EditorUtility.SetDirty(RoomManager.roomManager);
+
             }
         }
         var tempname = EditorGUILayout.TextField("Name:",levelname);
@@ -110,6 +113,7 @@ public class MapEditor : EditorWindow {
         {
             levelname = tempname;
             RoomManager.roomManager.levelName = levelname;
+            EditorUtility.SetDirty(RoomManager.roomManager);
         }
         if (GUILayout.Button("Save"))
         {
