@@ -12,6 +12,11 @@ public class Octopus : MonoBehaviour {
 	void Update () {
 	
 	}
+    public bool IsWithinOctopus(int x, int y)
+    {
+        return x >= currentCell.x && x < currentCell.x + 5
+            && y >= currentCell.y && y < currentCell.y + 5;
+    }
 
     public void SetCell(int x, int y)
     {
