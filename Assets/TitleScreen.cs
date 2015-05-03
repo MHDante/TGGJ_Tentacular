@@ -11,7 +11,7 @@ public class TitleScreen : MonoBehaviour
 	public GameObject WhatDoPanel;
 	public GameObject Xbutton;
 	public GameObject RulesText;
-
+	public GameObject Title;
 
 	// Use this for initialization
 	void Start () {
@@ -30,8 +30,6 @@ public class TitleScreen : MonoBehaviour
 	public void HowTo() {
 		StartButton.SetActive (false);
 		WhatDoButton.SetActive (false);
-		Logo.SetActive (false);
-		Credits.SetActive (false);
 		WhatDoPanel.SetActive (true);
 
 	}
@@ -39,8 +37,9 @@ public class TitleScreen : MonoBehaviour
 		WhatDoPanel.SetActive (false);
 		StartButton.SetActive (true);
 		WhatDoButton.SetActive (true);
-		Logo.SetActive (true);
-		Credits.SetActive (true);
+
 
 	}
 }
+
+
