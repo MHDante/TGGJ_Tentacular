@@ -20,12 +20,18 @@ public class RoomManager : MonoBehaviour
     private const int CAM_SIZE = 5;
     public int maxEnemies = 6;
     public int differentColors = 3;
+    public bool hardMode = false;
+    public int secondsUntilGoat = 2;
+
     public void Awake()
     {
         mainCamera = GetComponentInChildren<Camera>();
         mainCamera.orthographicSize = CAM_SIZE;
         RegenMap(true);
         awoken = true;
+
+        hardMode = false;
+        secondsUntilGoat = 5;
     }
 	public bool IsPaused(){
 		return gameObject.GetComponent<Pause> ().MenuShowing;
@@ -139,7 +145,7 @@ public class RoomManager : MonoBehaviour
     {
 		if (IsPaused ()) {
 			return;
-			Debug.Log("we're paused");
+			//Debug.Log("we're paused");
 		}
         if (Application.isPlaying && player != null)
         {

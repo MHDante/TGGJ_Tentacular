@@ -12,11 +12,26 @@ public class Pause : MonoBehaviour {
 	public GameObject VictorySign;
 	public GameObject PausedSign;
 
-
+    public GameObject continueButton;
 	public void MenuToggle (string type){
 		MenuPanel.SetActive (!MenuShowing);
 		MenuShowing = !MenuShowing;
-	}
+
+        if (type == "Pause")
+        {
+            PausedSign.SetActive(MenuShowing);
+            continueButton.SetActive(MenuShowing);
+        }
+        else if (type == "Victory")
+        {
+            VictorySign.SetActive(MenuShowing);
+        }
+        else if (type == "GameOver")
+        {
+            GameOverSign.SetActive(MenuShowing);
+
+        }
+    }
 	public void SoundToggle () {
 			SoundUp.SetActive (!SoundEnabled);
 			SoundDown.SetActive (SoundEnabled);
@@ -39,9 +54,9 @@ public class Pause : MonoBehaviour {
 		PausedSign.SetActive (false);
 		GameOverSign.SetActive (false);
 		VictorySign.SetActive (false);
+        continueButton.SetActive(false);
 
-
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {

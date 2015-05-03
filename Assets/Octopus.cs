@@ -23,11 +23,14 @@ public class Octopus : MonoBehaviour {
     public Sprite OctAngry;
     public Sprite OctHappy;
 
+    public float timeUntilGoat = 10;
+
     // Use this for initialization
     void Start () {
         FindSpawnCells();
         var sp = GetComponent<SpriteRenderer>();
         sp.color = Color.black;
+        timeUntilGoat = (float)RoomManager.roomManager.secondsUntilGoat;
     }
     void FindSpawnCells()
     {
@@ -66,6 +69,15 @@ public class Octopus : MonoBehaviour {
 	void Update () {
 		if (RoomManager.roomManager.IsPaused ())
 			return;
+        if (timeUntilGoat > 0)
+        {
+            timeUntilGoat -= Time.deltaTime;
+            if (timeUntilGoat <= 0)
+            {
+                SpawnGoat();
+            }
+        }
+        
         if (enemyCounter < RoomManager.roomManager.maxEnemies)
         {
             timer += Time.deltaTime;
@@ -86,7 +98,20 @@ public class Octopus : MonoBehaviour {
 
             if (val == 100f)
             {
-                Debug.Log("TRUE WIN!");
+                //Debug.Log("TRUE WIN!");
+                if (RoomManager.roomManager.octopus.IsWithinOctopus(RoomManager.roomManager.player.currentCell.x, RoomManager.roomManager.player.currentCell.y))
+                {
+                    //Debug.Log("WIN");
+                    if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
+                    {
+                        Application.LoadLevel("TitleScreen");
+                    }
+                    else
+                    {
+                        FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
+                    }
+                    return;
+                }
             }
         }
 	}
@@ -108,6 +133,15 @@ public class Octopus : MonoBehaviour {
 
         enemyCounter++;
         //start enemy movement
+    }
+    public void SpawnGoat()
+    {
+        Cell c = spawnCells.ToArray()[0];
+
+        GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("goatPrefab"));
+        Goat goat = go.GetComponent<Goat>();
+        goat.SetCell(c.x, c.y);
+        goat.prevDir = cellDirs[c];
     }
     public void ChangeState()
     {

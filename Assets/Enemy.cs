@@ -71,14 +71,6 @@ public class Enemy : MonoBehaviour {
                     currentCell.Decay();
                 }
                 WinningState = IsWinCondition();
-                if (WinningState)
-                {
-                    Debug.Log("WINNING STATE");
-                }
-                //if (currentCell.col != col)
-                //{
-                //    SetColor(currentCell.col);
-                //}
             }
             RoomManager.roomManager.octopus.ChangeState();
         }
@@ -94,7 +86,6 @@ public class Enemy : MonoBehaviour {
                 Dirs opp = Cell.GetOppositeDir(d);
                 Vector2 next = Player.dirToVect[d] + (Vector2)transform.position;
                 Cell nextCell = RoomManager.Get((int)next.x, (int)next.y);
-                //check if player is adjacent, and kill no matter what
                 if (nextCell != null)
                 {
                     if (RoomManager.roomManager.octopus.IsWithinOctopus(nextCell.x, nextCell.y))
@@ -108,20 +99,10 @@ public class Enemy : MonoBehaviour {
                     else if (nextCell.type != Types.Blank
                         && (Cell.typeDirs[nextCell.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))
                     {
-                        if (RoomManager.roomManager.player.currentCell == nextCell)
-                        {
-                            Debug.Log("You are Dead.");
-                        }
-
-
-                        //if (c.enemy != null)
+                        //if (RoomManager.roomManager.player.currentCell == nextCell)
                         //{
-                        //    turnAround = true;
+                        //    Debug.Log("You are Dead.");
                         //}
-                        //else
-                        //{
-                            //if (col == currentCell.col)
-                            //{
                         if (col == nextCell.col && colorDir == null && nextCell.decayLeft > highestDecay)
                         {
                             colorDir = d;
@@ -135,38 +116,21 @@ public class Enemy : MonoBehaviour {
                         {
                             secondDirChoices.Add(d);
                         }
-
-
-                            //}
-                            //else if (currentCell.col == Colors.Black && nextCell.col != Colors.Black && nextCell.col != col)
-                            //{
-                            //    turnAround = true;
-                            //}
-                            //else
-                            //{
-                                //secondDirChoices.Add(d);
-                            //}
-                        //}
                     }
                 }
             }
-            //if (col == currentCell.col)
-            //{
-                if (colorDir != null)
-                {
-                    MoveInDir(colorDir.Value);
-                    return;
-                }
-            //}
+            if (colorDir != null)
+            {
+                MoveInDir(colorDir.Value);
+                return;
+            }
             if (firstDirChoices.Count > 0)
             {
-                //Dirs d = firstDirChoices.ToArray()[UnityEngine.Random.Range(0, secondDirChoices.Count)];
                 Dirs d = firstDirChoices[0];
                 MoveInDir(d);
             }
             else if (secondDirChoices.Count > 0)
             {
-                //Dirs d = secondDirChoices.ToArray()[UnityEngine.Random.Range(0, secondDirChoices.Count)];
                 Dirs d = secondDirChoices[0];
                 MoveInDir(d);
             }

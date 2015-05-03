@@ -100,23 +100,28 @@ public class Player : MonoBehaviour {
                 currentCell = nextCell;
                 nextCell = null;
                 IsMoving = false;
-                if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
-                {
-                    Debug.Log("WIN");
-                    if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
-                    {
-                        Application.LoadLevel("TitleScreen");
-                    }
-                    else
-                    {
-                        FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
-                    }
-                    return;
-                }
+                //if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
+                //{
+                //    Debug.Log("WIN");
+                //    if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
+                //    {
+                //        Application.LoadLevel("TitleScreen");
+                //    }
+                //    else
+                //    {
+                //        FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
+                //    }
+                //    return;
+                //}
             }
         }
         else
         {
+            if (currentCell.enemy != null && RoomManager.roomManager.hardMode)
+            {
+                var pause = GameObject.FindObjectOfType<Pause>();
+                pause.MenuToggle("GameOver");
+            }
             float horiz = Input.GetAxisRaw("Horizontal");
             float vert = Input.GetAxisRaw("Vertical");
             if (horiz != 0) vert = 0;
