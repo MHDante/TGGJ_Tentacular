@@ -1,6 +1,6 @@
 <Root>
   <Meta LevelName="firstlevel" NextLevel="level2_threeloops.xml" />
-  <Grid Width="30" Height="30" PlayerX="15" PlayerY="4" OctopusX="12" OctopusY="13" MaxEnemies="1" DifferentColors="3" secondsUntilGoat="60">
+  <Grid Width="30" Height="30" PlayerX="15" PlayerY="4" OctopusX="12" OctopusY="13" MaxEnemies="1" DifferentColors="3" secondsUntilGoat="120">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
       <Cell x="1" y="0" Color="Black" Type="Blank" />
