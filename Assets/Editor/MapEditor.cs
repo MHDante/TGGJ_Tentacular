@@ -116,6 +116,7 @@ public class MapEditor : EditorWindow {
 
     string result = "";
     string levelname;
+    private string nextlevel = "";
     void OnGUI()
     {
         Active = (EditorGUILayout.Toggle("Active", Active));
@@ -147,8 +148,20 @@ public class MapEditor : EditorWindow {
             RoomManager.roomManager.levelName = levelname;
             EditorUtility.SetDirty(RoomManager.roomManager);
         }
-        if (GUILayout.Button("Save"))
+
+        var tempnext = fileinfos[EditorGUILayout.Popup("NextLevel:", fileinfos.ToList().IndexOf(nextlevel), fileinfos)];
+        if (nextlevel != tempnext)
         {
+            nextlevel = tempnext;
+            RoomManager.roomManager.nextlevel = nextlevel;
+            EditorUtility.SetDirty(RoomManager.roomManager);
+        }
+            if (GUILayout.Button("Save"))
+            {
+
+            RoomManager.roomManager.nextlevel = nextlevel;
+            EditorUtility.SetDirty(RoomManager.roomManager);
+
             FileWrite.InitSerialization();
         }
 

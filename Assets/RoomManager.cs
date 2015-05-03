@@ -27,6 +27,7 @@ public class RoomManager : MonoBehaviour
         awoken = true;
     }
     public string levelName;
+    public string nextlevel;
 
     public void OnValidate()
     {
