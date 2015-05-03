@@ -8,10 +8,14 @@ public class TitleScreen : MonoBehaviour
 	public GameObject WhatDoButton;
 	public GameObject Logo;
 	public GameObject Credits;
-	public GameObject WhatDoPanel;
-	public GameObject Xbutton;
+	public GameObject WhatDoPanel1;
+	public GameObject WhatDoPanel2;
+	public GameObject WhatDoPanel3;
+	public GameObject WhatDoPanel4;
+	public GameObject WhatDoPanel5;
 	public GameObject RulesText;
 	public GameObject Title;
+
 
 	// Use this for initialization
 	void Start () {
@@ -23,18 +27,33 @@ public class TitleScreen : MonoBehaviour
 	
 	}
 
+	GameObject lastOne = null;
+	public void PanelChange(int ScreenName) {
+		var panel = GameObject.Find ("whatdo panel "+ ScreenName);
+		if (lastOne != null) {
+			lastOne.SetActive (false);
+		}
+		panel.SetActive (false);
+		lastOne = panel;
+
+	}
+
+
     public void OnClick() {
         Debug.Log("Click!");
         FileWrite.InitDeserialization(firstLevel + ".xml");
     }
 	public void HowTo() {
-		StartButton.SetActive (false);
-		WhatDoButton.SetActive (false);
-		WhatDoPanel.SetActive (true);
+		Logo.SetActive (false);
+		Credits.SetActive (false);
+		WhatDoPanel1.SetActive (true);
+		WhatDoPanel2.SetActive (true);
+		WhatDoPanel3.SetActive (true);
+		WhatDoPanel4.SetActive (true);
+		WhatDoPanel5.SetActive (true);
 
 	}
 	public void ExitRules() {
-		WhatDoPanel.SetActive (false);
 		StartButton.SetActive (true);
 		WhatDoButton.SetActive (true);
 
