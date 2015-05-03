@@ -39,7 +39,7 @@ public class Cell
     public static GameObject template = Resources.Load<GameObject>("cellPrefab");
     public static Sprite[] sprs = Resources.LoadAll<Sprite>(@"roads_wht");
     public Enemy enemy;
-    public int decayMax = 10, decayLeft;
+    public int decayMax = 15, decayLeft;
 
     public static Dictionary<Types, HashSet<Dirs>> typeDirs = new Dictionary<Types, HashSet<Dirs>>()
     {

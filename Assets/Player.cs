@@ -21,7 +21,7 @@ public class Player : MonoBehaviour {
         currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
         playerSpeed = 0.04f;
     }
-    bool StandingStill = true;
+    //bool StandingStill = true;
     bool IsMoving = false;
     Vector2 dest = Vector2.zero;
     Cell nextCell;
@@ -46,7 +46,6 @@ public class Player : MonoBehaviour {
 
         spriteChild = transform.FindChild("spriteChild").gameObject;
     }
-    Vector2 lastPressDir = Vector2.zero;
 	void Update () {
 		if (RoomManager.roomManager.IsPaused ())
 			return;
@@ -56,138 +55,102 @@ public class Player : MonoBehaviour {
         else if (Input.GetButton("Col3")) currentCol = Colors.Blue;
         else if (Input.GetButton("Col4")) currentCol = Colors.Black;
 
-        if (StandingStill)
+        if (currentCol != null)
+        {
+            //if (nextCell != null)
+            //{
+            //    nextCell.SetColor(currentCol.Value);
+            //}
+            //else
+            //{
+                currentCell.SetColor(currentCol.Value);
+            //}
+        }
+
+        if (IsMoving)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, dest, Mathf.Min(playerSpeed, Vector2.Distance(transform.position, dest)));
+            //if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
+            if (transform.position.x == dest.x && transform.position.y == dest.y)
+            {
+                currentCell = nextCell;
+                nextCell = null;
+                IsMoving = false;
+                if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
+                {
+                    Debug.Log("WIN");
+                    if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
+                    {
+                        Application.LoadLevel("TitleScreen");
+                    }
+                    else
+                    {
+                        FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
+                    }
+                    return;
+                }
+                //Update();
+            }
+            //Debug.Log("moving");
+        }
+        else
         {
             float horiz = Input.GetAxisRaw("Horizontal");
             float vert = Input.GetAxisRaw("Vertical");
             if (horiz != 0) vert = 0;
-            else if (vert == 0) return;
-            int x = (int)horiz + currentCell.x;
-            int y = (int)vert + currentCell.y;
-            if (!RoomManager.IsWithinGrid(x, y)) return;
-            Cell possibleNext = RoomManager.Get(x, y);
-            bool isOctTile = RoomManager.roomManager.octopus.IsWithinOctopus(x, y);
-            if (!isOctTile && (int)possibleNext.type == 0) return;
-            Dirs dir = vectToDir[new Vector2(horiz, vert)];
-            if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
+            if (horiz != 0 || vert != 0)
             {
-                IsMoving = true;
-                dest = new Vector2(x, y);
-
-                float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y) * Mathf.Rad2Deg;
-                spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
-
-                nextCell = possibleNext;
-                StandingStill = false;
-                prevDir = dir;
-            }
-        }
-        else
-        {
-            if (IsMoving)
-            {
-                float horiz = Input.GetAxisRaw("Horizontal");
-                float vert = Input.GetAxisRaw("Vertical");
-                if (horiz != 0) vert = 0;
-                if (horiz != 0 || vert != 0)
+                int x = (int)horiz + currentCell.x;
+                int y = (int)vert + currentCell.y;
+                if (RoomManager.IsWithinGrid(x, y))
                 {
-                    lastPressDir = new Vector2(horiz, vert);
-                }
-
-                transform.position = Vector3.MoveTowards(transform.position, dest, Mathf.Min(playerSpeed, Vector2.Distance(transform.position, dest)));
-                //if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
-                if (transform.position.x == dest.x && transform.position.y == dest.y)
-                {
-                    currentCell = nextCell;
-                    if (currentCol != null)
+                    Cell possibleNext = RoomManager.Get(x, y);
+                    bool isOctTile = RoomManager.roomManager.octopus.IsWithinOctopus(x, y);
+                    if (isOctTile || (int)possibleNext.type != 0)
                     {
-                        currentCell.SetColor(currentCol.Value);
-                    }
-                    IsMoving = false;
-                    if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
-                    {
-                        Debug.Log("WIN");
-                        if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
+                        Dirs dir = vectToDir[new Vector2(horiz, vert)];
+                        if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
                         {
-                            Application.LoadLevel("TitleScreen");
-                        }
-                        else
-                        {
-                            FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
-                        }
-                        return;
-                    }
-                    //Update();
-                }
-                //Debug.Log("moving");
-            }
-            else
-            {
-                float horiz = Input.GetAxisRaw("Horizontal");
-                float vert = Input.GetAxisRaw("Vertical");
-                if (horiz != 0) vert = 0;
-                if (horiz == 0 && vert == 0)
-                {
-                    horiz = lastPressDir.x;
-                    vert = lastPressDir.y;
-                }
-                if (horiz != 0 || vert != 0)
-                {
-                    int x = (int)horiz + currentCell.x;
-                    int y = (int)vert + currentCell.y;
-                    if (RoomManager.IsWithinGrid(x, y))
-                    {
-                        Cell possibleNext = RoomManager.Get(x, y);
-                        bool isOctTile = RoomManager.roomManager.octopus.IsWithinOctopus(x, y);
-                        if (isOctTile || (int)possibleNext.type != 0)
-                        {
-                            Dirs dir = vectToDir[new Vector2(horiz, vert)];
-                            if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
-                            {
-                                IsMoving = true;
-                                dest = new Vector2(x, y);
+                            IsMoving = true;
+                            dest = new Vector2(x, y);
 
-                                float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y) * Mathf.Rad2Deg;
-                                spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+                            float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y) * Mathf.Rad2Deg;
+                            spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
 
-                                nextCell = possibleNext;
-                                StandingStill = false;
-                                prevDir = dir;
-                                lastPressDir = Vector2.zero;
+                            nextCell = possibleNext;
+                            //StandingStill = false;
+                            prevDir = dir;
 
-                                Update();
-                                return;
-                            }
+                            Update();
+                            return;
                         }
                     }
                 }
-                foreach (Dirs d in dictPossibleDirs[prevDir])
-                {
-                    Dirs opp = Cell.GetOppositeDir(d);
-                    Vector2 next = dirToVect[d] + (Vector2)transform.position;
-                    Cell c = RoomManager.Get((int)next.x, (int)next.y);
-                    if (c != null 
-                        && (RoomManager.roomManager.octopus.IsWithinOctopus(c.x,c.y) 
-                               || (c.type != Types.Blank
-                          && (Cell.typeDirs[c.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))))
-                    {
-                        IsMoving = true;
-                        dest = next;
-                        
-                        float angle = Mathf.Atan2(-dirToVect[d].x, dirToVect[d].y) * Mathf.Rad2Deg;
-                        spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
-
-                        nextCell = c;
-                        prevDir = d;
-                        lastPressDir = Vector2.zero;
-
-                        Update();
-                        return;
-                    }
-                }
-                StandingStill = true;
-                Debug.Log("Or something");
             }
+            //foreach (Dirs d in dictPossibleDirs[prevDir])
+            //{
+            //    Dirs opp = Cell.GetOppositeDir(d);
+            //    Vector2 next = dirToVect[d] + (Vector2)transform.position;
+            //    Cell c = RoomManager.Get((int)next.x, (int)next.y);
+            //    if (c != null 
+            //        && (RoomManager.roomManager.octopus.IsWithinOctopus(c.x,c.y) 
+            //                || (c.type != Types.Blank
+            //            && (Cell.typeDirs[c.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))))
+            //    {
+            //        IsMoving = true;
+            //        dest = next;
+            //            
+            //        float angle = Mathf.Atan2(-dirToVect[d].x, dirToVect[d].y) * Mathf.Rad2Deg;
+            //        spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+            //
+            //        nextCell = c;
+            //        prevDir = d;
+            //
+            //        Update();
+            //        return;
+            //    }
+            //}
+            //Debug.Log("Or something");
         }
         
 	}

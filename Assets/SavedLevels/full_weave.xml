@@ -1,6 +1,6 @@
 <Root>
-  <Meta LevelName="full_weave" NextLevel="" />
-  <Grid Width="20" Height="20" PlayerX="11" PlayerY="2" OctopusX="0" OctopusY="0">
+  <Meta LevelName="full_weave" NextLevel="tangle1.xml" />
+  <Grid Width="20" Height="20" PlayerX="5" PlayerY="18" OctopusX="0" OctopusY="0" MaxEnemies="6">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
       <Cell x="1" y="0" Color="Black" Type="Blank" />
