@@ -38,6 +38,11 @@ public class MapEditor : EditorWindow {
             CellAction(MousePos, true);
             Event.current.Use();
         }
+        else if (MiddleDown())
+        {
+            PlacePlayer(MousePos);
+            Event.current.Use();
+        }
     }
     Types lastType;
     public void CellAction(Vector2 pos, bool useLastType = false)
@@ -56,6 +61,10 @@ public class MapEditor : EditorWindow {
             }
         }
     }
+    public void PlacePlayer(Vector2 pos)
+    {
+        RoomManager.roomManager.player.SetCell((int)pos.x, (int)pos.y);
+    }
     bool RightDown()
     {
         return (Event.current.type == EventType.MouseDown && Event.current.button == 1);
@@ -63,6 +72,10 @@ public class MapEditor : EditorWindow {
     bool LeftDown()
     {
         return (Event.current.type == EventType.MouseDown && Event.current.button == 0);
+    }
+    bool MiddleDown()
+    {
+        return (Event.current.type == EventType.MouseDown && Event.current.button == 2);
     }
     public bool Active;
 

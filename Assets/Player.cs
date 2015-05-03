@@ -2,14 +2,11 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
-    public int x, y;
     public float playerSpeed;
     public Cell currentCell;
 	// Use this for initialization
 	void Start () {
-        x = (int)transform.position.x;
-        y = (int)transform.position.y;
-        currentCell = RoomManager.roomManager.Grid[x][y];
+        currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
         playerSpeed = 0.05f;
     }
     bool IsMoving = false;
@@ -44,4 +41,13 @@ public class Player : MonoBehaviour {
         }
         
 	}
+    public void SetCell(int x, int y)
+    {
+        Cell next = RoomManager.Get(x, y);
+        if (next != null)
+        {
+            currentCell = next;
+            transform.position = new Vector3(currentCell.x, currentCell.y);
+        }
+    }
 }

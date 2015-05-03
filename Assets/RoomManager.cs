@@ -130,7 +130,7 @@ public class RoomManager : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = new Color(1, 0, 0, 0.5F);
+        Gizmos.color = new Color(1, 0, 0, 0.5f);
         Gizmos.DrawCube(new Vector3(((float)gridWidth)/2, ((float)gridHeight)/2), new Vector3(gridWidth, gridHeight));
     }
     public static Cell Get(int x, int y)

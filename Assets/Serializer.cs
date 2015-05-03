@@ -88,9 +88,10 @@ public static class FileWrite
 
         GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("playerPrefab"));
         RoomManager.roomManager.player = go.GetComponent<Player>();
-        RoomManager.roomManager.player.x = RoomManager.roomManager.PlayerStartX;
-        RoomManager.roomManager.player.y = RoomManager.roomManager.PlayerStartY;
-        RoomManager.roomManager.player.transform.position = new Vector3(RoomManager.roomManager.player.x, RoomManager.roomManager.player.y);
+        RoomManager.roomManager.player.SetCell(RoomManager.roomManager.PlayerStartX, RoomManager.roomManager.PlayerStartY);
+        //RoomManager.roomManager.player.x = RoomManager.roomManager.PlayerStartX;
+        //RoomManager.roomManager.player.y = RoomManager.roomManager.PlayerStartY;
+        //RoomManager.roomManager.player.transform.position = new Vector3(RoomManager.roomManager.player.x, RoomManager.roomManager.player.y);
 
         foreach (XElement row in grid.Elements("Row"))
         {
