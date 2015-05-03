@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start() {
         currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
-        playerSpeed = 0.05f;
+        
     }
     bool StandingStill = true;
     bool IsMoving = false;
@@ -74,14 +74,22 @@ public class Player : MonoBehaviour {
         {
             if (IsMoving)
             {
-                transform.position = Vector3.MoveTowards(transform.position, dest, playerSpeed);
-                if (transform.position.x == dest.x && transform.position.y == dest.y)
+                transform.position = Vector3.MoveTowards(transform.position, dest, playerSpeed*Time.deltaTime);
+                if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
                 {
                     currentCell = nextCell;
                     IsMoving = false;
                     if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
                     {
                         Debug.Log("WIN");
+                        if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
+                        {
+                            Application.LoadLevel("TitleScreen");
+                        }
+                        else
+                        {
+                            FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
+                        }
                         return;
                     }
                     //Update();
