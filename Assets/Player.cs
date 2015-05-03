@@ -28,11 +28,19 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
     void Awake()
     {
-        foreach (Dirs d in Enum.GetValues(typeof(Dirs))) {
-            dictPossibleDirs[d] = GetPossibleDirs(d);
+        if (dictPossibleDirs.Count == 0)
+        {
+            foreach (Dirs d in Enum.GetValues(typeof(Dirs)))
+            {
+                dictPossibleDirs[d] = GetPossibleDirs(d);
+            }
         }
-        foreach (Dirs d in dirToVect.Keys) {
-            vectToDir.Add(dirToVect[d], d);
+        if (vectToDir.Count == 0)
+        {
+            foreach (Dirs d in dirToVect.Keys)
+            {
+                vectToDir.Add(dirToVect[d], d);
+            }
         }
     }
 	void Update () {
@@ -110,7 +118,10 @@ public class Player : MonoBehaviour {
                     Dirs opp = Cell.GetOppositeDir(d);
                     Vector2 next = dirToVect[d] + (Vector2)transform.position;
                     Cell c = RoomManager.Get((int)next.x, (int)next.y);
-                    if (c != null && (Cell.typeDirs[c.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))
+                    if (c != null 
+                        && (RoomManager.roomManager.octopus.IsWithinOctopus(c.x,c.y) 
+                               || (c.type != Types.Blank
+                          && (Cell.typeDirs[c.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))))
                     {
                         IsMoving = true;
                         dest = next;
