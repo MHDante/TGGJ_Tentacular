@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour {
     public Dirs prevDir;
     // Update is called once per frame
     void Update () {
+		if (RoomManager.roomManager.IsPaused ())
+			return;
         if (IsMoving)
         {
             transform.position = Vector3.MoveTowards(transform.position, dest, enemySpeed);

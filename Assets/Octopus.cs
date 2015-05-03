@@ -47,6 +47,8 @@ public class Octopus : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (RoomManager.roomManager.IsPaused ())
+			return;
         timer += Time.deltaTime;
         if (timer > spawnInterval)
         {
