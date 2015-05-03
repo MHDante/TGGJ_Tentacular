@@ -63,6 +63,8 @@ public class MapEditor : EditorWindow {
     }
     public void PlacePlayer(Vector2 pos)
     {
+        RoomManager.roomManager.PlayerStartX = (int)pos.x;
+        RoomManager.roomManager.PlayerStartY = (int)pos.y;
         RoomManager.roomManager.player.SetCell((int)pos.x, (int)pos.y);
     }
     bool RightDown()

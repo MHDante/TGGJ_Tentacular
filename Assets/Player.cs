@@ -26,7 +26,6 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            
             float horiz = Input.GetAxisRaw("Horizontal");
             float vert = Input.GetAxisRaw("Vertical");
             //Debug.Log(horiz + "  :  " + vert);
@@ -35,9 +34,11 @@ public class Player : MonoBehaviour {
             int x = (int)horiz + currentCell.x;
             int y = (int)vert + currentCell.y;
             if (!RoomManager.IsWithinGrid(x, y)) return;
+            Cell possibleNext = RoomManager.Get(x, y);
+            if ((int)possibleNext.type == 0) return;
             IsMoving = true;
             dest = new Vector3(x, y);
-            nextCell = RoomManager.Get(x, y);
+            nextCell = possibleNext;
         }
         
 	}
