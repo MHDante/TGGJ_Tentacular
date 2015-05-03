@@ -109,10 +109,11 @@ public class Cell
         float percent = (float)decayLeft / (float)decayMax;
         percent = percent * 0.7f + 0.3f;
         var sp = go.GetComponent<SpriteRenderer>();
-        Color temp = sp.color;
+        Color temp = Cell.colorVals[col];
         temp *= percent;
         temp.a = 1f;
         sp.color = temp;
+
     }
     private void Orient(Types t)
     {

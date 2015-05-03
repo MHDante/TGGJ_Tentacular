@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour {
     public float enemySpeed;
@@ -24,12 +25,30 @@ public class Enemy : MonoBehaviour {
     public bool IsWinCondition()
     {
         var enemies = FindObjectsOfType<Enemy>();
-        if (enemies.Length != RoomManager.roomManager.maxEnemies) return false;
+        bool win = true;
+        if (enemies.Length != RoomManager.roomManager.maxEnemies) win = false;
+        Dictionary<Colors, int> dict = new Dictionary<Colors, int>()
+        {
+            { Colors.Red, 0 },
+            { Colors.Green, 0 },
+            { Colors.Blue, 0 },
+        };
         foreach (var e in enemies)
         {
-            if (e.col != e.currentCell.col) return false;
+            if (e.col != e.currentCell.col)
+            {
+                dict[e.col]++;
+                win = false;
+            }
         }
-        return true;
+        foreach(var c in dict.Keys)
+        {
+            string name = c.ToString().ToLower() + "FishNumber";
+            var go = GameObject.Find(name);
+            var txt = go.GetComponent<Text>();
+            txt.text = dict[c].ToString();
+        }
+        return win;
     }
     public static bool WinningState = false;
     bool IsMoving = false;

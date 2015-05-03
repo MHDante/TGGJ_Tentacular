@@ -61,7 +61,7 @@ public class Octopus : MonoBehaviour {
             }
         }
     }
-    float hue = 0f, huespeed = 1f;
+    float hue = 0f, huespeed = 5f, val = 0f, valspeed = 0.25f;
 	// Update is called once per frame
 	void Update () {
 		if (RoomManager.roomManager.IsPaused ())
@@ -78,9 +78,16 @@ public class Octopus : MonoBehaviour {
         if (state == OctopusStates.Happy)
         {
             hue = (hue + huespeed) % 360;
-            Color c = HSVToRGB(hue / 360f, 0.8f, 0.8f);
+            val += valspeed;
+            if (val > 100f) val = 100f;
+            Color c = HSVToRGB(hue / 360f, 1f - val/100f, val/100f);
             var sp = GetComponent<SpriteRenderer>();
             sp.color = c;
+
+            if (val == 100f)
+            {
+                Debug.Log("TRUE WIN!");
+            }
         }
 	}
     int enemyIndex = 0;
@@ -111,6 +118,8 @@ public class Octopus : MonoBehaviour {
                 state = OctopusStates.Happy;
                 var sp = GetComponent<SpriteRenderer>();
                 sp.sprite = OctHappy;
+                hue = 0f;
+                val = 0f;
             }
         }
         else
