@@ -61,7 +61,9 @@ public class Player : MonoBehaviour {
                     if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
                     {
                         Debug.Log("WIN");
+                        return;
                     }
+                    //Update();
                 }
                 //Debug.Log("moving");
             }
@@ -88,6 +90,7 @@ public class Player : MonoBehaviour {
                                 nextCell = possibleNext;
                                 StandingStill = false;
                                 prevDir = dir;
+                                Update();
                                 return;
                             }
                         }
@@ -104,6 +107,7 @@ public class Player : MonoBehaviour {
                         dest = next;
                         nextCell = c;
                         prevDir = d;
+                        Update();
                         return;
                     }
                 }
