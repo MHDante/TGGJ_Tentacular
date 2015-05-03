@@ -39,6 +39,7 @@ public class Cell
     public GameObject go;
     public static GameObject template = Resources.Load<GameObject>("cellPrefab");
     public static Sprite[] sprs = Resources.LoadAll<Sprite>(@"roads_wht");
+    public Enemy enemy;
 
     public static Dictionary<Types, HashSet<Dirs>> typeDirs = new Dictionary<Types, HashSet<Dirs>>()
     {

@@ -43,6 +43,7 @@ public class Player : MonoBehaviour {
             }
         }
     }
+    Vector2 lastPressDir = Vector2.zero;
 	void Update () {
         if (StandingStill)
         {
@@ -70,6 +71,14 @@ public class Player : MonoBehaviour {
         {
             if (IsMoving)
             {
+                float horiz = Input.GetAxisRaw("Horizontal");
+                float vert = Input.GetAxisRaw("Vertical");
+                if (horiz != 0) vert = 0;
+                if (horiz != 0 || vert != 0)
+                {
+                    lastPressDir = new Vector2(horiz, vert);
+                }
+
                 transform.position = Vector3.MoveTowards(transform.position, dest, playerSpeed);
                 if (transform.position.x == dest.x && transform.position.y == dest.y)
                 {
@@ -89,6 +98,11 @@ public class Player : MonoBehaviour {
                 float horiz = Input.GetAxisRaw("Horizontal");
                 float vert = Input.GetAxisRaw("Vertical");
                 if (horiz != 0) vert = 0;
+                if (horiz == 0 && vert == 0)
+                {
+                    horiz = lastPressDir.x;
+                    vert = lastPressDir.y;
+                }
                 if (horiz != 0 || vert != 0)
                 {
                     int x = (int)horiz + currentCell.x;
@@ -107,6 +121,8 @@ public class Player : MonoBehaviour {
                                 nextCell = possibleNext;
                                 StandingStill = false;
                                 prevDir = dir;
+                                lastPressDir = Vector2.zero;
+
                                 Update();
                                 return;
                             }
@@ -127,6 +143,8 @@ public class Player : MonoBehaviour {
                         dest = next;
                         nextCell = c;
                         prevDir = d;
+                        lastPressDir = Vector2.zero;
+
                         Update();
                         return;
                     }
