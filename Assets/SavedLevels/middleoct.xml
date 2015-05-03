@@ -1,5 +1,5 @@
 <Root>
-  <Meta LevelName="blank" />
+  <Meta LevelName="middleoct" />
   <Grid Width="30" Height="30" PlayerX="0" PlayerY="0" OctopusX="0" OctopusY="0">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
