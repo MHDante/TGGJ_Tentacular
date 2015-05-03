@@ -18,6 +18,7 @@ public class RoomManager : MonoBehaviour
     public Octopus octopus;
     private Camera mainCamera;
     private const int CAM_SIZE = 5;
+    public int maxEnemies = 6;
     public void Awake()
     {
 

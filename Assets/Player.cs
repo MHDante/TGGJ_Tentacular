@@ -19,7 +19,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start() {
         currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
-        playerSpeed = 0.1f;
+        playerSpeed = 0.04f;
     }
     bool StandingStill = true;
     bool IsMoving = false;
@@ -48,11 +48,11 @@ public class Player : MonoBehaviour {
     }
     Vector2 lastPressDir = Vector2.zero;
 	void Update () {
-        Colors currentCol = Colors.Black;
+        Colors? currentCol = null;
         if (Input.GetButton("Col1")) currentCol = Colors.Red;
         else if (Input.GetButton("Col2")) currentCol = Colors.Green;
         else if (Input.GetButton("Col3")) currentCol = Colors.Blue;
-        else if (Input.GetButton("Col4")) currentCol = Colors.Yellow;
+        else if (Input.GetButton("Col4")) currentCol = Colors.Black;
 
         if (StandingStill)
         {
@@ -97,7 +97,10 @@ public class Player : MonoBehaviour {
                 if (transform.position.x == dest.x && transform.position.y == dest.y)
                 {
                     currentCell = nextCell;
-                    currentCell.SetColor(currentCol);
+                    if (currentCol != null)
+                    {
+                        currentCell.SetColor(currentCol.Value);
+                    }
                     IsMoving = false;
                     if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
                     {

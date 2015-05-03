@@ -8,6 +8,9 @@ public class Octopus : MonoBehaviour {
     public Dictionary<Cell, Dirs> cellDirs = new Dictionary<Cell, Dirs>();
     public float spawnInterval = 2f;
     float timer = 0f;
+    Colors lastEnemyCol = Colors.Blue;
+    //public int maxEnemies = 6;
+    int enemyCounter = 0;
 	// Use this for initialization
 	void Start () {
         FindSpawnCells();
@@ -47,11 +50,14 @@ public class Octopus : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        timer += Time.deltaTime;
-        if (timer > spawnInterval)
+        if (enemyCounter < RoomManager.roomManager.maxEnemies)
         {
-            timer = 0;
-            SpawnEnemy();
+            timer += Time.deltaTime;
+            if (timer > spawnInterval)
+            {
+                timer = 0;
+                SpawnEnemy();
+            }
         }
 	}
     int enemyIndex = 0;
@@ -63,7 +69,14 @@ public class Octopus : MonoBehaviour {
         GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("enemyPrefab"));
         Enemy enemy = go.GetComponent<Enemy>();
         enemy.SetCell(c.x, c.y);
+        enemy.SetColor(lastEnemyCol);
         enemy.prevDir = cellDirs[c];
+
+        int colIndex = ((int)lastEnemyCol + 1) % 4;
+        if (colIndex == 0) colIndex++;
+        lastEnemyCol = (Colors)colIndex;
+
+        enemyCounter++;
         //start enemy movement
     }
     public bool IsWithinOctopus(int x, int y)

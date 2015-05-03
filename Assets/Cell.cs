@@ -9,7 +9,6 @@ public enum Colors
     Red,
     Green,
     Blue,
-    Yellow,
 }
 public enum Types
 {
@@ -40,6 +39,7 @@ public class Cell
     public static GameObject template = Resources.Load<GameObject>("cellPrefab");
     public static Sprite[] sprs = Resources.LoadAll<Sprite>(@"roads_wht");
     public Enemy enemy;
+    public int decayMax = 10, decayLeft;
 
     public static Dictionary<Types, HashSet<Dirs>> typeDirs = new Dictionary<Types, HashSet<Dirs>>()
     {
@@ -53,11 +53,10 @@ public class Cell
     };
     public static Dictionary<Colors, Color> colorVals = new Dictionary<Colors, Color>()
     {
-        { Colors.Black, Color.black },
+        { Colors.Black, Color.white },
         { Colors.Red, Color.red},
         { Colors.Blue, Color.blue },
         { Colors.Green, Color.green },
-        { Colors.Yellow, Color.yellow },
     };
     public static Dirs GetOppositeDir(Dirs d)
     {
@@ -78,17 +77,42 @@ public class Cell
         go.tag = "cell";
         go.transform.position = new Vector2(x, y);
         Orient(type);
+        decayLeft = decayMax;
     }
     public void SetColor(Colors color)
     {
-        if (col == color) return;
+        //if (col == color) return;
         col = color;
         if (go != null)
         {
             var sp = go.GetComponent<SpriteRenderer>();
-            sp.color = colorVals[col];
+            Color c = colorVals[col] == Color.white ? Color.black : colorVals[col];
+            sp.color = c;
+            decayLeft = decayMax;
+            //SetAlpha();
         }
-        
+    }
+    public void Decay()
+    {
+        decayLeft--;
+        if (decayLeft <= 0)
+        {
+            SetColor(Colors.Black);
+        }
+        else
+        {
+            SetAlpha();
+        }
+    }
+    void SetAlpha()
+    {
+        float percent = (float)decayLeft / (float)decayMax;
+        percent = percent * 0.7f + 0.3f;
+        var sp = go.GetComponent<SpriteRenderer>();
+        Color temp = sp.color;
+        temp *= percent;
+        temp.a = 1f;
+        sp.color = temp;
     }
     private void Orient(Types t)
     {
