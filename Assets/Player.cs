@@ -132,7 +132,7 @@ public class Player : MonoBehaviour {
                           && (Cell.typeDirs[c.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))))
                     {
                         IsMoving = true;
-                        dest = next+new Vector2(.5f,.5f);
+                        dest = next;
                         
                         float angle = Mathf.Atan2(-dirToVect[d].x, dirToVect[d].y) * Mathf.Rad2Deg;
                         transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
