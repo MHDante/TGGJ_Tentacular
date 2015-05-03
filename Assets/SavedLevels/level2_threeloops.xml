@@ -1,6 +1,6 @@
 <Root>
-  <Meta LevelName="firstlevel" NextLevel="level2_threeloops.xml" />
-  <Grid Width="30" Height="30" PlayerX="15" PlayerY="4" OctopusX="12" OctopusY="13" MaxEnemies="1">
+  <Meta LevelName="level2_threeloops" NextLevel="MaybeNumber2.xml" />
+  <Grid Width="30" Height="30" PlayerX="2" PlayerY="1" OctopusX="13" OctopusY="13" MaxEnemies="3">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
       <Cell x="1" y="0" Color="Black" Type="Blank" />
@@ -145,7 +145,7 @@
       <Cell x="12" y="4" Color="Black" Type="Blank" />
       <Cell x="13" y="4" Color="Black" Type="Blank" />
       <Cell x="14" y="4" Color="Black" Type="Blank" />
-      <Cell x="15" y="4" Color="Black" Type="Vert" />
+      <Cell x="15" y="4" Color="Black" Type="Blank" />
       <Cell x="16" y="4" Color="Black" Type="Blank" />
       <Cell x="17" y="4" Color="Black" Type="Blank" />
       <Cell x="18" y="4" Color="Black" Type="Blank" />
@@ -177,10 +177,10 @@
       <Cell x="12" y="5" Color="Black" Type="Blank" />
       <Cell x="13" y="5" Color="Black" Type="Blank" />
       <Cell x="14" y="5" Color="Black" Type="Blank" />
-      <Cell x="15" y="5" Color="Black" Type="BotRight" />
-      <Cell x="16" y="5" Color="Black" Type="Horiz" />
-      <Cell x="17" y="5" Color="Black" Type="Horiz" />
-      <Cell x="18" y="5" Color="Black" Type="TopLeft" />
+      <Cell x="15" y="5" Color="Black" Type="Blank" />
+      <Cell x="16" y="5" Color="Black" Type="Blank" />
+      <Cell x="17" y="5" Color="Black" Type="Blank" />
+      <Cell x="18" y="5" Color="Black" Type="Vert" />
       <Cell x="19" y="5" Color="Black" Type="Blank" />
       <Cell x="20" y="5" Color="Black" Type="Blank" />
       <Cell x="21" y="5" Color="Black" Type="Blank" />
@@ -205,12 +205,12 @@
       <Cell x="8" y="6" Color="Black" Type="Blank" />
       <Cell x="9" y="6" Color="Black" Type="Blank" />
       <Cell x="10" y="6" Color="Black" Type="Blank" />
-      <Cell x="11" y="6" Color="Black" Type="TopRight" />
-      <Cell x="12" y="6" Color="Black" Type="Horiz" />
-      <Cell x="13" y="6" Color="Black" Type="Horiz" />
-      <Cell x="14" y="6" Color="Black" Type="Horiz" />
-      <Cell x="15" y="6" Color="Black" Type="Horiz" />
-      <Cell x="16" y="6" Color="Black" Type="TopLeft" />
+      <Cell x="11" y="6" Color="Black" Type="Blank" />
+      <Cell x="12" y="6" Color="Black" Type="Blank" />
+      <Cell x="13" y="6" Color="Black" Type="Blank" />
+      <Cell x="14" y="6" Color="Black" Type="Blank" />
+      <Cell x="15" y="6" Color="Black" Type="Blank" />
+      <Cell x="16" y="6" Color="Black" Type="Blank" />
       <Cell x="17" y="6" Color="Black" Type="Blank" />
       <Cell x="18" y="6" Color="Black" Type="Vert" />
       <Cell x="19" y="6" Color="Black" Type="Blank" />
@@ -236,17 +236,17 @@
       <Cell x="7" y="7" Color="Black" Type="Blank" />
       <Cell x="8" y="7" Color="Black" Type="Blank" />
       <Cell x="9" y="7" Color="Black" Type="Blank" />
-      <Cell x="10" y="7" Color="Black" Type="Blank" />
-      <Cell x="11" y="7" Color="Black" Type="Vert" />
-      <Cell x="12" y="7" Color="Black" Type="Blank" />
-      <Cell x="13" y="7" Color="Black" Type="Blank" />
+      <Cell x="10" y="7" Color="Black" Type="TopRight" />
+      <Cell x="11" y="7" Color="Black" Type="Horiz" />
+      <Cell x="12" y="7" Color="Black" Type="Horiz" />
+      <Cell x="13" y="7" Color="Black" Type="TopLeft" />
       <Cell x="14" y="7" Color="Black" Type="Blank" />
       <Cell x="15" y="7" Color="Black" Type="Blank" />
-      <Cell x="16" y="7" Color="Black" Type="Vert" />
-      <Cell x="17" y="7" Color="Black" Type="Blank" />
-      <Cell x="18" y="7" Color="Black" Type="Vert" />
-      <Cell x="19" y="7" Color="Black" Type="Blank" />
-      <Cell x="20" y="7" Color="Black" Type="Blank" />
+      <Cell x="16" y="7" Color="Black" Type="TopRight" />
+      <Cell x="17" y="7" Color="Black" Type="Horiz" />
+      <Cell x="18" y="7" Color="Black" Type="Horiz" />
+      <Cell x="19" y="7" Color="Black" Type="Horiz" />
+      <Cell x="20" y="7" Color="Black" Type="TopLeft" />
       <Cell x="21" y="7" Color="Black" Type="Blank" />
       <Cell x="22" y="7" Color="Black" Type="Blank" />
       <Cell x="23" y="7" Color="Black" Type="Blank" />
@@ -268,17 +268,17 @@
       <Cell x="7" y="8" Color="Black" Type="Blank" />
       <Cell x="8" y="8" Color="Black" Type="Blank" />
       <Cell x="9" y="8" Color="Black" Type="Blank" />
-      <Cell x="10" y="8" Color="Black" Type="Blank" />
-      <Cell x="11" y="8" Color="Black" Type="Vert" />
+      <Cell x="10" y="8" Color="Black" Type="Vert" />
+      <Cell x="11" y="8" Color="Black" Type="Blank" />
       <Cell x="12" y="8" Color="Black" Type="Blank" />
-      <Cell x="13" y="8" Color="Black" Type="Blank" />
+      <Cell x="13" y="8" Color="Black" Type="Vert" />
       <Cell x="14" y="8" Color="Black" Type="Blank" />
       <Cell x="15" y="8" Color="Black" Type="Blank" />
       <Cell x="16" y="8" Color="Black" Type="Vert" />
       <Cell x="17" y="8" Color="Black" Type="Blank" />
       <Cell x="18" y="8" Color="Black" Type="Vert" />
       <Cell x="19" y="8" Color="Black" Type="Blank" />
-      <Cell x="20" y="8" Color="Black" Type="Blank" />
+      <Cell x="20" y="8" Color="Black" Type="Horiz" />
       <Cell x="21" y="8" Color="Black" Type="Blank" />
       <Cell x="22" y="8" Color="Black" Type="Blank" />
       <Cell x="23" y="8" Color="Black" Type="Blank" />
@@ -298,19 +298,19 @@
       <Cell x="5" y="9" Color="Black" Type="Blank" />
       <Cell x="6" y="9" Color="Black" Type="Blank" />
       <Cell x="7" y="9" Color="Black" Type="Blank" />
-      <Cell x="8" y="9" Color="Black" Type="Blank" />
-      <Cell x="9" y="9" Color="Black" Type="Blank" />
-      <Cell x="10" y="9" Color="Black" Type="Blank" />
-      <Cell x="11" y="9" Color="Black" Type="Vert" />
-      <Cell x="12" y="9" Color="Black" Type="Blank" />
-      <Cell x="13" y="9" Color="Black" Type="Blank" />
+      <Cell x="8" y="9" Color="Black" Type="Horiz" />
+      <Cell x="9" y="9" Color="Black" Type="Horiz" />
+      <Cell x="10" y="9" Color="Black" Type="Horiz" />
+      <Cell x="11" y="9" Color="Black" Type="Horiz" />
+      <Cell x="12" y="9" Color="Black" Type="Horiz" />
+      <Cell x="13" y="9" Color="Black" Type="BotLeft" />
       <Cell x="14" y="9" Color="Black" Type="Blank" />
       <Cell x="15" y="9" Color="Black" Type="Blank" />
       <Cell x="16" y="9" Color="Black" Type="Vert" />
       <Cell x="17" y="9" Color="Black" Type="Blank" />
-      <Cell x="18" y="9" Color="Black" Type="Vert" />
-      <Cell x="19" y="9" Color="Black" Type="Blank" />
-      <Cell x="20" y="9" Color="Black" Type="Blank" />
+      <Cell x="18" y="9" Color="Black" Type="BotRight" />
+      <Cell x="19" y="9" Color="Black" Type="Horiz" />
+      <Cell x="20" y="9" Color="Black" Type="BotLeft" />
       <Cell x="21" y="9" Color="Black" Type="Blank" />
       <Cell x="22" y="9" Color="Black" Type="Blank" />
       <Cell x="23" y="9" Color="Black" Type="Blank" />
@@ -332,15 +332,15 @@
       <Cell x="7" y="10" Color="Black" Type="Blank" />
       <Cell x="8" y="10" Color="Black" Type="Blank" />
       <Cell x="9" y="10" Color="Black" Type="Blank" />
-      <Cell x="10" y="10" Color="Black" Type="Blank" />
-      <Cell x="11" y="10" Color="Black" Type="BotRight" />
-      <Cell x="12" y="10" Color="Black" Type="Horiz" />
-      <Cell x="13" y="10" Color="Black" Type="Horiz" />
-      <Cell x="14" y="10" Color="Black" Type="Horiz" />
-      <Cell x="15" y="10" Color="Black" Type="Horiz" />
+      <Cell x="10" y="10" Color="Black" Type="Vert" />
+      <Cell x="11" y="10" Color="Black" Type="Blank" />
+      <Cell x="12" y="10" Color="Black" Type="Blank" />
+      <Cell x="13" y="10" Color="Black" Type="Blank" />
+      <Cell x="14" y="10" Color="Black" Type="Blank" />
+      <Cell x="15" y="10" Color="Black" Type="Blank" />
       <Cell x="16" y="10" Color="Black" Type="Vert" />
-      <Cell x="17" y="10" Color="Black" Type="Horiz" />
-      <Cell x="18" y="10" Color="Black" Type="BotLeft" />
+      <Cell x="17" y="10" Color="Black" Type="Blank" />
+      <Cell x="18" y="10" Color="Black" Type="Blank" />
       <Cell x="19" y="10" Color="Black" Type="Blank" />
       <Cell x="20" y="10" Color="Black" Type="Blank" />
       <Cell x="21" y="10" Color="Black" Type="Blank" />
@@ -360,21 +360,21 @@
       <Cell x="3" y="11" Color="Black" Type="Blank" />
       <Cell x="4" y="11" Color="Black" Type="Blank" />
       <Cell x="5" y="11" Color="Black" Type="Blank" />
-      <Cell x="6" y="11" Color="Black" Type="Blank" />
-      <Cell x="7" y="11" Color="Black" Type="Blank" />
-      <Cell x="8" y="11" Color="Black" Type="Blank" />
-      <Cell x="9" y="11" Color="Black" Type="Blank" />
-      <Cell x="10" y="11" Color="Black" Type="Blank" />
-      <Cell x="11" y="11" Color="Black" Type="Blank" />
-      <Cell x="12" y="11" Color="Black" Type="Blank" />
-      <Cell x="13" y="11" Color="Black" Type="TopRight" />
+      <Cell x="6" y="11" Color="Black" Type="TopRight" />
+      <Cell x="7" y="11" Color="Black" Type="Horiz" />
+      <Cell x="8" y="11" Color="Black" Type="Horiz" />
+      <Cell x="9" y="11" Color="Black" Type="Horiz" />
+      <Cell x="10" y="11" Color="Black" Type="Vert" />
+      <Cell x="11" y="11" Color="Black" Type="Horiz" />
+      <Cell x="12" y="11" Color="Black" Type="Horiz" />
+      <Cell x="13" y="11" Color="Black" Type="Horiz" />
       <Cell x="14" y="11" Color="Black" Type="Horiz" />
       <Cell x="15" y="11" Color="Black" Type="Horiz" />
-      <Cell x="16" y="11" Color="Black" Type="BotLeft" />
-      <Cell x="17" y="11" Color="Black" Type="Blank" />
-      <Cell x="18" y="11" Color="Black" Type="Blank" />
-      <Cell x="19" y="11" Color="Black" Type="Blank" />
-      <Cell x="20" y="11" Color="Black" Type="Blank" />
+      <Cell x="16" y="11" Color="Black" Type="Horiz" />
+      <Cell x="17" y="11" Color="Black" Type="Horiz" />
+      <Cell x="18" y="11" Color="Black" Type="Horiz" />
+      <Cell x="19" y="11" Color="Black" Type="Horiz" />
+      <Cell x="20" y="11" Color="Black" Type="TopLeft" />
       <Cell x="21" y="11" Color="Black" Type="Blank" />
       <Cell x="22" y="11" Color="Black" Type="Blank" />
       <Cell x="23" y="11" Color="Black" Type="Blank" />
@@ -392,21 +392,21 @@
       <Cell x="3" y="12" Color="Black" Type="Blank" />
       <Cell x="4" y="12" Color="Black" Type="Blank" />
       <Cell x="5" y="12" Color="Black" Type="Blank" />
-      <Cell x="6" y="12" Color="Black" Type="Blank" />
+      <Cell x="6" y="12" Color="Black" Type="Vert" />
       <Cell x="7" y="12" Color="Black" Type="Blank" />
       <Cell x="8" y="12" Color="Black" Type="Blank" />
       <Cell x="9" y="12" Color="Black" Type="Blank" />
-      <Cell x="10" y="12" Color="Black" Type="Blank" />
+      <Cell x="10" y="12" Color="Black" Type="Vert" />
       <Cell x="11" y="12" Color="Black" Type="Blank" />
       <Cell x="12" y="12" Color="Black" Type="Blank" />
-      <Cell x="13" y="12" Color="Black" Type="Vert" />
+      <Cell x="13" y="12" Color="Black" Type="Blank" />
       <Cell x="14" y="12" Color="Black" Type="Blank" />
       <Cell x="15" y="12" Color="Black" Type="Blank" />
-      <Cell x="16" y="12" Color="Black" Type="Blank" />
+      <Cell x="16" y="12" Color="Black" Type="Vert" />
       <Cell x="17" y="12" Color="Black" Type="Blank" />
       <Cell x="18" y="12" Color="Black" Type="Blank" />
       <Cell x="19" y="12" Color="Black" Type="Blank" />
-      <Cell x="20" y="12" Color="Black" Type="Blank" />
+      <Cell x="20" y="12" Color="Black" Type="Vert" />
       <Cell x="21" y="12" Color="Black" Type="Blank" />
       <Cell x="22" y="12" Color="Black" Type="Blank" />
       <Cell x="23" y="12" Color="Black" Type="Blank" />
@@ -424,11 +424,11 @@
       <Cell x="3" y="13" Color="Black" Type="Blank" />
       <Cell x="4" y="13" Color="Black" Type="Blank" />
       <Cell x="5" y="13" Color="Black" Type="Blank" />
-      <Cell x="6" y="13" Color="Black" Type="Blank" />
+      <Cell x="6" y="13" Color="Black" Type="Vert" />
       <Cell x="7" y="13" Color="Black" Type="Blank" />
       <Cell x="8" y="13" Color="Black" Type="Blank" />
       <Cell x="9" y="13" Color="Black" Type="Blank" />
-      <Cell x="10" y="13" Color="Black" Type="Blank" />
+      <Cell x="10" y="13" Color="Black" Type="Vert" />
       <Cell x="11" y="13" Color="Black" Type="Blank" />
       <Cell x="12" y="13" Color="Black" Type="Blank" />
       <Cell x="13" y="13" Color="Black" Type="Blank" />
@@ -438,7 +438,7 @@
       <Cell x="17" y="13" Color="Black" Type="Blank" />
       <Cell x="18" y="13" Color="Black" Type="Blank" />
       <Cell x="19" y="13" Color="Black" Type="Blank" />
-      <Cell x="20" y="13" Color="Black" Type="Blank" />
+      <Cell x="20" y="13" Color="Black" Type="Vert" />
       <Cell x="21" y="13" Color="Black" Type="Blank" />
       <Cell x="22" y="13" Color="Black" Type="Blank" />
       <Cell x="23" y="13" Color="Black" Type="Blank" />
@@ -456,13 +456,13 @@
       <Cell x="3" y="14" Color="Black" Type="Blank" />
       <Cell x="4" y="14" Color="Black" Type="Blank" />
       <Cell x="5" y="14" Color="Black" Type="Blank" />
-      <Cell x="6" y="14" Color="Black" Type="Blank" />
+      <Cell x="6" y="14" Color="Black" Type="Vert" />
       <Cell x="7" y="14" Color="Black" Type="Blank" />
       <Cell x="8" y="14" Color="Black" Type="Blank" />
       <Cell x="9" y="14" Color="Black" Type="Blank" />
-      <Cell x="10" y="14" Color="Black" Type="Blank" />
-      <Cell x="11" y="14" Color="Black" Type="Blank" />
-      <Cell x="12" y="14" Color="Black" Type="Blank" />
+      <Cell x="10" y="14" Color="Black" Type="BotRight" />
+      <Cell x="11" y="14" Color="Black" Type="Horiz" />
+      <Cell x="12" y="14" Color="Black" Type="Horiz" />
       <Cell x="13" y="14" Color="Black" Type="Blank" />
       <Cell x="14" y="14" Color="Black" Type="Blank" />
       <Cell x="15" y="14" Color="Black" Type="Blank" />
@@ -470,7 +470,7 @@
       <Cell x="17" y="14" Color="Black" Type="Blank" />
       <Cell x="18" y="14" Color="Black" Type="Blank" />
       <Cell x="19" y="14" Color="Black" Type="Blank" />
-      <Cell x="20" y="14" Color="Black" Type="Blank" />
+      <Cell x="20" y="14" Color="Black" Type="Vert" />
       <Cell x="21" y="14" Color="Black" Type="Blank" />
       <Cell x="22" y="14" Color="Black" Type="Blank" />
       <Cell x="23" y="14" Color="Black" Type="Blank" />
@@ -486,12 +486,12 @@
       <Cell x="1" y="15" Color="Black" Type="Blank" />
       <Cell x="2" y="15" Color="Black" Type="Blank" />
       <Cell x="3" y="15" Color="Black" Type="Blank" />
-      <Cell x="4" y="15" Color="Black" Type="Blank" />
-      <Cell x="5" y="15" Color="Black" Type="Blank" />
-      <Cell x="6" y="15" Color="Black" Type="Blank" />
-      <Cell x="7" y="15" Color="Black" Type="Blank" />
-      <Cell x="8" y="15" Color="Black" Type="Blank" />
-      <Cell x="9" y="15" Color="Black" Type="Blank" />
+      <Cell x="4" y="15" Color="Black" Type="Horiz" />
+      <Cell x="5" y="15" Color="Black" Type="Horiz" />
+      <Cell x="6" y="15" Color="Black" Type="Vert" />
+      <Cell x="7" y="15" Color="Black" Type="Horiz" />
+      <Cell x="8" y="15" Color="Black" Type="Horiz" />
+      <Cell x="9" y="15" Color="Black" Type="TopLeft" />
       <Cell x="10" y="15" Color="Black" Type="Blank" />
       <Cell x="11" y="15" Color="Black" Type="Blank" />
       <Cell x="12" y="15" Color="Black" Type="Blank" />
@@ -500,9 +500,9 @@
       <Cell x="15" y="15" Color="Black" Type="Blank" />
       <Cell x="16" y="15" Color="Black" Type="Blank" />
       <Cell x="17" y="15" Color="Black" Type="Blank" />
-      <Cell x="18" y="15" Color="Black" Type="Blank" />
-      <Cell x="19" y="15" Color="Black" Type="Blank" />
-      <Cell x="20" y="15" Color="Black" Type="Blank" />
+      <Cell x="18" y="15" Color="Black" Type="Horiz" />
+      <Cell x="19" y="15" Color="Black" Type="Horiz" />
+      <Cell x="20" y="15" Color="Black" Type="BotLeft" />
       <Cell x="21" y="15" Color="Black" Type="Blank" />
       <Cell x="22" y="15" Color="Black" Type="Blank" />
       <Cell x="23" y="15" Color="Black" Type="Blank" />
@@ -520,10 +520,10 @@
       <Cell x="3" y="16" Color="Black" Type="Blank" />
       <Cell x="4" y="16" Color="Black" Type="Blank" />
       <Cell x="5" y="16" Color="Black" Type="Blank" />
-      <Cell x="6" y="16" Color="Black" Type="Blank" />
+      <Cell x="6" y="16" Color="Black" Type="Vert" />
       <Cell x="7" y="16" Color="Black" Type="Blank" />
       <Cell x="8" y="16" Color="Black" Type="Blank" />
-      <Cell x="9" y="16" Color="Black" Type="Blank" />
+      <Cell x="9" y="16" Color="Black" Type="Vert" />
       <Cell x="10" y="16" Color="Black" Type="Blank" />
       <Cell x="11" y="16" Color="Black" Type="Blank" />
       <Cell x="12" y="16" Color="Black" Type="Blank" />
@@ -552,10 +552,10 @@
       <Cell x="3" y="17" Color="Black" Type="Blank" />
       <Cell x="4" y="17" Color="Black" Type="Blank" />
       <Cell x="5" y="17" Color="Black" Type="Blank" />
-      <Cell x="6" y="17" Color="Black" Type="Blank" />
-      <Cell x="7" y="17" Color="Black" Type="Blank" />
-      <Cell x="8" y="17" Color="Black" Type="Blank" />
-      <Cell x="9" y="17" Color="Black" Type="Blank" />
+      <Cell x="6" y="17" Color="Black" Type="BotRight" />
+      <Cell x="7" y="17" Color="Black" Type="Horiz" />
+      <Cell x="8" y="17" Color="Black" Type="Horiz" />
+      <Cell x="9" y="17" Color="Black" Type="BotLeft" />
       <Cell x="10" y="17" Color="Black" Type="Blank" />
       <Cell x="11" y="17" Color="Black" Type="Blank" />
       <Cell x="12" y="17" Color="Black" Type="Blank" />
