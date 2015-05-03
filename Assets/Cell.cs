@@ -51,6 +51,14 @@ public class Cell
         { Types.BotRight, new HashSet<Dirs>() { Dirs.S, Dirs.E } },
         { Types.BotLeft, new HashSet<Dirs>() { Dirs.S, Dirs.W } },
     };
+    public static Dictionary<Colors, Color> colorVals = new Dictionary<Colors, Color>()
+    {
+        { Colors.Black, Color.black },
+        { Colors.Red, Color.red},
+        { Colors.Blue, Color.blue },
+        { Colors.Green, Color.green },
+        { Colors.Yellow, Color.yellow },
+    };
     public static Dirs GetOppositeDir(Dirs d)
     {
         return (Dirs)(((int)d + 2) % Enum.GetValues(typeof(Dirs)).Length);
@@ -71,7 +79,17 @@ public class Cell
         go.transform.position = new Vector2(x, y);
         Orient(type);
     }
-
+    public void SetColor(Colors color)
+    {
+        if (col == color) return;
+        col = color;
+        if (go != null)
+        {
+            var sp = go.GetComponent<SpriteRenderer>();
+            sp.color = colorVals[col];
+        }
+        
+    }
     private void Orient(Types t)
     {
         var spr = go.GetComponent<SpriteRenderer>();

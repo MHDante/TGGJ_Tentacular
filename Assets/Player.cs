@@ -48,6 +48,12 @@ public class Player : MonoBehaviour {
     }
     Vector2 lastPressDir = Vector2.zero;
 	void Update () {
+        Colors currentCol = Colors.Black;
+        if (Input.GetButton("Col1")) currentCol = Colors.Red;
+        else if (Input.GetButton("Col2")) currentCol = Colors.Green;
+        else if (Input.GetButton("Col3")) currentCol = Colors.Blue;
+        else if (Input.GetButton("Col4")) currentCol = Colors.Yellow;
+
         if (StandingStill)
         {
             float horiz = Input.GetAxisRaw("Horizontal");
@@ -91,6 +97,7 @@ public class Player : MonoBehaviour {
                 if (transform.position.x == dest.x && transform.position.y == dest.y)
                 {
                     currentCell = nextCell;
+                    currentCell.SetColor(currentCol);
                     IsMoving = false;
                     if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
                     {
