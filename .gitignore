@@ -20,3 +20,5 @@ sysinfo.txt
 /UnityVS.TGGJ_Tentacular.sln.ide
 UnityVS.TGGJ_Tentacular.sln.ide/storage.ide
 *.ide
+*.sln.ide/
+UnityVS.TGGJ_Tentacular.sln.ide/
