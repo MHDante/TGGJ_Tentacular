@@ -1,6 +1,6 @@
 <Root>
-  <Meta LevelName="level2_threeloops" NextLevel="" />
-  <Grid Width="30" Height="30" PlayerX="18" PlayerY="5" OctopusX="13" OctopusY="13" MaxEnemies="3" DifferentColors="3">
+  <Meta LevelName="level2_threeloops" NextLevel="MaybeNumber2.xml" />
+  <Grid Width="30" Height="30" PlayerX="18" PlayerY="5" OctopusX="13" OctopusY="13" MaxEnemies="3" DifferentColors="3" secondsUntilGoat="60">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
       <Cell x="1" y="0" Color="Black" Type="Blank" />

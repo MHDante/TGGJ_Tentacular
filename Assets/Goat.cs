@@ -59,8 +59,8 @@ public class Goat : MonoBehaviour {
                     {
                         if (RoomManager.roomManager.player.currentCell == nextCell)
                         {
-                            //Debug.Log("You are Dead.");
                             //die
+
                             var pause = GameObject.FindObjectOfType<Pause>();
                             pause.MenuToggle("GameOver");
                         }

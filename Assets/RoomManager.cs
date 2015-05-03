@@ -37,7 +37,6 @@ public class RoomManager : MonoBehaviour
         tempHintTimer = (float) MaxHintTimer;
 
         hardMode = false;
-        secondsUntilGoat = 5;
         hintText = GameObject.Find("HintText").GetComponent<Text>();
     }
 	public bool IsPaused(){

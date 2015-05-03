@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Octopus : MonoBehaviour {
     public enum OctopusStates
@@ -74,8 +75,12 @@ public class Octopus : MonoBehaviour {
             timeUntilGoat -= Time.deltaTime;
             if (timeUntilGoat <= 0)
             {
+                timeUntilGoat = 0;
                 SpawnGoat();
             }
+            var go = GameObject.Find("GoatCounter");
+            var txt = go.GetComponent<Text>();
+            txt.text = string.Format("{0:00.0}",timeUntilGoat);
         }
         
         if (enemyCounter < RoomManager.roomManager.maxEnemies)

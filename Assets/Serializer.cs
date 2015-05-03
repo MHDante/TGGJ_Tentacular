@@ -120,6 +120,11 @@ public static class FileWrite
         {
             RoomManager.roomManager.differentColors = int.Parse(elemDifferentColors.Value);
         }
+        XAttribute elemsecondsUntilGoat = grid.Attribute("secondsUntilGoat");
+        if (elemsecondsUntilGoat != null)
+        {
+            RoomManager.roomManager.secondsUntilGoat = int.Parse(elemsecondsUntilGoat.Value);
+        }
 
         foreach (XElement row in grid.Elements("Row"))
         {
@@ -161,6 +166,7 @@ public static class FileWrite
         eGrid.Add(new XAttribute("OctopusY", RoomManager.roomManager.OctopusY));
         eGrid.Add(new XAttribute("MaxEnemies", RoomManager.roomManager.maxEnemies));
         eGrid.Add(new XAttribute("DifferentColors", RoomManager.roomManager.differentColors));
+        eGrid.Add(new XAttribute("secondsUntilGoat", RoomManager.roomManager.secondsUntilGoat));
 
         for (int y = 0; y < height; y++)
         {
