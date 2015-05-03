@@ -86,7 +86,7 @@ public class Player : MonoBehaviour {
                     lastPressDir = new Vector2(horiz, vert);
                 }
 
-                transform.position = Vector3.MoveTowards(transform.position, dest, playerSpeed);
+                transform.position = Vector3.MoveTowards(transform.position, dest, Mathf.Min(playerSpeed, Vector2.Distance(transform.position, dest)));
                 //if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
                 if (transform.position.x == dest.x && transform.position.y == dest.y)
                     {
