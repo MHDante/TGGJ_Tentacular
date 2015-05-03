@@ -8,17 +8,24 @@ public class Enemy : MonoBehaviour {
     public float enemySpeed;
     public Cell currentCell;
     public Colors col;
-    
+    private GameObject spriteChild;
+
+    void Awake()
+    {
+        spriteChild = transform.FindChild("spriteChild").gameObject;
+
+    }
     // Use this for initialization
     void Start () {
         currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
         enemySpeed = 0.04f;
+
     }
     public void SetColor(Colors color)
     {
         if (col == color) return;
         col = color;
-        var sp = GetComponent<SpriteRenderer>();
+        var sp = spriteChild.GetComponent<SpriteRenderer>();
         sp.color = Cell.colorVals[col];
 
     }
@@ -146,6 +153,9 @@ public class Enemy : MonoBehaviour {
         Cell c = RoomManager.Get((int)next.x, (int)next.y);
         IsMoving = true;
         dest = next;
+        float angle = Mathf.Atan2(-Player.dirToVect[d].x, Player.dirToVect[d].y) * Mathf.Rad2Deg;
+        spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+
         nextCell = c;
         currentCell.enemy = null;
         nextCell.enemy = this;

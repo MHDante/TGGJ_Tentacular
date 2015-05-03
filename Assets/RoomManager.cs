@@ -145,7 +145,6 @@ public class RoomManager : MonoBehaviour
     {
 		if (IsPaused ()) {
 			return;
-			//Debug.Log("we're paused");
 		}
         if (Application.isPlaying && player != null)
         {
