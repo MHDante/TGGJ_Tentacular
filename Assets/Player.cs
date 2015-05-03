@@ -58,7 +58,7 @@ public class Player : MonoBehaviour {
     void alterButton(GameObject button, bool pressed)
     {
         var colors = button.GetComponentInChildren<Button>().colors;
-        button.GetComponent<Image>().color = new Color(button.GetComponent<Image>().color.r, button.GetComponent<Image>().color.g, button.GetComponent<Image>().color.b,pressed?1 : .25f);
+        button.GetComponent<Image>().color = new Color(button.GetComponent<Image>().color.r, button.GetComponent<Image>().color.g, button.GetComponent<Image>().color.b,pressed?1 : .40f);
         button.GetComponentInChildren<Text>().color = pressed?Color.white :Color.black;
     }
     void Update () {
