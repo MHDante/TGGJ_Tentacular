@@ -42,6 +42,7 @@ public class TitleScreen : MonoBehaviour
     public void OnClick() {
         Debug.Log("Click!");
         FileWrite.InitDeserialization(firstLevel + ".xml");
+        Hints.Level = 0;
     }
 	public void HowTo() {
 		Logo.SetActive (false);

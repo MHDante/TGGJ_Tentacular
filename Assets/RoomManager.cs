@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.IO;
+using UnityEngine.UI;
 
 [ExecuteInEditMode]
 public class RoomManager : MonoBehaviour
@@ -22,6 +23,10 @@ public class RoomManager : MonoBehaviour
     public int differentColors = 3;
     public bool hardMode = false;
     public int secondsUntilGoat = 2;
+    private Text hintText;
+    private int MaxHintTimer = 10;
+    private float tempHintTimer = 0;
+    private float MaxFadeTimer = 2;
 
     public void Awake()
     {
@@ -29,9 +34,11 @@ public class RoomManager : MonoBehaviour
         mainCamera.orthographicSize = CAM_SIZE;
         RegenMap(true);
         awoken = true;
+        tempHintTimer = (float) MaxHintTimer;
 
         hardMode = false;
         secondsUntilGoat = 5;
+        hintText = GameObject.Find("HintText").GetComponent<Text>();
     }
 	public bool IsPaused(){
 		return gameObject.GetComponent<Pause> ().MenuShowing;
@@ -140,12 +147,59 @@ public class RoomManager : MonoBehaviour
 
     }
 
+    private float hintAlpha = 0;
     // Update is called once per frame
+    public enum FadeStates
+    {
+        FadeIn,
+        Show,
+        FadeOut,
+        Wait
+
+    }
+    private  FadeStates fadeState = FadeStates.Wait;
     void Update()
     {
+
 		if (IsPaused ()) {
 			return;
 		}
+
+        tempHintTimer -= Time.deltaTime;
+        if (tempHintTimer <= 0)
+        {
+            if (fadeState == FadeStates.FadeIn)
+            {
+                fadeState = FadeStates.Show;
+                hintText.color = new Color(1, 1, 1);
+                tempHintTimer = MaxHintTimer;
+            }
+            else if(fadeState == FadeStates.Show)
+            {
+                fadeState = FadeStates.FadeOut;
+                tempHintTimer = MaxFadeTimer;
+            } else if (fadeState == FadeStates.FadeOut) {
+                fadeState = FadeStates.Wait;
+                hintText.color = new Color(1, 1, 1, 0);
+                tempHintTimer = MaxHintTimer;
+                Hints.GetHint();
+            } else if (fadeState == FadeStates.Wait) {
+                fadeState = FadeStates.FadeIn;
+                tempHintTimer = MaxFadeTimer;
+            }
+            
+        }
+
+        float percent = tempHintTimer / MaxFadeTimer;
+        if (fadeState == FadeStates.FadeOut)
+        {
+            hintText.color = new Color(1,1,1,1-percent);
+        }
+        if (fadeState == FadeStates.FadeOut) {
+            hintText.color = new Color(1, 1, 1, percent);
+        }
+
+
         if (Application.isPlaying && player != null)
         {
             mainCamera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);

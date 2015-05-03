@@ -104,11 +104,13 @@ public class Octopus : MonoBehaviour {
                     //Debug.Log("WIN");
                     if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
                     {
-                        Application.LoadLevel("TitleScreen");
+                        //Application.LoadLevel("TitleScreen");
+                        RoomManager.roomManager.gameObject.GetComponent<Pause>().MenuToggle("Victory");
                     }
                     else
                     {
                         FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
+                        Hints.Level++;
                     }
                     return;
                 }
