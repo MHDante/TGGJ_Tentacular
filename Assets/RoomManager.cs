@@ -31,7 +31,6 @@ public class RoomManager : MonoBehaviour
         awoken = true;
 
         hardMode = false;
-        secondsUntilGoat = 5;
     }
 	public bool IsPaused(){
 		return gameObject.GetComponent<Pause> ().MenuShowing;
