@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
     public float playerSpeed;
     public Cell currentCell;
 
+    private GameObject spriteChild;
     public static Dictionary<Dirs, Vector2> dirToVect = new Dictionary<Dirs, Vector2>()
     {
         { Dirs.N, Vector2.up },
@@ -42,6 +43,8 @@ public class Player : MonoBehaviour {
                 vectToDir.Add(dirToVect[d], d);
             }
         }
+
+        spriteChild = transform.FindChild("spriteChild").gameObject;
     }
     Vector2 lastPressDir = Vector2.zero;
 	void Update () {
@@ -61,10 +64,10 @@ public class Player : MonoBehaviour {
             if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
             {
                 IsMoving = true;
-                dest = new Vector2(x, y) + new Vector2(.5f, .5f);
+                dest = new Vector2(x, y);
 
                 float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y) * Mathf.Rad2Deg;
-                transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+                spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
 
                 nextCell = possibleNext;
                 StandingStill = false;
@@ -129,10 +132,10 @@ public class Player : MonoBehaviour {
                             if (isOctTile || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
                             {
                                 IsMoving = true;
-                                dest = new Vector2(x, y) + new Vector2(.5f, .5f);
+                                dest = new Vector2(x, y);
 
                                 float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y) * Mathf.Rad2Deg;
-                                transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+                                spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
 
                                 nextCell = possibleNext;
                                 StandingStill = false;
@@ -159,7 +162,7 @@ public class Player : MonoBehaviour {
                         dest = next;
                         
                         float angle = Mathf.Atan2(-dirToVect[d].x, dirToVect[d].y) * Mathf.Rad2Deg;
-                        transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+                        spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
 
                         nextCell = c;
                         prevDir = d;
@@ -194,7 +197,7 @@ public class Player : MonoBehaviour {
         if (next != null)
         {
             currentCell = next;
-            transform.position = new Vector3(currentCell.x + .5f, currentCell.y + .5f);
+            transform.position = new Vector3(currentCell.x, currentCell.y);
         }
     }
 }
