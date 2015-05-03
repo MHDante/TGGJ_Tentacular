@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
     public Cell currentCell;
 
     private GameObject spriteChild;
+    private Quaternion rotGoal;
     public static Dictionary<Dirs, Vector2> dirToVect = new Dictionary<Dirs, Vector2>()
     {
         { Dirs.N, Vector2.up },
