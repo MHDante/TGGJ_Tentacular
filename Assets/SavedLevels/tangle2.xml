@@ -1,10 +1,6 @@
 <Root>
-  <Meta LevelName="bleh" />
-<<<<<<< HEAD
-  <Grid Width="20" Height="20" PlayerX="0" PlayerY="0">
-=======
+  <Meta LevelName="tangle2" />
   <Grid Width="20" Height="2" PlayerX="0" PlayerY="0">
->>>>>>> origin/master
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
       <Cell x="1" y="0" Color="Black" Type="Blank" />
