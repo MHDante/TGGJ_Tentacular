@@ -154,59 +154,6 @@ public static class FileWrite
         return eRoot;
     }
 
-    //public static XElement SerializeObject(object o)
-    //{
-    //    Type type = o.GetType();
-    //
-    //    XElement r = new XElement(type.Name);
-    //    if (o is MonoBehaviour)
-    //    {
-    //        MonoBehaviour mono = (MonoBehaviour)o;
-    //        if (mono.gameObject != null)
-    //        {
-    //            XAttribute att = new XAttribute("Name", mono.gameObject.name);
-    //            r.Add(att);
-    //            if (mono is GamePiece)
-    //            {
-    //                GamePiece gp = (GamePiece)mono;
-    //                XAttribute att2 = new XAttribute("Zpos", gp.getZPosition());
-    //                r.Add(att2);
-    //            }
-    //        }
-    //    }
-    //    foreach (var prop in type.GetProperties())
-    //    {
-    //        if (prop.GetCustomAttributes(typeof(SerializeBlockIt), true).Length > 0)
-    //        {
-    //            XElement p = new XElement("Property");
-    //            XAttribute att = new XAttribute("Name", prop.Name);
-    //            XAttribute att2 = new XAttribute("Type", prop.PropertyType);
-    //            XAttribute att3 = new XAttribute("Value", prop.GetValue(o, null));
-    //
-    //            p.Add(att);
-    //            p.Add(att2);
-    //            p.Add(att3);
-    //            r.Add(p);
-    //        }
-    //    }
-    //    foreach (var field in type.GetFields())
-    //    {
-    //        if (field.GetCustomAttributes(typeof(SerializeBlockIt), true).Length > 0)
-    //        {
-    //            XElement f = new XElement("Field");
-    //            XAttribute att = new XAttribute("Name", field.Name);
-    //            XAttribute att2 = new XAttribute("Type", field.FieldType);
-    //            XAttribute att3 = new XAttribute("Value", field.GetValue(o));
-    //
-    //            f.Add(att);
-    //            f.Add(att2);
-    //            f.Add(att3);
-    //            r.Add(f);
-    //        }
-    //    }
-    //    return r;
-    //}
-
 }
 [System.AttributeUsage(System.AttributeTargets.Property |
                        System.AttributeTargets.Field)

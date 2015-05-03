@@ -16,9 +16,13 @@ public class RoomManager : MonoBehaviour
     public Player player;
     public int OctopusX = 0, OctopusY = 0;
     public Octopus octopus;
-
+    private Camera mainCamera;
+    private const int CAM_SIZE = 5;
     public void Awake()
     {
+
+        mainCamera = GetComponentInChildren<Camera>();
+        mainCamera.orthographicSize = CAM_SIZE;
         RegenMap(true);
         awoken = true;
     }
@@ -115,8 +119,7 @@ public class RoomManager : MonoBehaviour
         _gW = gridWidth;
         _gH = gridHeight;
 
-        var camera = GetComponentInChildren<Camera>();
-        camera.orthographicSize = gridHeight/2 + (gridHeight%2)*2;
+        //mainCamera.orthographicSize = gridHeight/2 + (gridHeight%2)*2;
         transform.position = new Vector3(((float) gridWidth)/2, ((float) gridHeight)/2);
     }
 
@@ -129,7 +132,10 @@ public class RoomManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Application.isPlaying && player != null)
+        {
+            mainCamera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
+        }
     }
 
     public static Cell GetFromWorldPos(float x, float y)
