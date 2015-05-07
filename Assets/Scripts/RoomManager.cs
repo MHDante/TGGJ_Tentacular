@@ -132,7 +132,7 @@ public class RoomManager : MonoBehaviour
         _gH = gridHeight;
 
         //mainCamera.orthographicSize = gridHeight/2 + (gridHeight%2)*2;
-        transform.position = new Vector3(((float) gridWidth)/2, ((float) gridHeight)/2);
+        //transform.position = new Vector3(((float) gridWidth)/2, ((float) gridHeight)/2);
     }
 
     // Use this for initialization

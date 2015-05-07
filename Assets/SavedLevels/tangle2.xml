@@ -1,6 +1,6 @@
 <Root>
   <Meta LevelName="tangle2" NextLevel="" />
-  <Grid Width="20" Height="21" PlayerX="4" PlayerY="1" OctopusX="0" OctopusY="17" MaxEnemies="3" DifferentColors="3">
+  <Grid Width="20" Height="21" PlayerX="10" PlayerY="1" OctopusX="0" OctopusY="17" MaxEnemies="3" DifferentColors="3" secondsUntilGoat="120">
     <Row y="0">
       <Cell x="0" y="0" Color="Black" Type="Blank" />
       <Cell x="1" y="0" Color="Black" Type="Blank" />
