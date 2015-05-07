@@ -1,4 +1,4 @@
-Shader "Sprites/Custom/TileShader"
+Shader "Custom/TileShader"
 {
 	Properties
 	{
