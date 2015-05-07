@@ -96,6 +96,7 @@ public static class FileWrite
         RoomManager.roomManager.PlayerStartY = exists ? int.Parse(elemPlayerY.Value) : 0;
         GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("playerPrefab"));
         go.tag = "generated";
+        go.transform.parent = RoomManager.roomManager.entityObject.transform;
         RoomManager.roomManager.player = go.GetComponent<Player>();
         RoomManager.roomManager.player.SetCell(RoomManager.roomManager.PlayerStartX, RoomManager.roomManager.PlayerStartY);
 
@@ -106,6 +107,7 @@ public static class FileWrite
         RoomManager.roomManager.OctopusY = exists2 ? int.Parse(elemOctopusY.Value) : 0;
         GameObject go2 = (GameObject)GameObject.Instantiate(Resources.Load("octopusPrefab"));
         go2.tag = "generated";
+        go2.transform.parent = RoomManager.roomManager.entityObject.transform;
         RoomManager.roomManager.octopus = go2.GetComponent<Octopus>();
         RoomManager.roomManager.octopus.SetCell(RoomManager.roomManager.OctopusX, RoomManager.roomManager.OctopusY);
 

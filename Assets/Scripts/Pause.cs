@@ -3,7 +3,14 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class Pause : MonoBehaviour {
-	public bool MenuShowing = false;
+    public enum FadeStates {
+        FadeIn,
+        Show,
+        FadeOut,
+        Wait
+    }
+
+    public bool MenuShowing = false;
 	public GameObject SoundUp;
 	public GameObject SoundDown;
 	public bool SoundEnabled = true;
@@ -16,7 +23,18 @@ public class Pause : MonoBehaviour {
     public GameObject continueButton;
    
     public GameObject HardMode;
-	public void MenuToggle (string type){
+
+
+    private float hintAlpha = 0;
+    private Text hintText;
+
+    private float tempHintTimer = 0;
+    private float MaxFadeTimer = 2;
+    private FadeStates fadeState = FadeStates.FadeOut;
+    private int MaxHintTimer = 4;
+
+
+    public void MenuToggle (string type){
 		MenuPanel.SetActive (!MenuShowing);
 		MenuShowing = !MenuShowing;
 
@@ -55,7 +73,13 @@ public class Pause : MonoBehaviour {
 
 
 
+    void Awake()
+    {
 
+        tempHintTimer = (float)MaxHintTimer;
+        var obj = GameObject.Find("HintText");
+        hintText = obj == null ? null : obj.GetComponent<Text>();
+    }
 	// Use this for initialization
 	void Start () {
         var hmObj = GameObject.Find("HardMode");
@@ -72,7 +96,36 @@ public class Pause : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetKeyDown(KeyCode.Escape))
+
+        tempHintTimer -= Time.deltaTime;
+        if (tempHintTimer <= 0) {
+            if (fadeState == FadeStates.FadeIn) {
+                fadeState = FadeStates.Show;
+                hintText.color = Color.black;
+                tempHintTimer = MaxHintTimer;
+            } else if (fadeState == FadeStates.Show) {
+                fadeState = FadeStates.FadeOut;
+                tempHintTimer = MaxFadeTimer;
+            } else if (fadeState == FadeStates.FadeOut) {
+                fadeState = FadeStates.Wait;
+                hintText.color = new Color(0, 0, 0, 0);
+                tempHintTimer = MaxHintTimer;
+                //Hints.GetHint();
+                hintText.text = Hints.GetHint();
+            } else if (fadeState == FadeStates.Wait) {
+                fadeState = FadeStates.FadeIn;
+                tempHintTimer = MaxFadeTimer;
+            }
+        }
+
+        float percent = (float)tempHintTimer / (float)MaxFadeTimer;
+        if (fadeState == FadeStates.FadeOut) {
+            hintText.color = new Color(0, 0, 0, percent);
+        } else if (fadeState == FadeStates.FadeIn) {
+            hintText.color = new Color(0, 0, 0, 1 - percent);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             MenuToggle("Pause");
         }

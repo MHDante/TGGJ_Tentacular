@@ -45,7 +45,7 @@ public class Player : MonoBehaviour {
                 vectToDir.Add(dirToVect[d], d);
             }
         }
-
+        background = GameObject.Find("Background");
         spriteChild = transform.FindChild("spriteChild").gameObject;
         skillButton1 = GameObject.Find("skillButton1");
         skillButton2 = GameObject.Find("skillButton2");
@@ -63,11 +63,10 @@ public class Player : MonoBehaviour {
     }
     GameObject background;
     void Update () {
-        if (background == null)
+        if (background != null)
         {
-            background = GameObject.Find("background");
+            background.transform.position = transform.position*0.3f;
         }
-        background.transform.position = transform.position * 0.3f;
         float scrollwheel = Input.GetAxisRaw("Mouse ScrollWheel");
         if (scrollwheel != 0)
         {

@@ -129,6 +129,8 @@ public class Octopus : MonoBehaviour {
         enemyIndex = (enemyIndex + 1) % spawnCells.Count;
 
         GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("enemyPrefab"));
+        go.transform.parent = RoomManager.roomManager.entityObject.transform;
+
         Enemy enemy = go.GetComponent<Enemy>();
         enemy.SetCell(c.x, c.y);
         enemy.SetColor(lastEnemyCol);

@@ -68,14 +68,14 @@ public class Cell
         return (typeDirs[dest].Contains(opp) || typeDirs[prev].Contains(direction));
     }
 
-    public Cell(int x, int y, GameObject parent = null)
+    public Cell(int x, int y)
     {
         this.x = x;
         this.y = y;
         this.col = Colors.Black;
         go = (GameObject)GameObject.Instantiate(template);
         go.tag = "generated";
-        if (parent != null) go.transform.parent = parent.transform;
+        go.transform.parent = RoomManager.roomManager.gridObject.transform;
         go.transform.position = new Vector2(x, y);
         Orient(type);
         decayLeft = decayMax;

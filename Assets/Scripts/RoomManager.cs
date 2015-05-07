@@ -8,13 +8,7 @@ using UnityEngine.UI;
 public class RoomManager : MonoBehaviour
 {
     // Update is called once per frame
-    public enum FadeStates
-    {
-        FadeIn,
-        Show,
-        FadeOut,
-        Wait
-    }
+
 
     private const int CAM_SIZE = 8;
     public static RoomManager roomManager;
@@ -23,38 +17,36 @@ public class RoomManager : MonoBehaviour
     private int _gW = 0, _gH = 0;
     private bool awoken = false;
     public int differentColors = 3;
-    private FadeStates fadeState = FadeStates.FadeOut;
     public Cell[][] Grid;
     public int gridWidth = 5, gridHeight = 4;
-    private float hintAlpha = 0;
-    private Text hintText;
     public string levelName;
     public int maxEnemies = 6;
-    private float MaxFadeTimer = 2;
-    private int MaxHintTimer = 4;
     public string nextlevel;
     public Octopus octopus;
     public int OctopusX = 0, OctopusY = 0;
     public Player player;
     public int PlayerStartX = 0, PlayerStartY = 0;
     public int secondsUntilGoat = 2;
-    private float tempHintTimer = 0;
-    private GameObject gridObject;
+    public GameObject gridObject;
+    private Pause pause;
+    public GameObject entityObject;
 
     public void Awake()
     {
+
+#if UNITY_EDITOR
+        if (!Application.isPlaying && EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
+#endif
         Camera.main.orthographicSize = CAM_SIZE;
         RegenMap(true);
         awoken = true;
-        tempHintTimer = (float) MaxHintTimer;
+        pause = FindObjectOfType<Pause>();
 
-        var obj = GameObject.Find("HintText");
-        hintText = obj == null ? null : obj.GetComponent<Text>();
     }
 
     public bool IsPaused()
     {
-        return gameObject.GetComponent<Pause>().MenuShowing;
+        return pause.MenuShowing;
     }
 
     public void OnValidate()
@@ -73,6 +65,10 @@ public class RoomManager : MonoBehaviour
     {
         roomManager = this;
         if (gridObject == null) gridObject = GameObject.Find("Grid")?? new GameObject("Grid");
+        if (entityObject == null) entityObject = GameObject.Find("Entities")?? new GameObject("Entities");
+        gridObject.transform.parent = transform;
+        entityObject.transform.parent = transform;
+
 
         var obs = GameObject.FindGameObjectsWithTag("generated");
         foreach (var o in obs)
@@ -147,46 +143,9 @@ public class RoomManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsPaused() || !Application.isPlaying) return;
+        if (!Application.isPlaying||IsPaused())return;
 
-        tempHintTimer -= Time.deltaTime;
-        if (tempHintTimer <= 0)
-        {
-            if (fadeState == FadeStates.FadeIn)
-            {
-                fadeState = FadeStates.Show;
-                hintText.color = Color.black;
-                tempHintTimer = MaxHintTimer;
-            }
-            else if (fadeState == FadeStates.Show)
-            {
-                fadeState = FadeStates.FadeOut;
-                tempHintTimer = MaxFadeTimer;
-            }
-            else if (fadeState == FadeStates.FadeOut)
-            {
-                fadeState = FadeStates.Wait;
-                hintText.color = new Color(0, 0, 0, 0);
-                tempHintTimer = MaxHintTimer;
-                //Hints.GetHint();
-                hintText.text = Hints.GetHint();
-            }
-            else if (fadeState == FadeStates.Wait)
-            {
-                fadeState = FadeStates.FadeIn;
-                tempHintTimer = MaxFadeTimer;
-            }
-        }
-
-        float percent = (float) tempHintTimer/(float) MaxFadeTimer;
-        if (fadeState == FadeStates.FadeOut)
-        {
-            hintText.color = new Color(0, 0, 0, percent);
-        }
-        else if (fadeState == FadeStates.FadeIn)
-        {
-            hintText.color = new Color(0, 0, 0, 1 - percent);
-        }
+        
 
 
         if (player != null)

@@ -13,7 +13,7 @@ public class MapEditor : EditorWindow {
     }
     void OnEnable()
     {
-        if (EditorApplication.currentScene == "Assets/Scenes/Blank.unity") return;
+        if (EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
         SceneView.onSceneGUIDelegate += OnUpdate;
         EditorApplication.playmodeStateChanged = () =>
         {
@@ -26,7 +26,7 @@ public class MapEditor : EditorWindow {
     }
     void OnUpdate(SceneView sceneView)
     {
-        if (EditorApplication.currentScene == "Assets/Scenes/Blank.unity") return;
+        if (EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
         if (Event.current.type == EventType.keyDown)
         {
             if (Event.current.keyCode == KeyCode.LeftControl)
@@ -122,7 +122,7 @@ public class MapEditor : EditorWindow {
     private string nextlevel = "";
     void OnGUI()
     {
-        if (EditorApplication.currentScene == "Assets/Scenes/Blank.unity") return;
+        if (EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
         Active = (EditorGUILayout.Toggle("Active", Active));
         string path = Application.dataPath + "/SavedLevels";
         var infos = new DirectoryInfo(path);
