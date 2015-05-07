@@ -62,6 +62,13 @@ public class Player : MonoBehaviour {
         button.GetComponentInChildren<Text>().color = pressed?Color.white :Color.black;
     }
     void Update () {
+
+        float scrollwheel = Input.GetAxisRaw("Mouse ScrollWheel");
+        if (scrollwheel != 0)
+        {
+            RoomManager.roomManager.mainCamera.orthographicSize -= scrollwheel;
+        }
+
 		if (RoomManager.roomManager.IsPaused ())
 			return;
         Colors? currentCol = null;

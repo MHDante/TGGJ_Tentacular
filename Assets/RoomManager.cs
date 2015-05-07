@@ -17,8 +17,8 @@ public class RoomManager : MonoBehaviour
     public Player player;
     public int OctopusX = 0, OctopusY = 0;
     public Octopus octopus;
-    private Camera mainCamera;
-    private const int CAM_SIZE = 5;
+    public Camera mainCamera;
+    private const int CAM_SIZE = 8;
     public int maxEnemies = 6;
     public int differentColors = 3;
     public static bool hardMode = false;
@@ -36,7 +36,7 @@ public class RoomManager : MonoBehaviour
         awoken = true;
         tempHintTimer = (float) MaxHintTimer;
 
-        hardMode = false;
+        
         hintText = GameObject.Find("HintText").GetComponent<Text>();
 
         
