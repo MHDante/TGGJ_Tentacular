@@ -36,7 +36,7 @@ public static class FileWrite
     public static string WriteFile(string filename, string text)
     {
         string path = GetPath();
-        string fullFileName = path + "/SavedLevels/" + filename;
+        string fullFileName = path + "/SavedLevels/Resources/" + filename;
         //string fullFileName = path + "/" + filename;
         StreamWriter fileWriter = File.CreateText(fullFileName);
         fileWriter.Write(text);
@@ -69,14 +69,21 @@ public static class FileWrite
         RoomManager room = MonoBehaviour.FindObjectOfType<RoomManager>();
 
         string path = GetPath();
-
         XElement loaded;
         try
         {
-            loaded = XElement.Load(Application.dataPath + "/SavedLevels/" + (filename ?? defaultFileName));
+#if UNITY_EDITOR
+            loaded = XElement.Load(Application.dataPath + "/SavedLevels/Resources/" + (filename ?? defaultFileName));
+
+#else
+            var name = Path.GetFileNameWithoutExtension(filename ?? defaultFileName);
+            Debug.Log(name);
+            TextAsset t = Resources.Load<TextAsset>(name);
+            loaded = XElement.Parse(t.text);
+#endif
+
             //XElement loaded = XElement.Load(path + "/" + defaultFileName + ".xml");
-        }
-        catch (UnauthorizedAccessException)
+        } catch (UnauthorizedAccessException)
         {
             return false;
         }

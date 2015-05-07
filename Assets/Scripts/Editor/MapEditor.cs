@@ -13,10 +13,11 @@ public class MapEditor : EditorWindow {
     }
     void OnEnable()
     {
-        if (EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
+        
         SceneView.onSceneGUIDelegate += OnUpdate;
         EditorApplication.playmodeStateChanged = () =>
         {
+            if (EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
             levelname = RoomManager.roomManager.levelName;
             if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
             {
@@ -122,9 +123,15 @@ public class MapEditor : EditorWindow {
     private string nextlevel = "";
     void OnGUI()
     {
-        if (EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
+
+
+        if (EditorApplication.currentScene != "Assets/Scenes/Workshop.unity")
+        {
+            GUILayout.Button("Go to workshop Scene and click here.");
+            return;
+        }
         Active = (EditorGUILayout.Toggle("Active", Active));
-        string path = Application.dataPath + "/SavedLevels";
+        string path = Application.dataPath + "/SavedLevels/Resources";
         var infos = new DirectoryInfo(path);
         //we're leaving this here
         var fileinfos = infos.GetFiles().Select(f => f.Name).Where(s => !s.Contains(".meta")).Union(new string[] { "" }).ToArray();
