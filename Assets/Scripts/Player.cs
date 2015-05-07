@@ -71,7 +71,7 @@ public class Player : MonoBehaviour {
         float scrollwheel = Input.GetAxisRaw("Mouse ScrollWheel");
         if (scrollwheel != 0)
         {
-            RoomManager.roomManager.mainCamera.orthographicSize -= scrollwheel;
+            Camera.main.orthographicSize -= scrollwheel;
         }
 
         

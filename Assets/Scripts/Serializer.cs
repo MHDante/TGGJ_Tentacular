@@ -39,7 +39,6 @@ public static class FileWrite
         string fullFileName = path + "/SavedLevels/" + filename;
         //string fullFileName = path + "/" + filename;
         StreamWriter fileWriter = File.CreateText(fullFileName);
-        //fileWriter.WriteLine("Hello world");
         fileWriter.Write(text);
         fileWriter.Close();
 
@@ -96,6 +95,7 @@ public static class FileWrite
         RoomManager.roomManager.PlayerStartX = exists ? int.Parse(elemPlayerX.Value) : 0;
         RoomManager.roomManager.PlayerStartY = exists ? int.Parse(elemPlayerY.Value) : 0;
         GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("playerPrefab"));
+        go.tag = "generated";
         RoomManager.roomManager.player = go.GetComponent<Player>();
         RoomManager.roomManager.player.SetCell(RoomManager.roomManager.PlayerStartX, RoomManager.roomManager.PlayerStartY);
 
@@ -105,6 +105,7 @@ public static class FileWrite
         RoomManager.roomManager.OctopusX = exists2 ? int.Parse(elemOctopusX.Value) : 0;
         RoomManager.roomManager.OctopusY = exists2 ? int.Parse(elemOctopusY.Value) : 0;
         GameObject go2 = (GameObject)GameObject.Instantiate(Resources.Load("octopusPrefab"));
+        go2.tag = "generated";
         RoomManager.roomManager.octopus = go2.GetComponent<Octopus>();
         RoomManager.roomManager.octopus.SetCell(RoomManager.roomManager.OctopusX, RoomManager.roomManager.OctopusY);
 

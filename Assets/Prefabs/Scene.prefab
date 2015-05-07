@@ -681,7 +681,7 @@ GameObject:
   - 224: {fileID: 22456822}
   - 114: {fileID: 11454378}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: HardMode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -834,7 +834,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1401,7 +1401,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11476302}
         m_MethodName: setHardMode
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
@@ -1731,7 +1731,7 @@ MonoBehaviour:
   VictorySign: {fileID: 152130}
   PausedSign: {fileID: 124160}
   continueButton: {fileID: 131280}
-  HardMode: {fileID: 0}
+  HardMode: {fileID: 190804}
 --- !u!114 &11476310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2139,20 +2139,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cd96a9c3bca2e4a89e07d03b3ae0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  differentColors: 3
   gridWidth: 30
   gridHeight: 30
-  PlayerStartX: 0
-  PlayerStartY: 0
-  player: {fileID: 0}
+  levelName: blank0
+  mainCamera: {fileID: 2066796}
+  maxEnemies: 6
+  nextlevel: 
+  octopus: {fileID: 0}
   OctopusX: 0
   OctopusY: 0
-  octopus: {fileID: 0}
-  mainCamera: {fileID: 0}
-  maxEnemies: 6
-  differentColors: 3
+  player: {fileID: 0}
+  PlayerStartX: 0
+  PlayerStartY: 0
   secondsUntilGoat: 5
-  levelName: blank0
-  nextlevel: 
 --- !u!114 &11496474
 MonoBehaviour:
   m_ObjectHideFlags: 1

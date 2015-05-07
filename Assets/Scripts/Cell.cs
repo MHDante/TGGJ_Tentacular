@@ -74,7 +74,7 @@ public class Cell
         this.y = y;
         this.col = Colors.Black;
         go = (GameObject)GameObject.Instantiate(template);
-        go.tag = "cell";
+        go.tag = "generated";
         if (parent != null) go.transform.parent = parent.transform;
         go.transform.position = new Vector2(x, y);
         Orient(type);
