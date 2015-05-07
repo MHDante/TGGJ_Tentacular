@@ -108,7 +108,8 @@ public class Cell
     void SetAlpha()
     {
         float percent = (float)decayLeft / (float)decayMax;
-        percent = percent * 0.7f + 0.3f;
+        float range = 0.8f;
+        percent = percent * range + (1f - range);
         var sp = go.GetComponent<SpriteRenderer>();
         Color temp = Cell.colorVals[col];
         temp *= percent;
