@@ -37,9 +37,10 @@ public class RoomManager : MonoBehaviour
         tempHintTimer = (float) MaxHintTimer;
 
         hardMode = false;
-        hintText = GameObject.Find("HintText").GetComponent<Text>();
-
+        var obj = GameObject.Find("HintText");
+        hintText = obj == null? null : obj.GetComponent<Text>();
         
+
 
     }
 	public bool IsPaused(){
@@ -167,9 +168,7 @@ public class RoomManager : MonoBehaviour
     void Update()
     {
 
-		if (IsPaused ()) {
-			return;
-		}
+		if (IsPaused () || !Application.isPlaying) return;
 
         tempHintTimer -= Time.deltaTime;
         if (tempHintTimer <= 0)
@@ -207,7 +206,7 @@ public class RoomManager : MonoBehaviour
         }
 
 
-        if (Application.isPlaying && player != null)
+        if (player != null)
         {
             mainCamera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
         }
