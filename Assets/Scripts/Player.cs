@@ -61,13 +61,20 @@ public class Player : MonoBehaviour {
         button.GetComponent<Image>().color = new Color(button.GetComponent<Image>().color.r, button.GetComponent<Image>().color.g, button.GetComponent<Image>().color.b,pressed?1 : .40f);
         button.GetComponentInChildren<Text>().color = pressed?Color.white :Color.black;
     }
+    GameObject background;
     void Update () {
-
+        if (background == null)
+        {
+            background = GameObject.Find("background");
+        }
+        background.transform.position = transform.position * 0.3f;
         float scrollwheel = Input.GetAxisRaw("Mouse ScrollWheel");
         if (scrollwheel != 0)
         {
             RoomManager.roomManager.mainCamera.orthographicSize -= scrollwheel;
         }
+
+        
 
 		if (RoomManager.roomManager.IsPaused ())
 			return;
@@ -85,14 +92,14 @@ public class Player : MonoBehaviour {
 
         if (currentCol != null)
         {
-            //if (nextCell != null)
-            //{
-            //    nextCell.SetColor(currentCol.Value);
-            //}
-            //else
-            //{
-                currentCell.SetColor(currentCol.Value);
-            //}
+            if (nextCell != null && Vector2.Distance(transform.position, dest) < 0.5f)
+            {
+                nextCell.SetColor(currentCol.Value);
+            }
+            else
+            {
+              currentCell.SetColor(currentCol.Value);
+            }
         }
         Color pCol = currentCol == null ? Color.white : Cell.colorVals[currentCol.Value];
         var sp = GetComponentInChildren<SpriteRenderer>();

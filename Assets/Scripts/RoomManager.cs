@@ -39,7 +39,6 @@ public class RoomManager : MonoBehaviour
         var obj = GameObject.Find("HintText");
         hintText = obj == null? null : obj.GetComponent<Text>();
 
-        
 
     }
 	public bool IsPaused(){

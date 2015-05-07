@@ -21,12 +21,15 @@ public class TitleScreen : MonoBehaviour
 	void Start () {
         HardMode.GetComponent<Toggle>().isOn= RoomManager.hardMode;
 
-        FileWrite.WriteFile("rummy123.txt", "haha");
+        //FileWrite.WriteFile("rummy123.txt", "haha");
     }
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    if(Input.GetKeyDown(KeyCode.Return))
+        {
+            OnClick();
+        }
 	}
 
     public void setHardMode()
@@ -35,7 +38,7 @@ public class TitleScreen : MonoBehaviour
     }
 
     public void OnClick() {
-        Debug.Log("Click!");
+        //Debug.Log("Click!");
         FileWrite.InitDeserialization(firstLevel + ".xml");
         Hints.Level = 0;
     }
