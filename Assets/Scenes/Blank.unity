@@ -128,6 +128,7 @@ MonoBehaviour:
   PlayerStartY: 0
   secondsUntilGoat: 5
   gridObject: {fileID: 0}
+  pause: {fileID: 0}
   entityObject: {fileID: 0}
 --- !u!4 &55309960
 Transform:
@@ -487,7 +488,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 515933967}
-  m_RootOrder: 2
+  m_RootOrder: 6
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: .00102543831, y: 116.099998}
@@ -533,7 +534,7 @@ GameObject:
   - 222: {fileID: 414021340}
   - 114: {fileID: 414021339}
   m_Layer: 5
-  m_Name: Panel3
+  m_Name: BlueCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -617,7 +618,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 515933967}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: .00012207, y: 116}
@@ -713,7 +714,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Back to Menu
+  m_Text: 'Back to Title
+
+'
 --- !u!222 &462760601
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -751,11 +754,11 @@ RectTransform:
   - {fileID: 945337840}
   - {fileID: 2049228296}
   m_Father: {fileID: 515933967}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 21.3999996, y: 39.5}
-  m_SizeDelta: {x: 160, y: 20}
+  m_AnchoredPosition: {x: .00104979996, y: -125}
+  m_SizeDelta: {x: 106.599998, y: 20}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &501966175
 MonoBehaviour:
@@ -800,7 +803,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1316951962}
         m_MethodName: setHardMode
         m_Mode: 1
         m_Arguments:
@@ -814,7 +817,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &515933966
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +829,7 @@ GameObject:
   - 222: {fileID: 515933969}
   - 114: {fileID: 515933968}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Pause Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -843,13 +846,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1650600492}
+  - {fileID: 1123987146}
+  - {fileID: 1828611288}
+  - {fileID: 501966174}
   - {fileID: 430326321}
   - {fileID: 1457542362}
   - {fileID: 372483645}
-  - {fileID: 1123987146}
-  - {fileID: 1828611288}
-  - {fileID: 1650600492}
-  - {fileID: 501966174}
   m_Father: {fileID: 1316951958}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
@@ -1069,7 +1072,7 @@ GameObject:
   - 222: {fileID: 601732617}
   - 114: {fileID: 601732616}
   m_Layer: 5
-  m_Name: Panel2
+  m_Name: GreenCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1204,7 +1207,7 @@ GameObject:
   - 222: {fileID: 871709644}
   - 114: {fileID: 871709643}
   m_Layer: 5
-  m_Name: Panel 1
+  m_Name: Top Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1275,7 +1278,7 @@ GameObject:
   - 222: {fileID: 945337842}
   - 114: {fileID: 945337841}
   m_Layer: 5
-  m_Name: Background
+  m_Name: CheckBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1295,11 +1298,11 @@ RectTransform:
   - {fileID: 217214133}
   m_Father: {fileID: 501966174}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -10}
+  m_AnchorMin: {x: 0, y: .5}
+  m_AnchorMax: {x: 0, y: .5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
-  m_Pivot: {x: .5, y: .5}
+  m_Pivot: {x: 0, y: .5}
 --- !u!114 &945337841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1477,7 +1480,7 @@ GameObject:
   - 222: {fileID: 986263036}
   - 114: {fileID: 986263035}
   m_Layer: 5
-  m_Name: Panel 2
+  m_Name: BottomBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1762,10 +1765,10 @@ RectTransform:
   m_Children:
   - {fileID: 1814869154}
   m_Father: {fileID: 515933967}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: .000122070312, y: .250015259}
+  m_AnchoredPosition: {x: 0, y: -53}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1123987147
@@ -1808,7 +1811,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1316951962}
         m_MethodName: Restart
         m_Mode: 1
         m_Arguments:
@@ -2227,7 +2230,7 @@ GameObject:
   - 222: {fileID: 1402435025}
   - 114: {fileID: 1402435024}
   m_Layer: 5
-  m_Name: Panel1
+  m_Name: RedCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2311,7 +2314,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 515933967}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 5.7220459e-05, y: 119}
@@ -2835,10 +2838,10 @@ RectTransform:
   m_Children:
   - {fileID: 1701018537}
   m_Father: {fileID: 515933967}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: .000122070312, y: -167.749985}
+  m_AnchoredPosition: {x: 0, y: -21}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1650600493
@@ -2881,7 +2884,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1316951962}
         m_MethodName: MenuToggle
         m_Mode: 5
         m_Arguments:
@@ -3095,7 +3098,7 @@ RectTransform:
   m_Children:
   - {fileID: 462760599}
   m_Father: {fileID: 515933967}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: .000122070312, y: -85.7499847}
@@ -3141,7 +3144,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1316951962}
         m_MethodName: BackToTitle
         m_Mode: 1
         m_Arguments:
@@ -3557,7 +3560,7 @@ GameObject:
   - 222: {fileID: 2049209106}
   - 114: {fileID: 2049209105}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: GoatTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3641,10 +3644,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 501966174}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: .5, y: .5}
+  m_AnchorMax: {x: .5, y: .5}
   m_AnchoredPosition: {x: 9, y: -.5}
-  m_SizeDelta: {x: -28, y: -3}
+  m_SizeDelta: {x: 72, y: 17}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &2049228297
 MonoBehaviour:

@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
 
     private GameObject spriteChild;
     private Quaternion rotGoal;
+    public LayerMask enemies;
     public static Dictionary<Dirs, Vector2> dirToVect = new Dictionary<Dirs, Vector2>()
     {
         { Dirs.N, Vector2.up },
@@ -63,6 +64,8 @@ public class Player : MonoBehaviour {
     }
     GameObject background;
     void Update () {
+        if (RoomManager.roomManager.IsPaused())
+            return;
         if (background != null)
         {
             background.transform.position = transform.position*0.3f;
@@ -73,10 +76,7 @@ public class Player : MonoBehaviour {
             Camera.main.orthographicSize -= scrollwheel;
         }
 
-        
-
-		if (RoomManager.roomManager.IsPaused ())
-			return;
+        CheckCollision();
         Colors? currentCol = null;
         if      (Input.GetButton("Col1")) currentCol = Colors.Red;
         else if (Input.GetButton("Col2")) currentCol = Colors.Green;
@@ -130,11 +130,7 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            if (currentCell.enemy != null && RoomManager.hardMode)
-            {
-                var pause = GameObject.FindObjectOfType<Pause>();
-                pause.MenuToggle("GameOver");
-            }
+            
             float horiz = Input.GetAxisRaw("Horizontal");
             float vert = Input.GetAxisRaw("Vertical");
             if (horiz != 0) vert = 0;
@@ -190,6 +186,21 @@ public class Player : MonoBehaviour {
         {
             currentCell = next;
             transform.position = new Vector3(currentCell.x, currentCell.y);
+        }
+    }
+
+    public void CheckCollision()
+    {
+
+        var col = GetComponent<CircleCollider2D>();
+        foreach (var enemy in Physics2D.OverlapCircleAll((Vector2)transform.position + col.offset, col.radius, enemies))
+        {
+            Debug.Log("Hard "  + RoomManager.hardMode);
+            Debug.Log("Enemy? " + (enemy.gameObject.GetComponent<Enemy>() != null));
+            if ((RoomManager.hardMode && (enemy.gameObject.GetComponent<Enemy>()!= null))|| enemy.gameObject.GetComponent<Goat>() != null)
+            {
+                    RoomManager.roomManager.pause.MenuToggle("GameOver");
+            } 
         }
     }
 }

@@ -28,7 +28,7 @@ public class RoomManager : MonoBehaviour
     public int PlayerStartX = 0, PlayerStartY = 0;
     public int secondsUntilGoat = 2;
     public GameObject gridObject;
-    private Pause pause;
+    public Pause pause;
     public GameObject entityObject;
 
     public void Awake()

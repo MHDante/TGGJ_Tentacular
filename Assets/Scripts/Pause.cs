@@ -85,7 +85,6 @@ public class Pause : MonoBehaviour {
         var hmObj = GameObject.Find("HardMode");
         var tog = hmObj.GetComponent<Toggle>();
         tog.isOn = RoomManager.hardMode;
-
         MenuPanel.SetActive(false);
 		PausedSign.SetActive (false);
 		GameOverSign.SetActive (false);

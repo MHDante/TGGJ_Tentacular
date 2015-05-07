@@ -9,7 +9,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 426612}
   - 114: {fileID: 11419704}
-  m_Layer: 0
+  - 58: {fileID: 5809020}
+  m_Layer: 8
   m_Name: enemyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 468340}
   - 212: {fileID: 21203274}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spriteChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,6 +58,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 426612}
   m_RootOrder: 0
+--- !u!58 &5809020
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 133724}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: .5, y: .5}
+  serializedVersion: 2
+  m_Radius: .300000012
 --- !u!114 &11419704
 MonoBehaviour:
   m_ObjectHideFlags: 1

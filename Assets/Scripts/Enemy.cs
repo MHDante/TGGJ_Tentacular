@@ -21,6 +21,9 @@ public class Enemy : MonoBehaviour {
         enemySpeed = 0.04f;
 
     }
+    public void OnTriggerEnter(Collider other) {
+        Debug.Log("E Enter.");
+    }
     public void SetColor(Colors color)
     {
         if (col == color) return;
