@@ -71,7 +71,7 @@ public class RoomManager : MonoBehaviour
 
         //if (masterParent == null) masterParent = GameObject.Find("Puzzle_Pieces");
         //if (masterParent == null) masterParent = new GameObject("Puzzle_Pieces");
-        var obs = FindObjectsOfType<CellAdapter>();
+        var obs = GameObject.FindGameObjectsWithTag("cell");
         foreach (var o in obs)
         {
             DestroyGeneralized(o.gameObject);
