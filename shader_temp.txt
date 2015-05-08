@@ -1,0 +1,47 @@
+fixed4 c = tex2D(_MainTex, IN.texcoord) * IN.color;
+
+						float xlen = (1 / 27.0);
+						float ylen = (1 / 15.0);
+						float xA = fmod(IN.texcoord.x, xlen * 2);
+						float yA = fmod(IN.texcoord.y, ylen * 2);
+						bool xHalf = xA > xlen;
+						bool yHalf = yA > ylen;
+						//
+						//
+						float4 xxx = float4(0, xlen, 0, -xlen);
+						float4 yyy = float4(ylen, 0, -ylen, 0);
+						//
+						int index = 0 * 1;
+						//
+						//
+						float2 v = float2(0, 0);
+						if (!xHalf && !yHalf) v = float2(0, ylen);
+						else if (!xHalf && yHalf) v = float2(xlen, 0);
+						else if (xHalf && yHalf) v = float2(0, -ylen);
+						else if (xHalf && !yHalf) v = float2(-xlen, 0);
+						//
+						//
+						float speed = 0.5;
+						float time = fmod(_Time.y * speed, 4);
+						//
+						float2 v2 = float2(0, 0);
+						int i = 1;
+						for (; i < 4; i++)
+						//
+						if (time > (float)i)
+						//
+						if (!xHalf && !yHalf) v2 += float2(xxx[i], yyy[i]);
+						else if (!xHalf && yHalf) v2 += float2(xxx[(i + 1) % 4], yyy[(i + 1) % 4]);
+						else if (xHalf && yHalf) v2 += float2(xxx[(i + 1) % 4], yyy[(i + 1) % 4]);
+						else if (xHalf && !yHalf) v2 += float2(xxx[(i + 1) % 4], yyy[(i + 1) % 4]);
+						//
+						//
+						float2 ncoord = IN.texcoord + v * fmod(_Time.y * speed, 1);// +v2;
+						//
+						//
+						//c = tex2D(_MainTex, ncoord) * IN.color;
+
+						c.rgb *= c.a;
+
+						//c = float4(IN.texcoord.y, IN.texcoord.y, IN.texcoord.y, 1);
+						return c;
