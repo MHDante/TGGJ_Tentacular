@@ -92,6 +92,11 @@
 						if (bar)
 						{
 							float rad = 0.05;
+							//half2 point = 
+							if (IN.texcoord.y > 1 - barpad - rad)
+							{
+
+							}
 							half2 mid = half2(1 - barpad - barwidth / 2.0, (index * seg) * barheight + barpad + seg * 0.5);
 								bar = bar && withinDist(mid, IN.texcoord, seg * 0.4);
 						}
