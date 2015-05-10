@@ -33,10 +33,13 @@ public class RoomManager : MonoBehaviour
     public GameObject gridObject;
     public Pause pause;
     public GameObject entityObject;
+    public float UpdateRate = 0.25f;
+    public int gameSteps;
+    public float transitionPercent;
 
     public void Awake()
     {
-
+        Application.targetFrameRate = 60;
 #if UNITY_EDITOR
         if (!Application.isPlaying && EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
 #endif
@@ -147,6 +150,9 @@ public class RoomManager : MonoBehaviour
     private void Update()
     {
         if (!Application.isPlaying||IsPaused())return;
+
+        gameSteps = (int) (Time.time/UpdateRate);
+        transitionPercent = (Time.time%UpdateRate)/UpdateRate;
 
         if (player != null)
         {

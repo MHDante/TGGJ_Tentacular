@@ -61,31 +61,28 @@ public class Enemy : MonoBehaviour {
         return win;
     }
     public static bool WinningState = false;
-    bool IsMoving = false;
+    int currentStep = 0;
     Vector2 dest = Vector2.zero;
-    Cell nextCell;
+    Cell destCell;
     public Dirs prevDir;
     // Update is called once per frame
     void Update () {
 		if (RoomManager.roomManager.IsPaused ())
 			return;
-        if (IsMoving)
+        if (currentStep == RoomManager.roomManager.gameSteps && currentStep != 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position, dest, enemySpeed);
-            if (transform.position.x == dest.x && transform.position.y == dest.y)
-            {
-                currentCell = nextCell;
-                IsMoving = false;
-                if (currentCell.col == col)
-                {
-                    currentCell.Decay();
-                }
-                WinningState = IsWinCondition();
-            }
+            transform.position = Vector3.Lerp(currentCell.go.transform.position, dest, RoomManager.roomManager.transitionPercent);
             RoomManager.roomManager.octopus.ChangeState();
         }
         else
         {
+            currentCell = destCell??currentCell;
+            currentStep = RoomManager.roomManager.gameSteps;
+            if (currentCell.col == col) {
+                currentCell.Decay();
+            }
+            WinningState = IsWinCondition();
+
             bool turnAround = false;
             List<Dirs> firstDirChoices = new List<Dirs>();
             List<Dirs> secondDirChoices = new List<Dirs>();
@@ -94,7 +91,7 @@ public class Enemy : MonoBehaviour {
             foreach (Dirs d in Player.dictPossibleDirs[prevDir])
             {
                 Dirs opp = Cell.GetOppositeDir(d);
-                Vector2 next = Player.dirToVect[d] + (Vector2)transform.position;
+                Vector2 next = Player.dirToVect[d] + (Vector2)currentCell.go.transform.position;
                 Cell nextCell = RoomManager.Get((int)next.x, (int)next.y);
                 if (nextCell != null)
                 {
@@ -152,16 +149,16 @@ public class Enemy : MonoBehaviour {
     }
     void MoveInDir(Dirs d)
     {
-        Vector2 next = Player.dirToVect[d] + (Vector2)transform.position;
+        Vector2 next = Player.dirToVect[d] + (Vector2)currentCell.go.transform.position;
         Cell c = RoomManager.Get((int)next.x, (int)next.y);
-        IsMoving = true;
+        currentStep = RoomManager.roomManager.gameSteps;
         dest = next;
         float angle = Mathf.Atan2(-Player.dirToVect[d].x, Player.dirToVect[d].y) * Mathf.Rad2Deg;
         spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
 
-        nextCell = c;
+        destCell = c;
         currentCell.enemy = null;
-        nextCell.enemy = this;
+        destCell.enemy = this;
         prevDir = d;
         Update();
     }
