@@ -135,7 +135,7 @@ public class Cell
                 break;
             default:
                 spr.sprite = sprs[(int)t- 1];
-                    break;
+                break;
         }
 
     }
@@ -145,7 +145,7 @@ public class Cell
     {
 
     }
-
+    bool fromMid = false;
     // Update is called once per frame
     public void Update()
     {
@@ -156,6 +156,7 @@ public class Cell
             if (diff > timeItTakes)
             {
                 lastChangeTime = null;
+                fromMid = false;
             }
             else
             {
@@ -166,17 +167,18 @@ public class Cell
                 {
                     int x = arr[i], y = arr[i + 1];
                     Cell c = RoomManager.Get(x+this.x, y+this.y);
-                    var newRatio = c.lastChangeTime == null ? ratio : Mathf.Min(ratio, (Time.time - c.lastChangeTime.Value) / timeItTakes);
-                    if (c != null && c.col == col)
+                    
+                    if (c != null && c.col == col && !fromMid)
                     {
+                        var newRatio = c.lastChangeTime == null ? ratio : Mathf.Min(ratio, (Time.time - c.lastChangeTime.Value) / timeItTakes);
                         vect[i / 2] = newRatio;
                     }
                     else
                     {
-                        vect[i / 2] = newRatio -2;
+                        vect[i / 2] = ratio -2;
+                        fromMid = true;
                     }
                 }
-                Debug.Log(vect + "   : " + ratio);
             }
             
             var sp = go.GetComponent<SpriteRenderer>();

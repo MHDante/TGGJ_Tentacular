@@ -25,13 +25,23 @@ public class Octopus : MonoBehaviour {
     public Sprite OctHappy;
 
     public float timeUntilGoat = 10;
-
+    Texture2D fishtex;
     // Use this for initialization
     void Start () {
         FindSpawnCells();
         var sp = GetComponent<SpriteRenderer>();
         sp.color = Color.black;
         timeUntilGoat = (float)RoomManager.roomManager.secondsUntilGoat;
+
+        
+        fishtex = new Texture2D(RoomManager.roomManager.maxEnemies, 1, TextureFormat.ARGB32, false);
+        for(int i = 0; i < RoomManager.roomManager.maxEnemies; i++)
+        {
+            fishtex.SetPixel(i, 0, new Color(0, 0, 0, 0));
+        }
+        fishtex.Apply();
+        sp.material.SetTexture("_FishTex", fishtex);
+        sp.material.SetInt("_FishTexLen", RoomManager.roomManager.maxEnemies);
     }
     void FindSpawnCells()
     {
@@ -70,6 +80,22 @@ public class Octopus : MonoBehaviour {
 	void Update () {
 		if (RoomManager.roomManager.IsPaused ())
 			return;
+
+        for(int i =0; i <  RoomManager.roomManager.maxEnemies; i++)
+        {
+            if (i >= enemies.Count) break;
+            var e = enemies[i];
+            float cap = (e.currentCell.col == e.col) ? 1 : 0;
+            Color c = Cell.colorVals[e.col];
+            c.a = cap;
+            fishtex.SetPixel(i, 0, c);
+        }
+        fishtex.Apply();
+
+        var sp = GetComponent<SpriteRenderer>();
+        sp.material.SetTexture("_FishTex", fishtex);
+
+
         if (timeUntilGoat > 0)
         {
             timeUntilGoat -= Time.deltaTime;
@@ -94,12 +120,12 @@ public class Octopus : MonoBehaviour {
 	    }
         if (state == OctopusStates.Happy)
         {
-            hue = (hue + huespeed) % 360;
             val += valspeed;
             if (val > 100f) val = 100f;
-            Color c = HSVToRGB(hue / 360f, 1f - val/100f, val/100f);
-            var sp = GetComponent<SpriteRenderer>();
-            sp.color = c;
+            sp.material.SetFloat("_Percent", val / 100f);
+            //hue = (hue + huespeed) % 360;
+            //Color c = HSVToRGB(hue / 360f, 1f - val/100f, val/100f);
+            //sp.color = c;
 
             if (val == 100f)
             {
@@ -121,8 +147,13 @@ public class Octopus : MonoBehaviour {
                 }
             }
         }
+        else
+        {
+            sp.material.SetFloat("_Percent", 0);
+        }
 	}
     int enemyIndex = 0;
+    List<Enemy> enemies = new List<Enemy>();
     public void SpawnEnemy()
     {
         Cell c = spawnCells.ToArray()[enemyIndex];
@@ -141,6 +172,8 @@ public class Octopus : MonoBehaviour {
         lastEnemyCol = (Colors)colIndex;
 
         enemyCounter++;
+
+        enemies.Add(enemy);
         //start enemy movement
     }
     public void SpawnGoat()
