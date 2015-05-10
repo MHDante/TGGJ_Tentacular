@@ -134,7 +134,11 @@ PlayerSettings:
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
   resolutionDialogBanner: {fileID: 0}
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - m_Icon: {fileID: 0}
+      m_Size: 128
   m_BuildTargetBatching: []
   webPlayerTemplate: APPLICATION:Default
   m_TemplateCustomTags: {}
@@ -377,14 +381,14 @@ PlayerSettings:
   WP8::ScriptingBackend: 2
   WebGL::ScriptingBackend: 1
   WebGL::audioCompressionFormat: 4
-  WebGL::exceptionSupport: 0
+  WebGL::exceptionSupport: 2
   WebGL::memorySize: 256
   iOS::Architecture: 2
   iOS::ScriptingBackend: 0
   boolPropertyNames:
   - WebGL::dataCaching
   - XboxOne::enus
-  WebGL::dataCaching: 0
+  WebGL::dataCaching: 1
   XboxOne::enus: 1
   stringPropertyNames:
   - WebGL::emscriptenArgs
