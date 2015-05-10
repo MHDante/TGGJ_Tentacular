@@ -148,12 +148,22 @@ public class RoomManager : MonoBehaviour
     {
         if (!Application.isPlaying||IsPaused())return;
 
-        
-
-
         if (player != null)
         {
             Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
+        }
+
+
+        for(int i = 0; i < Grid.Length; i++)
+        {
+            for (int j = 0; j < Grid[0].Length; j++)
+            {
+                Cell c = Grid[i][j];
+                if (c != null)
+                {
+                    c.Update();
+                }
+            }
         }
     }
 

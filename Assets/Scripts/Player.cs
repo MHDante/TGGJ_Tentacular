@@ -195,8 +195,8 @@ public class Player : MonoBehaviour {
         var col = GetComponent<CircleCollider2D>();
         foreach (var enemy in Physics2D.OverlapCircleAll((Vector2)transform.position + col.offset, col.radius, enemies))
         {
-            Debug.Log("Hard "  + RoomManager.hardMode);
-            Debug.Log("Enemy? " + (enemy.gameObject.GetComponent<Enemy>() != null));
+            //Debug.Log("Hard "  + RoomManager.hardMode);
+            //Debug.Log("Enemy? " + (enemy.gameObject.GetComponent<Enemy>() != null));
             if ((RoomManager.hardMode && (enemy.gameObject.GetComponent<Enemy>()!= null))|| enemy.gameObject.GetComponent<Goat>() != null)
             {
                     RoomManager.roomManager.pause.MenuToggle("GameOver");

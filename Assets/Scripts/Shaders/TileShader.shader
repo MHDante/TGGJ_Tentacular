@@ -3,8 +3,10 @@ Shader "Custom/TileShader"
 	Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-		_Color ("Tint", Color) = (1,1,1,1)
+		_Color("Tint", Color) = (1,1,1,1)
+		_LastColor ("LastColor", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
+		_UDLR ("UpDownLeftRight", Vector) = (-1.0,-1.0,-1.0,-1.0)
 	}
 
 	SubShader
@@ -41,12 +43,17 @@ Shader "Custom/TileShader"
 			struct v2f
 			{
 				float4 vertex   : SV_POSITION;
-				fixed4 color    : COLOR;
+				fixed4 color    : COLOR0;
 				half2 texcoord  : TEXCOORD0;
 				float4 worldpos : TEXCOORD1;
+				fixed4 udlr	    : COLOR1;
+				fixed4 lastcol  : COLOR2;
+
 			};
 			
+			fixed4 _LastColor;
 			fixed4 _Color;
+			fixed4 _UDLR;
 
 			v2f vert(appdata_t IN)
 			{
@@ -56,7 +63,8 @@ Shader "Custom/TileShader"
 				OUT.color = IN.color * _Color;
 
 				OUT.worldpos = mul(_Object2World, IN.vertex);
-
+				OUT.lastcol = _LastColor;
+				OUT.udlr = _UDLR;
 				#ifdef PIXELSNAP_ON
 				OUT.vertex = UnityPixelSnap (OUT.vertex);
 				#endif
@@ -66,17 +74,36 @@ Shader "Custom/TileShader"
 
 			sampler2D _MainTex;
 
+			bool withinDist(float2 a, float2 b, float dist) {
+				return ((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y)) < (dist * dist);
+			}
+
 			fixed4 frag(v2f IN) : SV_Target
 			{
-				fixed4 c = tex2D(_MainTex, IN.texcoord) * IN.color;
+				fixed4 c = tex2D(_MainTex, IN.texcoord);// *IN.color;
+				
+				float2 relCoord = float2(fmod(IN.texcoord.x, (1.0 / 6.0)) / (1.0 / 6.0), IN.texcoord.y);
+				//float relcoord = float2(fmod(IN.worldpos.x, 1.0).fmod(IN.worldpos., 1.0))
+				bool none = ((IN.udlr.r < -1.0) && (IN.udlr.g < -1.0) && (IN.udlr.b < -1.0) && (IN.udlr.a < -1.0) && withinDist(relCoord, float2(0.5, 0.5), IN.udlr.r + 2));
+				//bool none = false;
+				bool north = ((IN.udlr.r >= 0) && withinDist(relCoord, float2(0.5, 1), IN.udlr.r));
+				bool south = ((IN.udlr.g >= 0) && withinDist(relCoord, float2(0.5, 0), IN.udlr.g));
+				bool east = ((IN.udlr.b >= 0) && withinDist(relCoord, float2(1, 0.5), IN.udlr.b));
+				bool west = ((IN.udlr.a >= 0) && withinDist(relCoord, float2(0, 0.5), IN.udlr.a));
 
-				//float lines = 4;
-				//float actualSize = 1.0 / 6.0;
-				//float xcoord = fmod(IN.texcoord.x, actualSize);
-				//if (fmod(xcoord, actualSize / lines) < (actualSize / lines) / 5)
-				//{
-				//	c *= 0.8;
-				//}
+				if(none
+					|| north
+					|| south
+					|| east
+					|| west) {
+					c *= IN.color;
+				}
+				else
+				{
+					c *= IN.lastcol;
+				}
+				//fixed4 c = float4(IN.lastcol.r, IN.lastcol.g, IN.lastcol.b, m.a);
+				
 				float sublength = 0.3;
 				float time = _Time.x*5;
 				float xcoord = IN.worldpos.x + time;
@@ -91,28 +118,6 @@ Shader "Custom/TileShader"
 				{
 					check = !check;
 				}
-
-				//if (check)
-				//{
-				//	c.rgb *= 0.7;
-				//}
-				//
-				//if (check)
-				//{
-				//	float mult = 0.2;
-				//	int i = 0;
-				//	for (; i < 3; i++)
-				//	{
-				//		//swizzledexing
-				//		c.rgb[i] = (1.0 - c.rgb[i]) * mult + c.rgb[i];
-				//	}
-				//}
-				//else
-				//{
-				//	//c = float4(1, 0, 0, 1);
-				//}
-
-
 				////
 				float a = 1.0, b = 1.0;
 				if (check)

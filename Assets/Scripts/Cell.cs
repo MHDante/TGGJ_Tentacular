@@ -40,7 +40,6 @@ public class Cell
     public static Sprite[] sprs = Resources.LoadAll<Sprite>(@"roads_wht");
     public Enemy enemy;
     public int decayMax = 15, decayLeft;
-
     public static Dictionary<Types, HashSet<Dirs>> typeDirs = new Dictionary<Types, HashSet<Dirs>>()
     {
         { Types.Blank, new HashSet<Dirs>() },
@@ -82,15 +81,19 @@ public class Cell
     }
     public void SetColor(Colors color)
     {
-        //if (col == color) return;
+        if (col == color) return;
         col = color;
         if (go != null)
         {
             var sp = go.GetComponent<SpriteRenderer>();
             Color c = colorVals[col] == Color.white ? Color.black : colorVals[col];
+            sp.material.SetColor("_LastColor", sp.color);
             sp.color = c;
+
             decayLeft = decayMax;
             //SetAlpha();
+            lastChangeTime = Time.time;
+            Update();
         }
     }
     public void Decay()
@@ -105,6 +108,8 @@ public class Cell
             SetAlpha();
         }
     }
+    float timeItTakes = .5f;
+    float? lastChangeTime = null;
     void SetAlpha()
     {
         float percent = (float)decayLeft / (float)decayMax;
@@ -115,6 +120,8 @@ public class Cell
         temp *= percent;
         temp.a = 1f;
         sp.color = temp;
+
+        
 
     }
     private void Orient(Types t)
@@ -140,8 +147,41 @@ public class Cell
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
+        if (lastChangeTime.HasValue)
+        {
+            float diff = Time.time - lastChangeTime.Value;
+            Vector4 vect = new Vector4(1, 1, 1, 1);
+            if (diff > timeItTakes)
+            {
+                lastChangeTime = null;
+            }
+            else
+            {
+                float ratio = diff / timeItTakes;
+                int[] arr = { 0, 1, 0, -1, 1, 0, -1, 0 };
 
+                for (int i = 0; i < arr.Length; i += 2)
+                {
+                    int x = arr[i], y = arr[i + 1];
+                    Cell c = RoomManager.Get(x+this.x, y+this.y);
+                    var newRatio = c.lastChangeTime == null ? ratio : Mathf.Min(ratio, (Time.time - c.lastChangeTime.Value) / timeItTakes);
+                    if (c != null && c.col == col)
+                    {
+                        vect[i / 2] = newRatio;
+                    }
+                    else
+                    {
+                        vect[i / 2] = newRatio -2;
+                    }
+                }
+                Debug.Log(vect + "   : " + ratio);
+            }
+            
+            var sp = go.GetComponent<SpriteRenderer>();
+            sp.material.SetVector("_UDLR", vect);
+
+        }
     }
 }
