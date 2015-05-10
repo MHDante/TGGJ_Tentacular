@@ -35,7 +35,7 @@ public class RoomManager : MonoBehaviour
     public GameObject entityObject;
     public float UpdateRate = 0.25f;
     public int gameSteps;
-    public int transitionPercent;
+    public float transitionPercent;
 
     public void Awake()
     {
@@ -150,6 +150,9 @@ public class RoomManager : MonoBehaviour
     private void Update()
     {
         if (!Application.isPlaying||IsPaused())return;
+
+        gameSteps = (int) (Time.time/UpdateRate);
+        transitionPercent = (Time.time%UpdateRate)/UpdateRate;
 
         if (player != null)
         {

@@ -111,19 +111,6 @@ public class Player : MonoBehaviour {
                 currentCell = nextCell;
                 nextCell = null;
                 IsMoving = false;
-                //if (RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y))
-                //{
-                //    Debug.Log("WIN");
-                //    if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
-                //    {
-                //        Application.LoadLevel("TitleScreen");
-                //    }
-                //    else
-                //    {
-                //        FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
-                //    }
-                //    return;
-                //}
             }
         }
         else

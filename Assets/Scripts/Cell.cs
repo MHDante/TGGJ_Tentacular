@@ -176,7 +176,6 @@ public class Cell
                         vect[i / 2] = newRatio -2;
                     }
                 }
-                Debug.Log(vect + "   : " + ratio);
             }
             
             var sp = go.GetComponent<SpriteRenderer>();
