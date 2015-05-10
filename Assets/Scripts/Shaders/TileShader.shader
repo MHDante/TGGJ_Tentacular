@@ -28,6 +28,7 @@ Shader "Custom/TileShader"
 		Pass
 		{
 		CGPROGRAM
+			#pragma target 3.0
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma multi_compile _ PIXELSNAP_ON
@@ -46,8 +47,8 @@ Shader "Custom/TileShader"
 				fixed4 color    : COLOR0;
 				half2 texcoord  : TEXCOORD0;
 				float4 worldpos : TEXCOORD1;
-				fixed4 udlr	    : COLOR1;
-				fixed4 lastcol  : COLOR2;
+				fixed4 lastcol  : COLOR1;
+				fixed4 udlr		: TEXCOORD2;
 
 			};
 			
@@ -104,8 +105,8 @@ Shader "Custom/TileShader"
 				}
 				//fixed4 c = float4(IN.lastcol.r, IN.lastcol.g, IN.lastcol.b, m.a);
 				
-				float sublength = 0.3;
-				float time = _Time.x*5;
+				float sublength = 0.33333;
+				float time = _Time.x*6;
 				float xcoord = IN.worldpos.x + time;
 				float ycoord = IN.worldpos.y + time;
 				float decay = max(IN.color.r, max(IN.color.g, IN.color.b));

@@ -24,8 +24,6 @@ public class Pause : MonoBehaviour {
    
     public GameObject HardMode;
 
-
-    private float hintAlpha = 0;
     private Text hintText;
 
     private float tempHintTimer = 0;

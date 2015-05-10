@@ -28,7 +28,6 @@ public class Player : MonoBehaviour {
     bool IsMoving = false;
     Vector2 dest = Vector2.zero;
     Cell nextCell;
-    Dirs prevDir;
 	// Update is called once per frame
     void Awake()
     {
@@ -58,7 +57,6 @@ public class Player : MonoBehaviour {
 
     void alterButton(GameObject button, bool pressed)
     {
-        var colors = button.GetComponentInChildren<Button>().colors;
         button.GetComponent<Image>().color = new Color(button.GetComponent<Image>().color.r, button.GetComponent<Image>().color.g, button.GetComponent<Image>().color.b,pressed?1 : .40f);
         button.GetComponentInChildren<Text>().color = pressed?Color.white :Color.black;
     }
@@ -155,7 +153,6 @@ public class Player : MonoBehaviour {
                             spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
 
                             nextCell = possibleNext;
-                            prevDir = dir;
 
                             Update();
                             return;

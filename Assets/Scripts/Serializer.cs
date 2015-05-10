@@ -67,8 +67,6 @@ public static class FileWrite
     {
 
         RoomManager room = MonoBehaviour.FindObjectOfType<RoomManager>();
-
-        string path = GetPath();
         XElement loaded;
         try
         {
