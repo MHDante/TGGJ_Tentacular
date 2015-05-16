@@ -1,49 +1,53 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class Octopus : MonoBehaviour {
+public class Octopus : MonoBehaviour
+{
     public enum OctopusStates
     {
         Normal,
         Happy,
         Angry,
     }
-    public Cell currentCell;
-    public List<Cell> spawnCells = new List<Cell>();
-    public Dictionary<Cell, Dirs> cellDirs = new Dictionary<Cell, Dirs>();
-    public float spawnInterval = 2f;
-    float timer = 0f;
-    Colors lastEnemyCol = Colors.Red;
-    //public int maxEnemies = 6;
-    int enemyCounter = 0;
-    public OctopusStates state = OctopusStates.Normal;
 
-    public Sprite OctNormal;
+    public Dictionary<Cell, Dirs> cellDirs = new Dictionary<Cell, Dirs>();
+    public Cell currentCell;
+    private List<Enemy> enemies = new List<Enemy>();
+    //public int maxEnemies = 6;
+    private int enemyCounter = 0;
+    private int enemyIndex = 0;
+    private Texture2D fishtex;
+    private float hue = 0f, huespeed = 5f, val = 0f, valspeed = 0.25f;
+    private Colors lastEnemyCol = Colors.Red;
     public Sprite OctAngry;
     public Sprite OctHappy;
-
+    public Sprite OctNormal;
+    public List<Cell> spawnCells = new List<Cell>();
+    public float spawnInterval = 2f;
+    public OctopusStates state = OctopusStates.Normal;
+    private float timer = 0f;
     public float timeUntilGoat = 10;
-    Texture2D fishtex;
     // Use this for initialization
-    void Start () {
+    private void Start()
+    {
         FindSpawnCells();
         var sp = GetComponent<SpriteRenderer>();
         sp.color = Color.black;
-        timeUntilGoat = (float)RoomManager.roomManager.secondsUntilGoat;
+        timeUntilGoat = (float) RoomManager.instance.secondsUntilGoat;
 
-        
-        fishtex = new Texture2D(RoomManager.roomManager.maxEnemies, 1, TextureFormat.ARGB32, false);
-        for(int i = 0; i < RoomManager.roomManager.maxEnemies; i++)
+
+        fishtex = new Texture2D(RoomManager.instance.maxEnemies, 1, TextureFormat.ARGB32, false);
+        for (int i = 0; i < RoomManager.instance.maxEnemies; i++)
         {
             fishtex.SetPixel(i, 0, new Color(0, 0, 0, 0));
         }
         fishtex.Apply();
         sp.material.SetTexture("_FishTex", fishtex);
-        sp.material.SetInt("_FishTexLen", RoomManager.roomManager.maxEnemies);
+        sp.material.SetInt("_FishTexLen", RoomManager.instance.maxEnemies);
     }
-    void FindSpawnCells()
+
+    private void FindSpawnCells()
     {
         for (int x = 0; x < 5; x++)
         {
@@ -53,39 +57,41 @@ public class Octopus : MonoBehaviour {
         {
             CheckSpawnCellValidity(new Vector2(5, y), Dirs.W);
         }
-        for (int x = 5; x >=0; x--)
+        for (int x = 5; x >= 0; x--)
         {
             CheckSpawnCellValidity(new Vector2(x, 5), Dirs.S);
         }
-        for (int y = 5; y >=0; y--)
+        for (int y = 5; y >= 0; y--)
         {
             CheckSpawnCellValidity(new Vector2(-1, y), Dirs.E);
         }
     }
-    void CheckSpawnCellValidity(Vector2 pos, Dirs dir)
+
+    private void CheckSpawnCellValidity(Vector2 pos, Dirs dir)
     {
-        Vector2 v = pos + (Vector2)transform.position;
-        Cell c = RoomManager.Get((int)v.x, (int)v.y);
+        Vector2 v = pos + (Vector2) transform.position;
+        Cell c = RoomManager.Get((int) v.x, (int) v.y);
         if (c != null)
         {
-            if (Cell.typeDirs[c.type].Contains(dir))
+            if (Cell.typeDirs[c.CellType].Contains(dir))
             {
                 spawnCells.Add(c);
                 cellDirs[c] = Cell.GetOppositeDir(dir);
             }
         }
     }
-    float hue = 0f, huespeed = 5f, val = 0f, valspeed = 0.25f;
-	// Update is called once per frame
-	void Update () {
-		if (RoomManager.roomManager.IsPaused ())
-			return;
 
-        for(int i =0; i <  RoomManager.roomManager.maxEnemies; i++)
+    // Update is called once per frame
+    private void Update()
+    {
+        if (RoomManager.instance.IsPaused())
+            return;
+
+        for (int i = 0; i < RoomManager.instance.maxEnemies; i++)
         {
             if (i >= enemies.Count) break;
             var e = enemies[i];
-            float cap = (e.currentCell.col == e.col) ? 1 : 0;
+            float cap = (e.currentCell.color == e.col) ? 1 : 0;
             Color c = Cell.colorVals[e.col];
             c.a = cap;
             fishtex.SetPixel(i, 0, c);
@@ -106,10 +112,10 @@ public class Octopus : MonoBehaviour {
             }
             var go = GameObject.Find("GoatCounter");
             var txt = go.GetComponent<Text>();
-            txt.text = string.Format("{0:00.0}",timeUntilGoat);
+            txt.text = string.Format("{0:00.0}", timeUntilGoat);
         }
-        
-        if (enemyCounter < RoomManager.roomManager.maxEnemies)
+
+        if (enemyCounter < RoomManager.instance.maxEnemies)
         {
             timer += Time.deltaTime;
             if (timer > spawnInterval)
@@ -117,12 +123,12 @@ public class Octopus : MonoBehaviour {
                 timer = 0;
                 SpawnEnemy();
             }
-	    }
+        }
         if (state == OctopusStates.Happy)
         {
             val += valspeed;
             if (val > 100f) val = 100f;
-            sp.material.SetFloat("_Percent", val / 100f);
+            sp.material.SetFloat("_Percent", val/100f);
             //hue = (hue + huespeed) % 360;
             //Color c = HSVToRGB(hue / 360f, 1f - val/100f, val/100f);
             //sp.color = c;
@@ -130,17 +136,18 @@ public class Octopus : MonoBehaviour {
             if (val == 100f)
             {
                 //Debug.Log("TRUE WIN!");
-                if (RoomManager.roomManager.octopus.IsWithinOctopus(RoomManager.roomManager.player.currentCell.x, RoomManager.roomManager.player.currentCell.y))
+                if (RoomManager.instance.octopus.IsWithinOctopus(RoomManager.instance.player.currentCell.x,
+                    RoomManager.instance.player.currentCell.y))
                 {
                     //Debug.Log("WIN");
-                    if (string.IsNullOrEmpty(RoomManager.roomManager.nextlevel))
+                    if (string.IsNullOrEmpty(RoomManager.instance.nextlevel))
                     {
                         //Application.LoadLevel("TitleScreen");
-                        RoomManager.roomManager.gameObject.GetComponent<Pause>().MenuToggle("Victory");
+                        RoomManager.instance.gameObject.GetComponent<Pause>().MenuToggle("Victory");
                     }
                     else
                     {
-                        FileWrite.InitDeserialization(RoomManager.roomManager.nextlevel);
+                        FileWrite.InitDeserialization(RoomManager.instance.nextlevel);
                         Hints.Level++;
                     }
                     return;
@@ -151,40 +158,41 @@ public class Octopus : MonoBehaviour {
         {
             sp.material.SetFloat("_Percent", 0);
         }
-	}
-    int enemyIndex = 0;
-    List<Enemy> enemies = new List<Enemy>();
+    }
+
     public void SpawnEnemy()
     {
         Cell c = spawnCells.ToArray()[enemyIndex];
-        enemyIndex = (enemyIndex + 1) % spawnCells.Count;
+        enemyIndex = (enemyIndex + 1)%spawnCells.Count;
 
-        GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("enemyPrefab"));
-        go.transform.parent = RoomManager.roomManager.entityObject.transform;
+        GameObject go = (GameObject) Instantiate(Resources.Load("enemyPrefab"));
+        go.transform.parent = RoomManager.instance.entityObject.transform;
 
         Enemy enemy = go.GetComponent<Enemy>();
         enemy.SetCell(c.x, c.y);
         enemy.SetColor(lastEnemyCol);
         enemy.prevDir = cellDirs[c];
 
-        int colIndex = ((int)lastEnemyCol + 1) % (RoomManager.roomManager.differentColors + 1);
+        int colIndex = ((int) lastEnemyCol + 1)%(RoomManager.instance.differentColors + 1);
         if (colIndex == 0) colIndex++;
-        lastEnemyCol = (Colors)colIndex;
+        lastEnemyCol = (Colors) colIndex;
 
         enemyCounter++;
 
         enemies.Add(enemy);
         //start enemy movement
     }
+
     public void SpawnGoat()
     {
         Cell c = spawnCells.ToArray()[0];
 
-        GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("goatPrefab"));
+        GameObject go = (GameObject) Instantiate(Resources.Load("goatPrefab"));
         Goat goat = go.GetComponent<Goat>();
         goat.SetCell(c.x, c.y);
         goat.prevDir = cellDirs[c];
     }
+
     public void ChangeState()
     {
         if (Enemy.WinningState)
@@ -209,10 +217,11 @@ public class Octopus : MonoBehaviour {
             }
         }
     }
+
     public bool IsWithinOctopus(int x, int y)
     {
         return x >= currentCell.x && x < currentCell.x + 5
-            && y >= currentCell.y && y < currentCell.y + 5;
+               && y >= currentCell.y && y < currentCell.y + 5;
     }
 
     public void SetCell(int x, int y)
@@ -234,12 +243,12 @@ public class Octopus : MonoBehaviour {
         else
         {
             Color col = Color.black;
-            float Hval = H * 6f;
+            float Hval = H*6f;
             int sel = Mathf.FloorToInt(Hval);
             float mod = Hval - sel;
-            float v1 = V * (1f - S);
-            float v2 = V * (1f - S * mod);
-            float v3 = V * (1f - S * (1f - mod));
+            float v1 = V*(1f - S);
+            float v2 = V*(1f - S*mod);
+            float v3 = V*(1f - S*(1f - mod));
             switch (sel + 1)
             {
                 case 0:

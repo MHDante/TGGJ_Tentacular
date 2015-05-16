@@ -1,40 +1,36 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
-public class Pause : MonoBehaviour {
-    public enum FadeStates {
+public class Pause : MonoBehaviour
+{
+    public enum FadeStates
+    {
         FadeIn,
         Show,
         FadeOut,
         Wait
     }
 
-    public bool MenuShowing = false;
-	public GameObject SoundUp;
-	public GameObject SoundDown;
-	public bool SoundEnabled = true;
-	public GameObject MenuPanel;
-
-	public GameObject GameOverSign;
-	public GameObject VictorySign;
-	public GameObject PausedSign;
-
     public GameObject continueButton;
-   
-    public GameObject HardMode;
-
-    private Text hintText;
-
-    private float tempHintTimer = 0;
-    private float MaxFadeTimer = 2;
     private FadeStates fadeState = FadeStates.FadeOut;
+    public GameObject GameOverSign;
+    public GameObject HardMode;
+    private Text hintText;
+    private float MaxFadeTimer = 2;
     private int MaxHintTimer = 4;
+    public GameObject MenuPanel;
+    public bool MenuShowing = false;
+    public GameObject PausedSign;
+    public GameObject SoundDown;
+    public bool SoundEnabled = true;
+    public GameObject SoundUp;
+    private float tempHintTimer = 0;
+    public GameObject VictorySign;
 
-
-    public void MenuToggle (string type){
-		MenuPanel.SetActive (!MenuShowing);
-		MenuShowing = !MenuShowing;
+    public void MenuToggle(string type)
+    {
+        MenuPanel.SetActive(!MenuShowing);
+        MenuShowing = !MenuShowing;
 
         if (type == "Pause")
         {
@@ -48,77 +44,90 @@ public class Pause : MonoBehaviour {
         else if (type == "GameOver")
         {
             GameOverSign.SetActive(MenuShowing);
-
         }
     }
-	public void SoundToggle () {
-			SoundUp.SetActive (!SoundEnabled);
-			SoundDown.SetActive (SoundEnabled);
-			SoundEnabled = !SoundEnabled;
-		}
-	public void BackToTitle () {
-		Application.LoadLevel ("TitleScreen");
-	}
+
+    public void SoundToggle()
+    {
+        SoundUp.SetActive(!SoundEnabled);
+        SoundDown.SetActive(SoundEnabled);
+        SoundEnabled = !SoundEnabled;
+    }
+
+    public void BackToTitle()
+    {
+        Application.LoadLevel("TitleScreen");
+    }
 
     public void setHardMode()
     {
         RoomManager.hardMode = HardMode.GetComponent<Toggle>().isOn;
     }
 
-    public void Restart () {
-		FileWrite.InitDeserialization (RoomManager.roomManager.levelName + ".xml");
-	}
-
-
-
-    void Awake()
+    public void Restart()
     {
+        FileWrite.InitDeserialization(RoomManager.instance.levelName + ".xml");
+    }
 
-        tempHintTimer = (float)MaxHintTimer;
+    private void Awake()
+    {
+        tempHintTimer = (float) MaxHintTimer;
         var obj = GameObject.Find("HintText");
         hintText = obj == null ? null : obj.GetComponent<Text>();
     }
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    private void Start()
+    {
         var hmObj = GameObject.Find("HardMode");
         var tog = hmObj.GetComponent<Toggle>();
         tog.isOn = RoomManager.hardMode;
         MenuPanel.SetActive(false);
-		PausedSign.SetActive (false);
-		GameOverSign.SetActive (false);
-		VictorySign.SetActive (false);
+        PausedSign.SetActive(false);
+        GameOverSign.SetActive(false);
+        VictorySign.SetActive(false);
         continueButton.SetActive(false);
-
     }
-	
-	// Update is called once per frame
-	void Update () {
 
+    // Update is called once per frame
+    private void Update()
+    {
         tempHintTimer -= Time.deltaTime;
-        if (tempHintTimer <= 0) {
-            if (fadeState == FadeStates.FadeIn) {
+        if (tempHintTimer <= 0)
+        {
+            if (fadeState == FadeStates.FadeIn)
+            {
                 fadeState = FadeStates.Show;
                 hintText.color = Color.black;
                 tempHintTimer = MaxHintTimer;
-            } else if (fadeState == FadeStates.Show) {
+            }
+            else if (fadeState == FadeStates.Show)
+            {
                 fadeState = FadeStates.FadeOut;
                 tempHintTimer = MaxFadeTimer;
-            } else if (fadeState == FadeStates.FadeOut) {
+            }
+            else if (fadeState == FadeStates.FadeOut)
+            {
                 fadeState = FadeStates.Wait;
                 hintText.color = new Color(0, 0, 0, 0);
                 tempHintTimer = MaxHintTimer;
                 //Hints.GetHint();
                 hintText.text = Hints.GetHint();
-            } else if (fadeState == FadeStates.Wait) {
+            }
+            else if (fadeState == FadeStates.Wait)
+            {
                 fadeState = FadeStates.FadeIn;
                 tempHintTimer = MaxFadeTimer;
             }
         }
 
-        float percent = (float)tempHintTimer / (float)MaxFadeTimer;
-        if (fadeState == FadeStates.FadeOut) {
+        float percent = (float) tempHintTimer/(float) MaxFadeTimer;
+        if (fadeState == FadeStates.FadeOut)
+        {
             hintText.color = new Color(0, 0, 0, percent);
-        } else if (fadeState == FadeStates.FadeIn) {
+        }
+        else if (fadeState == FadeStates.FadeIn)
+        {
             hintText.color = new Color(0, 0, 0, 1 - percent);
         }
 
@@ -131,5 +140,4 @@ public class Pause : MonoBehaviour {
             Restart();
         }
     }
-
 }

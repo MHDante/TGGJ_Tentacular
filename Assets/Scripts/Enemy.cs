@@ -1,57 +1,64 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour {
-    public float enemySpeed;
-    public Cell currentCell;
+public class Enemy : MonoBehaviour
+{
+    public static bool WinningState = false;
     public Colors col;
+    public Cell currentCell;
+    private int currentStep = 0;
+    private Vector2 dest = Vector2.zero;
+    private Cell destCell;
+    public float enemySpeed;
+    public Dirs prevDir;
     private GameObject spriteChild;
 
-    void Awake()
+    private void Awake()
     {
         spriteChild = transform.FindChild("spriteChild").gameObject;
-
     }
+
     // Use this for initialization
-    void Start () {
-        currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
+    private void Start()
+    {
+        currentCell = RoomManager.instance.grid[(int) transform.position.x][(int) transform.position.y];
         enemySpeed = 0.04f;
-
     }
-    public void OnTriggerEnter(Collider other) {
+
+    public void OnTriggerEnter(Collider other)
+    {
         Debug.Log("E Enter.");
     }
+
     public void SetColor(Colors color)
     {
         if (col == color) return;
         col = color;
         var sp = spriteChild.GetComponent<SpriteRenderer>();
         sp.color = Cell.colorVals[col];
-
     }
+
     public bool IsWinCondition()
     {
         var enemies = FindObjectsOfType<Enemy>();
         bool win = true;
-        if (enemies.Length != RoomManager.roomManager.maxEnemies) win = false;
+        if (enemies.Length != RoomManager.instance.maxEnemies) win = false;
         Dictionary<Colors, int> dict = new Dictionary<Colors, int>()
         {
-            { Colors.Red, 0 },
-            { Colors.Green, 0 },
-            { Colors.Blue, 0 },
+            {Colors.Red, 0},
+            {Colors.Green, 0},
+            {Colors.Blue, 0},
         };
         foreach (var e in enemies)
         {
-            if (e.col != e.currentCell.col)
+            if (e.col != e.currentCell.color)
             {
                 dict[e.col]++;
                 win = false;
             }
         }
-        foreach(var c in dict.Keys)
+        foreach (var c in dict.Keys)
         {
             string name = c.ToString().ToLower() + "FishNumber";
             var go = GameObject.Find(name);
@@ -60,25 +67,24 @@ public class Enemy : MonoBehaviour {
         }
         return win;
     }
-    public static bool WinningState = false;
-    int currentStep = 0;
-    Vector2 dest = Vector2.zero;
-    Cell destCell;
-    public Dirs prevDir;
+
     // Update is called once per frame
-    void Update () {
-		if (RoomManager.roomManager.IsPaused ())
-			return;
-        if (currentStep == RoomManager.roomManager.gameSteps && currentStep != 0)
+    private void Update()
+    {
+        if (RoomManager.instance.IsPaused())
+            return;
+        if (currentStep == RoomManager.instance.gameSteps && currentStep != 0)
         {
-            transform.position = Vector3.Lerp(currentCell.go.transform.position, dest, RoomManager.roomManager.transitionPercent);
-            RoomManager.roomManager.octopus.ChangeState();
+            transform.position = Vector3.Lerp(currentCell.gameObject.transform.position, dest,
+                RoomManager.instance.transitionPercent);
+            RoomManager.instance.octopus.ChangeState();
         }
         else
         {
-            currentCell = destCell??currentCell;
-            currentStep = RoomManager.roomManager.gameSteps;
-            if (currentCell.col == col) {
+            currentCell = destCell ?? currentCell;
+            currentStep = RoomManager.instance.gameSteps;
+            if (currentCell.color == col)
+            {
                 currentCell.Decay();
             }
             WinningState = IsWinCondition();
@@ -91,31 +97,32 @@ public class Enemy : MonoBehaviour {
             foreach (Dirs d in Player.dictPossibleDirs[prevDir])
             {
                 Dirs opp = Cell.GetOppositeDir(d);
-                Vector2 next = Player.dirToVect[d] + (Vector2)currentCell.go.transform.position;
-                Cell nextCell = RoomManager.Get((int)next.x, (int)next.y);
+                Vector2 next = Player.dirToVect[d] + (Vector2) currentCell.gameObject.transform.position;
+                Cell nextCell = RoomManager.Get((int) next.x, (int) next.y);
                 if (nextCell != null)
                 {
-                    if (RoomManager.roomManager.octopus.IsWithinOctopus(nextCell.x, nextCell.y))
+                    if (RoomManager.instance.octopus.IsWithinOctopus(nextCell.x, nextCell.y))
                     {
                         turnAround = true;
                     }
-                    else if (nextCell.type == Types.Blank)
+                    else if (nextCell.CellType == Types.Blank)
                     {
                         turnAround = true; // ??
                     }
-                    else if (nextCell.type != Types.Blank
-                        && (Cell.typeDirs[nextCell.type].Contains(opp) || Cell.typeDirs[currentCell.type].Contains(d)))
+                    else if (nextCell.CellType != Types.Blank
+                             &&
+                             (Cell.typeDirs[nextCell.CellType].Contains(opp) || Cell.typeDirs[currentCell.CellType].Contains(d)))
                     {
                         //if (RoomManager.roomManager.player.currentCell == nextCell)
                         //{
                         //    Debug.Log("You are Dead.");
                         //}
-                        if (col == nextCell.col && colorDir == null && nextCell.decayLeft > highestDecay)
+                        if (col == nextCell.color && colorDir == null && nextCell.decayLeft > highestDecay)
                         {
                             colorDir = d;
                             highestDecay = nextCell.decayLeft;
                         }
-                        else if (nextCell.col == Colors.Black)
+                        else if (nextCell.color == Colors.Black)
                         {
                             firstDirChoices.Add(d);
                         }
@@ -147,21 +154,21 @@ public class Enemy : MonoBehaviour {
             }
         }
     }
-    void MoveInDir(Dirs d)
+
+    private void MoveInDir(Dirs d)
     {
-        Vector2 next = Player.dirToVect[d] + (Vector2)currentCell.go.transform.position;
-        Cell c = RoomManager.Get((int)next.x, (int)next.y);
-        currentStep = RoomManager.roomManager.gameSteps;
+        Vector2 next = Player.dirToVect[d] + (Vector2) currentCell.gameObject.transform.position;
+        Cell c = RoomManager.Get((int) next.x, (int) next.y);
+        currentStep = RoomManager.instance.gameSteps;
         dest = next;
-        float angle = Mathf.Atan2(-Player.dirToVect[d].x, Player.dirToVect[d].y) * Mathf.Rad2Deg;
-        spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+        float angle = Mathf.Atan2(-Player.dirToVect[d].x, Player.dirToVect[d].y)*Mathf.Rad2Deg;
+        spriteChild.transform.rotation = new Quaternion {eulerAngles = new Vector3(0, 0, angle)};
 
         destCell = c;
-        currentCell.enemy = null;
-        destCell.enemy = this;
         prevDir = d;
         Update();
     }
+
     public void SetCell(int x, int y)
     {
         Cell next = RoomManager.Get(x, y);
@@ -169,7 +176,6 @@ public class Enemy : MonoBehaviour {
         {
             currentCell = next;
             transform.position = new Vector3(currentCell.x, currentCell.y);
-            currentCell.enemy = this;
         }
     }
 }

@@ -18,7 +18,7 @@ public class MapEditor : EditorWindow {
         EditorApplication.playmodeStateChanged = () =>
         {
             if (EditorApplication.currentScene != "Assets/Scenes/Workshop.unity") return;
-            levelname = RoomManager.roomManager.levelName;
+            levelname = RoomManager.instance.levelName;
             if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
             {
                 FileWrite.InitSerialization();
@@ -77,31 +77,31 @@ public class MapEditor : EditorWindow {
     Types lastType;
     public void CellAction(Vector2 pos, bool useLastType = false)
     {
-        Cell c = RoomManager.GetFromWorldPos(pos.x, pos.y);
+        Cell c = RoomManager.Get((int)pos.x, (int)pos.y);
         if (c != null)
         {
             if (useLastType)
             {
-                c.type = lastType;
+                c.CellType = lastType;
             }
             else
             {
-                c.type = (Types)(((int)c.type + 1) % Enum.GetValues(typeof(Types)).Length);
-                lastType = c.type;
+                c.CellType = (Types)(((int)c.CellType + 1) % Enum.GetValues(typeof(Types)).Length);
+                lastType = c.CellType;
             }
         }
     }
     public void PlacePlayer(Vector2 pos)
     {
-        RoomManager.roomManager.PlayerStartX = (int)pos.x;
-        RoomManager.roomManager.PlayerStartY = (int)pos.y;
-        RoomManager.roomManager.player.SetCell((int)pos.x, (int)pos.y);
+        RoomManager.instance.playerStartX = (int)pos.x;
+        RoomManager.instance.playerStartY = (int)pos.y;
+        RoomManager.instance.player.SetCell((int)pos.x, (int)pos.y);
     }
     public void PlaceOctopus(Vector2 pos)
     {
-        RoomManager.roomManager.OctopusX = (int)pos.x;
-        RoomManager.roomManager.OctopusY = (int)pos.y;
-        RoomManager.roomManager.octopus.SetCell((int)pos.x, (int)pos.y);
+        RoomManager.instance.octopusX = (int)pos.x;
+        RoomManager.instance.octopusY = (int)pos.y;
+        RoomManager.instance.octopus.SetCell((int)pos.x, (int)pos.y);
         
     }
     bool RightDown()
@@ -146,9 +146,9 @@ public class MapEditor : EditorWindow {
             else
             {
                 levelname = result.Replace(".xml", "");
-                RoomManager.roomManager.levelName = levelname;
-                RoomManager.roomManager.Awake();
-                EditorUtility.SetDirty(RoomManager.roomManager);
+                RoomManager.instance.levelName = levelname;
+                RoomManager.instance.Awake();
+                EditorUtility.SetDirty(RoomManager.instance);
 
             }
         }
@@ -156,22 +156,22 @@ public class MapEditor : EditorWindow {
         if (tempname != levelname)
         {
             levelname = tempname;
-            RoomManager.roomManager.levelName = levelname;
-            EditorUtility.SetDirty(RoomManager.roomManager);
+            RoomManager.instance.levelName = levelname;
+            EditorUtility.SetDirty(RoomManager.instance);
         }
 
         var tempnext = fileinfos[EditorGUILayout.Popup("NextLevel:", fileinfos.ToList().IndexOf(nextlevel), fileinfos)];
         if (nextlevel != tempnext)
         {
             nextlevel = tempnext;
-            RoomManager.roomManager.nextlevel = nextlevel;
-            EditorUtility.SetDirty(RoomManager.roomManager);
+            RoomManager.instance.nextlevel = nextlevel;
+            EditorUtility.SetDirty(RoomManager.instance);
         }
             if (GUILayout.Button("Save"))
             {
 
-            RoomManager.roomManager.nextlevel = nextlevel;
-            EditorUtility.SetDirty(RoomManager.roomManager);
+            RoomManager.instance.nextlevel = nextlevel;
+            EditorUtility.SetDirty(RoomManager.instance);
 
             FileWrite.InitSerialization();
         }

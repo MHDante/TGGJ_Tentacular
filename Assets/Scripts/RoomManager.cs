@@ -1,41 +1,36 @@
 ﻿using System;
 using System.IO;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-using UnityEngine;
-using UnityEngine.UI;
-
 [ExecuteInEditMode]
 public class RoomManager : MonoBehaviour
 {
-    // Update is called once per frame
-
-
     private const int CAM_SIZE = 8;
-    public static RoomManager roomManager;
+    public static RoomManager instance;
     public static float cellSize = 40;
     public static bool hardMode = false;
     private int _gW = 0, _gH = 0;
-    private bool awoken = false;
+    private bool _awoken;
     public int differentColors = 3;
-    public Cell[][] Grid;
+    public GameObject entityObject;
+    public int gameSteps;
+    public Cell[][] grid;
+    public GameObject gridObject;
     public int gridWidth = 5, gridHeight = 4;
     public string levelName;
     public int maxEnemies = 6;
     public string nextlevel;
     public Octopus octopus;
-    public int OctopusX = 0, OctopusY = 0;
-    public Player player;
-    public int PlayerStartX = 0, PlayerStartY = 0;
-    public int secondsUntilGoat = 2;
-    public GameObject gridObject;
+    public int octopusX, octopusY = 0;
     public Pause pause;
-    public GameObject entityObject;
-    public float UpdateRate = 0.25f;
-    public int gameSteps;
+    public Player player;
+    public int playerStartX = 0, playerStartY = 0;
+    public int secondsUntilGoat = 2;
     public float transitionPercent;
+    private const float UPDATE_RATE = 0.25f;
 
     public void Awake()
     {
@@ -45,9 +40,8 @@ public class RoomManager : MonoBehaviour
 #endif
         Camera.main.orthographicSize = CAM_SIZE;
         RegenMap(true);
-        awoken = true;
+        _awoken = true;
         pause = FindObjectOfType<Pause>();
-
     }
 
     public bool IsPaused()
@@ -60,7 +54,7 @@ public class RoomManager : MonoBehaviour
         if (levelName == "")
             Debug.LogError("levelname is null");
 
-        if (awoken && (_gW != gridWidth || _gH != gridHeight))
+        if (_awoken && (_gW != gridWidth || _gH != gridHeight))
         {
             FileWrite.InitSerialization(gridWidth, gridHeight);
             RegenMap(true);
@@ -69,40 +63,32 @@ public class RoomManager : MonoBehaviour
 
     private void RegenMap(bool validation)
     {
-        roomManager = this;
-        if (gridObject == null) gridObject = GameObject.Find("Grid")?? new GameObject("Grid");
-        if (entityObject == null) entityObject = GameObject.Find("Entities")?? new GameObject("Entities");
+        instance = this;
+        if (gridObject == null) gridObject = GameObject.Find("Grid") ?? new GameObject("Grid");
+        if (entityObject == null) entityObject = GameObject.Find("Entities") ?? new GameObject("Entities");
         gridObject.transform.parent = transform;
         entityObject.transform.parent = transform;
 
 
         var obs = GameObject.FindGameObjectsWithTag("generated");
+
         foreach (var o in obs)
         {
             DestroyGeneralized(o.gameObject);
         }
 
-        //if (Application.isPlaying)
-        //{
         try
         {
-            string n = levelName;
-            if (n == "blank0")
-            {
+            if (levelName == "blank0")
                 FileWrite.DeserializationCallback();
-            }
             else if (!Application.isPlaying)
-            {
-                FileWrite.DeserializationCallback(n + ".xml");
-            }
-
-            else FileWrite.InitDeserialization(n + ".xml");
+                FileWrite.DeserializationCallback(levelName + ".xml");
+            else FileWrite.InitDeserialization(levelName + ".xml");
         }
         catch (FileNotFoundException)
         {
             GenerateEmptyGrid();
         }
-        //}
     }
 
     public static void DestroyGeneralized(GameObject o)
@@ -124,35 +110,26 @@ public class RoomManager : MonoBehaviour
 
     public void GenerateEmptyGrid()
     {
-        Grid = new Cell[gridWidth][];
+        grid = new Cell[gridWidth][];
         for (int i = 0; i < gridWidth; i++)
         {
-            Grid[i] = new Cell[gridHeight];
+            grid[i] = new Cell[gridHeight];
             for (int j = 0; j < gridHeight; j++)
             {
-                Grid[i][j] = new Cell(i, j);
+                grid[i][j] = new Cell(i, j);
             }
         }
 
         _gW = gridWidth;
         _gH = gridHeight;
-
-        //mainCamera.orthographicSize = gridHeight/2 + (gridHeight%2)*2;
-        //transform.position = new Vector3(((float) gridWidth)/2, ((float) gridHeight)/2);
-    }
-
-    // Use this for initialization
-    private void Start()
-    {
-        //hintText.text = Hints.GetHint();
     }
 
     private void Update()
     {
-        if (!Application.isPlaying||IsPaused())return;
+        if (!Application.isPlaying || IsPaused()) return;
 
-        gameSteps = (int) (Time.time/UpdateRate);
-        transitionPercent = (Time.time%UpdateRate)/UpdateRate;
+        gameSteps = (int) (Time.time/UPDATE_RATE);
+        transitionPercent = (Time.time%UPDATE_RATE)/UPDATE_RATE;
 
         if (player != null)
         {
@@ -160,31 +137,13 @@ public class RoomManager : MonoBehaviour
         }
 
 
-        for(int i = 0; i < Grid.Length; i++)
-        {
-            for (int j = 0; j < Grid[0].Length; j++)
-            {
-                Cell c = Grid[i][j];
-                if (c != null)
-                {
-                    c.Update();
-                }
-            }
-        }
+        foreach (var row in grid)
+            foreach (var cell in row)
+                if (cell != null)
+                    cell.Update();
     }
-
-    public void SkillButton(int num)
-    {
-    }
-
-    public static Cell GetFromWorldPos(float x, float y)
-    {
-        int originX = (int) Mathf.Floor(x);
-        int originY = (int) Mathf.Floor(y);
-        return Get(originX, originY);
-    }
-
-    private void OnDrawGizmos()
+    
+    public void OnDrawGizmos()
     {
         Gizmos.color = new Color(1, 0, 0, 0.5f);
         Gizmos.DrawCube(new Vector3(((float) gridWidth)/2, ((float) gridHeight)/2), new Vector3(gridWidth, gridHeight));
@@ -192,16 +151,11 @@ public class RoomManager : MonoBehaviour
 
     public static Cell Get(int x, int y)
     {
-        if (!IsWithinGrid(x, y))
+        if (!(x >= 0 && x < instance.grid.Length
+                && y >= 0 && y < instance.grid[0].Length))
             return null;
-        Cell ret = roomManager.Grid[x][y];
+        Cell ret = instance.grid[x][y];
         if (x != ret.x || y != ret.y) throw new SystemException();
         return ret;
-    }
-
-    public static bool IsWithinGrid(int x, int y)
-    {
-        return (x >= 0 && x < roomManager.Grid.Length
-                && y >= 0 && y < roomManager.Grid[0].Length);
     }
 }

@@ -1,39 +1,44 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour {
-    public float playerSpeed;
-    public Cell currentCell;
-
-    private GameObject spriteChild;
-    private Quaternion rotGoal;
-    public LayerMask enemies;
+public class Player : MonoBehaviour
+{
     public static Dictionary<Dirs, Vector2> dirToVect = new Dictionary<Dirs, Vector2>()
     {
-        { Dirs.N, Vector2.up },
-        { Dirs.S, -Vector2.up },
-        { Dirs.E, Vector2.right },
-        { Dirs.W, -Vector2.right },
+        {Dirs.N, Vector2.up},
+        {Dirs.S, -Vector2.up},
+        {Dirs.E, Vector2.right},
+        {Dirs.W, -Vector2.right},
     };
+
     public static Dictionary<Vector2, Dirs> vectToDir = new Dictionary<Vector2, Dirs>();
+    public static Dictionary<Dirs, List<Dirs>> dictPossibleDirs = new Dictionary<Dirs, List<Dirs>>();
+    private GameObject background;
+    public Cell currentCell;
+    private Vector2 dest = Vector2.zero;
+    public LayerMask enemies;
+    //bool StandingStill = true;
+    private bool IsMoving = false;
+    private Cell nextCell;
+    public float playerSpeed;
+    private Quaternion rotGoal;
+    private GameObject skillButton1, skillButton2, skillButton3, skillButton4;
+    private GameObject spriteChild;
     // Use this for initialization
-    void Start() {
-        currentCell = RoomManager.roomManager.Grid[(int)transform.position.x][(int)transform.position.y];
+    private void Start()
+    {
+        currentCell = RoomManager.instance.grid[(int) transform.position.x][(int) transform.position.y];
         playerSpeed = 0.08f;
     }
-    //bool StandingStill = true;
-    bool IsMoving = false;
-    Vector2 dest = Vector2.zero;
-    Cell nextCell;
-	// Update is called once per frame
-    void Awake()
+
+    // Update is called once per frame
+    private void Awake()
     {
         if (dictPossibleDirs.Count == 0)
         {
-            foreach (Dirs d in Enum.GetValues(typeof(Dirs)))
+            foreach (Dirs d in Enum.GetValues(typeof (Dirs)))
             {
                 dictPossibleDirs[d] = GetPossibleDirs(d);
             }
@@ -53,16 +58,16 @@ public class Player : MonoBehaviour {
         skillButton4 = GameObject.Find("skillButton4");
     }
 
-    private GameObject skillButton1, skillButton2, skillButton3, skillButton4;
-
-    void alterButton(GameObject button, bool pressed)
+    private void alterButton(GameObject button, bool pressed)
     {
-        button.GetComponent<Image>().color = new Color(button.GetComponent<Image>().color.r, button.GetComponent<Image>().color.g, button.GetComponent<Image>().color.b,pressed?1 : .40f);
-        button.GetComponentInChildren<Text>().color = pressed?Color.white :Color.black;
+        button.GetComponent<Image>().color = new Color(button.GetComponent<Image>().color.r,
+            button.GetComponent<Image>().color.g, button.GetComponent<Image>().color.b, pressed ? 1 : .40f);
+        button.GetComponentInChildren<Text>().color = pressed ? Color.white : Color.black;
     }
-    GameObject background;
-    void Update () {
-        if (RoomManager.roomManager.IsPaused())
+
+    private void Update()
+    {
+        if (RoomManager.instance.IsPaused())
             return;
         if (background != null)
         {
@@ -76,7 +81,7 @@ public class Player : MonoBehaviour {
 
         CheckCollision();
         Colors? currentCol = null;
-        if      (Input.GetButton("Col1")) currentCol = Colors.Red;
+        if (Input.GetButton("Col1")) currentCol = Colors.Red;
         else if (Input.GetButton("Col2")) currentCol = Colors.Green;
         else if (Input.GetButton("Col3")) currentCol = Colors.Blue;
         else if (Input.GetButton("Col4")) currentCol = Colors.Black;
@@ -95,7 +100,7 @@ public class Player : MonoBehaviour {
             }
             else
             {
-              currentCell.SetColor(currentCol.Value);
+                currentCell.SetColor(currentCol.Value);
             }
         }
         Color pCol = currentCol == null ? Color.white : Cell.colorVals[currentCol.Value];
@@ -104,7 +109,8 @@ public class Player : MonoBehaviour {
 
         if (IsMoving)
         {
-            transform.position = Vector3.MoveTowards(transform.position, dest, Mathf.Min(playerSpeed, Vector2.Distance(transform.position, dest)));
+            transform.position = Vector3.MoveTowards(transform.position, dest,
+                Mathf.Min(playerSpeed, Vector2.Distance(transform.position, dest)));
             //if (Vector2.Distance(transform.position, dest) < playerSpeed * Time.deltaTime)
             if (transform.position.x == dest.x && transform.position.y == dest.y)
             {
@@ -115,29 +121,29 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            
             float horiz = Input.GetAxisRaw("Horizontal");
             float vert = Input.GetAxisRaw("Vertical");
             if (horiz != 0) vert = 0;
             if (horiz != 0 || vert != 0)
             {
-                int x = (int)horiz + currentCell.x;
-                int y = (int)vert + currentCell.y;
-                if (RoomManager.IsWithinGrid(x, y))
+                int x = (int) horiz + currentCell.x;
+                int y = (int) vert + currentCell.y;
+                Cell possibleNext = RoomManager.Get(x, y);
+                if (possibleNext != null)
                 {
-                    Cell possibleNext = RoomManager.Get(x, y);
-                    bool isOctTile = RoomManager.roomManager.octopus.IsWithinOctopus(x, y);
-                    bool prevOctTile = RoomManager.roomManager.octopus.IsWithinOctopus(currentCell.x, currentCell.y);
-                    if (isOctTile || (int)possibleNext.type != 0)
+                    
+                    bool isOctTile = RoomManager.instance.octopus.IsWithinOctopus(x, y);
+                    bool prevOctTile = RoomManager.instance.octopus.IsWithinOctopus(currentCell.x, currentCell.y);
+                    if (isOctTile || (int) possibleNext.CellType != 0)
                     {
                         Dirs dir = vectToDir[new Vector2(horiz, vert)];
-                        if ((isOctTile && prevOctTile) || Cell.IsValidMove(dir, currentCell.type, possibleNext.type))
+                        if ((isOctTile && prevOctTile) || Cell.IsValidMove(dir, currentCell.CellType, possibleNext.CellType))
                         {
                             IsMoving = true;
                             dest = new Vector2(x, y);
 
-                            float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y) * Mathf.Rad2Deg;
-                            spriteChild.transform.rotation = new Quaternion { eulerAngles = new Vector3(0, 0, angle) };
+                            float angle = Mathf.Atan2(-dirToVect[dir].x, dirToVect[dir].y)*Mathf.Rad2Deg;
+                            spriteChild.transform.rotation = new Quaternion {eulerAngles = new Vector3(0, 0, angle)};
 
                             nextCell = possibleNext;
 
@@ -148,21 +154,21 @@ public class Player : MonoBehaviour {
                 }
             }
         }
-	}
-    
-    public static Dictionary<Dirs, List<Dirs>> dictPossibleDirs = new Dictionary<Dirs, List<Dirs>>();
+    }
+
     public static List<Dirs> GetPossibleDirs(Dirs dir)
     {
         List<Dirs> dirs = new List<Dirs>();
         Dirs opp = Cell.GetOppositeDir(dir);
         dirs.Add(dir);
-        foreach (Dirs d in Enum.GetValues(typeof(Dirs)))
+        foreach (Dirs d in Enum.GetValues(typeof (Dirs)))
         {
             if (d == opp || d == dir) continue;
             dirs.Add(d);
         }
         return dirs;
     }
+
     public void SetCell(int x, int y)
     {
         Cell next = RoomManager.Get(x, y);
@@ -175,16 +181,17 @@ public class Player : MonoBehaviour {
 
     public void CheckCollision()
     {
-
         var col = GetComponent<CircleCollider2D>();
-        foreach (var enemy in Physics2D.OverlapCircleAll((Vector2)transform.position + col.offset, col.radius, enemies))
+        foreach (var enemy in Physics2D.OverlapCircleAll((Vector2) transform.position + col.offset, col.radius, enemies)
+            )
         {
             //Debug.Log("Hard "  + RoomManager.hardMode);
             //Debug.Log("Enemy? " + (enemy.gameObject.GetComponent<Enemy>() != null));
-            if ((RoomManager.hardMode && (enemy.gameObject.GetComponent<Enemy>()!= null))|| enemy.gameObject.GetComponent<Goat>() != null)
+            if ((RoomManager.hardMode && (enemy.gameObject.GetComponent<Enemy>() != null)) ||
+                enemy.gameObject.GetComponent<Goat>() != null)
             {
-                    RoomManager.roomManager.pause.MenuToggle("GameOver");
-            } 
+                RoomManager.instance.pause.MenuToggle("GameOver");
+            }
         }
     }
 }

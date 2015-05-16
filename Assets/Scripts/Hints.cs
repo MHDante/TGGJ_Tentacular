@@ -1,12 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-static class Hints
+
+internal static class Hints
 {
     private static int level;
     private static int hintNum;
     private static int hintmax;
+
+    private static String[][] hints =
+    {
+        new string[] {"Use the Number Keys!", "Stay inside him when he's happy"},
+        new string[]
+        {"You have to keep them in their color.", "Press 4 to paint black.", "Without the Loops you'll fail."},
+        new string[] {"The head makes them bounce", "They won't last in a short loop.", "Press 4 to paint black"},
+        new string[] {"The head makes them bounce", "They won't last in a short loop.", "Press 4 to paint black"},
+        new string[] {"The head makes them bounce", "They won't last in a short loop.", "Press 4 to paint black"},
+    };
+
     public static int Level
     {
         get { return level; }
@@ -14,7 +23,7 @@ static class Hints
         {
             level = value;
             hintNum = 0;
-            hintmax = (level >= hints.Length)?0 : hints[level].Length;
+            hintmax = (level >= hints.Length) ? 0 : hints[level].Length;
         }
     }
 
@@ -25,16 +34,4 @@ static class Hints
         hintNum = (hintNum + 1)%hintmax;
         return ret;
     }
-
-    private static String[][] hints =
-    {
-        new string[]{"Use the Number Keys!","Stay inside him when he's happy" },
-        new string[]{"You have to keep them in their color.","Press 4 to paint black.","Without the Loops you'll fail." },
-        new string[]{"The head makes them bounce","They won't last in a short loop.", "Press 4 to paint black" },
-        new string[]{"The head makes them bounce","They won't last in a short loop.", "Press 4 to paint black" },
-        new string[]{"The head makes them bounce","They won't last in a short loop.", "Press 4 to paint black" },
-
-    };
-
-
 }
