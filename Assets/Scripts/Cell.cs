@@ -81,7 +81,7 @@ public class Cell
     }
     public void SetColor(Colors color)
     {
-        if (col == color) return;
+        if (col == color & decayLeft == decayMax) return;
         col = color;
         if (go != null)
         {
