@@ -286,7 +286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &260232097
 RectTransform:
   m_ObjectHideFlags: 0
@@ -347,7 +347,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1057374972}
-        m_MethodName: EndAll
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   - 222: {fileID: 1003130715}
   - 114: {fileID: 1003130714}
   m_Layer: 5
-  m_Name: whatdo panel 1
+  m_Name: helpPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -663,8 +663,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1057374972}
-        m_MethodName: HowTo
-        m_Mode: 1
+        m_MethodName: HelpPanel
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
@@ -672,7 +672,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
@@ -762,17 +762,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstLevel: firstlevel
-  StartButton: {fileID: 35537208}
-  WhatDoButton: {fileID: 1052197175}
-  Logo: {fileID: 262423792}
-  Credits: {fileID: 1411969485}
-  WhatDoPanel1: {fileID: 1003130712}
-  RulesText: {fileID: 1981700809}
-  Title: {fileID: 1651565144}
-  GarbagePanel: {fileID: 1303258939}
-  QuitButton: {fileID: 260232096}
-  Xbutton: {fileID: 1431331291}
   HardMode: {fileID: 1222290099}
+  HelpWindow: {fileID: 1003130712}
 --- !u!114 &1057374973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,7 +899,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1057374972}
-        m_MethodName: setHardMode
+        m_MethodName: SetHardMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1204,15 +1195,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1057374972}
-        m_MethodName: ExitRules
-        m_Mode: 1
+        m_MethodName: HelpPanel
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
             Culture=neutral, PublicKeyToken=null
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: HidePanel
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
